@@ -1,11 +1,20 @@
 import express from 'express';
-import sqlite3 from 'sqlite3';
+import pkg from 'pg';
 import bcrypt from 'bcrypt';
 import session from 'express-session';
 import cors from 'cors';
 
 const app = express();
-const db = new sqlite3.Database('./db/database.db');
+
+// PostgreSQL Pool erstellen
+const {Pool} = pkg;
+const pool = new Pool({
+    user: process.env.POSTGRES_USER,
+    password: process.env.POSTGRES_PASSWORD,
+    database: process.env.POSTGRES_DB,
+    host: process.env.POSTGRES_HOST,
+    port: process.env.POSTGRES_PORT,
+});
 
 app.set('port', 8080);
 
@@ -13,53 +22,56 @@ app.use(cors());
 app.use(express.json());
 
 app.set('view engine', 'ejs');
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({extended: true}));
 app.use(session({
     secret: 'secret-key',
     resave: false,
     saveUninitialized: false
 }));
 
-// Error handler middleware
 function errorHandler(err, req, res, next) {
     console.log(err);
-    res.json({error: err});
-    res.status(500).send('Something broke!');
+    res.status(500).json({error: err.message});
 }
+
 app.use(errorHandler);
 
-app.get('/', (req, res) => {
+app.get('/', async (req, res) => {
     if (req.session.loggedin) {
-        db.all('SELECT * FROM persons', [], (err, rows) => {
-            if (err) {
-                throw err;
-            }
+        try {
+            const {rows} = await pool.query('SELECT * FROM persons');
             res.render('dashboard', {
                 persons: rows
             });
-        });
+        } catch (err) {
+            throw err;
+        }
     } else {
         res.render('login');
     }
 });
 
-app.post('/login', (req, res) => {
-    const { username, password } = req.body;
+app.post('/login', async (req, res) => {
+    const {username, password} = req.body;
 
-    db.get('SELECT password FROM users WHERE username = ?', [username], (err, row) => {
-        if (err || !row) {
-            if (err)
-                console.error(err);
-            return res.redirect('/');
-        }
+    try {
+        const {rows} = await pool.query('SELECT password FROM users WHERE username = $1', [username]);
 
-        if (bcrypt.compareSync(password, row.password)) {
-            req.session.loggedin = true;
-            res.redirect('/');
-        } else {
-            res.redirect('/');
+        console.log(rows);
+
+        // for user in rows
+        for (let user of rows) {
+            if (bcrypt.compare(password, user.password)) {
+                req.session.loggedin = true;
+                res.redirect('/');
+                return;
+            }
         }
-    });
+    } catch (err) {
+        console.error(err);
+    } finally {
+        res.redirect('/');
+    }
 });
 
 app.listen(app.get('port'), console.log(`Server is running on Port ${app.get('port')}.`));
