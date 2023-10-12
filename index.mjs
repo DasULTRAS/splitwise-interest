@@ -60,17 +60,20 @@ app.post('/login', async (req, res) => {
         console.log(rows);
 
         // for user in rows
-        for (let user of rows) {
+        if (rows[0]) {
+            const user = rows[0];
             if (bcrypt.compare(password, user.password)) {
                 req.session.loggedin = true;
                 res.redirect('/');
                 return;
             }
         }
+        res.send(401).render('login', {
+            error: "Wrong credentials"
+        });
     } catch (err) {
         console.error(err);
-    } finally {
-        res.redirect('/');
+        res.send(500).redirect('/');
     }
 });
 

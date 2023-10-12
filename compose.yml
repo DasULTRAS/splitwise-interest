@@ -3,12 +3,18 @@ version: '3'
 services:
   web:
     build: .
-    depends_on:
-      - db
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules/
     ports:
       - "8080:8080"
+      - "9229:9229" # Für das Debugging
     env_file:
       - ./db.env
+    depends_on:
+      - db
+    command: npm run dev
+
   db:
     image: postgres:latest
     ports:
