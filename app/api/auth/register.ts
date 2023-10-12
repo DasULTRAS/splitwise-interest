@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import bcrypt from 'bcrypt';
 import User from '../../../lib/models/User';
 import { checkEmail, checkPassword, checkUsername } from '../../../utils/validation';
-import connectToDb from '../../../lib/mongodb';
+import { connectToDb } from '../../../lib/mongodb';
 
 const saltRounds = 10;
 
@@ -25,7 +25,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         errors.username = checkUsername(username);
 
         if (errors.email || errors.password || errors.username) {
-            return res.status(400).send({message: 'Invalid data!', errors: errors});
+            return res.status(400).send({ message: 'Invalid data!', errors: errors });
         }
 
         try {
@@ -51,11 +51,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
             // Save the new user
             await newUser.save();
-            res.status(201).send({message: 'User successfully saved!'});
+            res.status(201).send({ message: 'User successfully saved!' });
 
-        } catch (err:any) {
+        } catch (err: any) {
             console.error('Error while registering user: ' + err);
-            return res.status(500).send({message: 'Server Error'});
+            return res.status(500).send({ message: 'Server Error' });
         }
     } else {
         res.status(405).end();

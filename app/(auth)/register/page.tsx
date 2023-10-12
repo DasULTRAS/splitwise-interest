@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useEffect, useState } from "react";
+import { signIn } from 'next-auth/react';
 
 export default function Register() {
     interface InputErrors {
@@ -10,6 +11,12 @@ export default function Register() {
     interface ErrorResponse {
         errors: InputErrors;
         message: string;
+    }
+    interface LoginResponse {
+        error: string,
+        ok: boolean,
+        status: number,
+        url: string | null,
     }
 
     const [email, setEmail] = useState<string>("");
@@ -49,6 +56,17 @@ export default function Register() {
             }
             setInputErrors({ username: "", email: "", password: "" });
             setMessage(responseData.message || "Account created successfully!");
+            
+            const user = await signIn('credentials', {
+                username: username,
+                password: password
+            }) as LoginResponse;
+
+            if (user.ok) {
+                setMessage(`Login successful!`);
+            } else {
+                setMessage("Login failed!");
+            }
         } catch (error: any) {
             setMessage(`Error: ${error.message || 'Unknown error'}`);
         } finally {

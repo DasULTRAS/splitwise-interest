@@ -1,10 +1,17 @@
 'use client'
 
 import React, { useState } from "react";
+import { signIn, useSession, getSession } from 'next-auth/react';
 
 export default function Login() {
     interface ErrorResponse {
         message: string,
+    }
+    interface LoginResponse {
+        error: string,
+        ok: boolean,
+        status: number,
+        url: string | null,
     }
 
     const [idString, setIdString] = useState<string>("");
@@ -19,22 +26,17 @@ export default function Login() {
         setLoading(true);
 
         try {
-            const response = await fetch("/api/auth/login", {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ idString, password })
-            });
+            const user = await signIn('credentials', {
+                username: idString,
+                password: password,
+                redirect: false,
+            }) as LoginResponse;
 
-            if (!response.ok) {
-                const errorData: ErrorResponse = await response.json();
-                setMessage(errorData.message || `Error: ${response.statusText}`);
-                return;
+            if (user.ok) {
+                setMessage(`Login successful!`);
+            } else {
+                setMessage("Login failed!");
             }
-
-            const data = await response.json();
-            setMessage(data?.message);
         } catch (error: any) {
             setMessage(`Error: ${error.message || 'Unknown error'}`);
         } finally {
@@ -75,11 +77,11 @@ export default function Login() {
                                 onChange={(event) => setPassword(event.target.value)}
                             />
                             <button className="ml-2" type="button"
-                                    onMouseDown={() => setShowPassword(true)}
-                                    onMouseUp={() => setShowPassword(false)}
-                                    onMouseLeave={() => setShowPassword(false)}
-                                    onTouchStart={() => setShowPassword(true)}
-                                    onTouchEnd={() => setShowPassword(false)}
+                                onMouseDown={() => setShowPassword(true)}
+                                onMouseUp={() => setShowPassword(false)}
+                                onMouseLeave={() => setShowPassword(false)}
+                                onTouchStart={() => setShowPassword(true)}
+                                onTouchEnd={() => setShowPassword(false)}
                             >show
                             </button>
                         </div>
@@ -94,9 +96,9 @@ export default function Login() {
                             {loading && (
                                 <svg className="m-auto animate-spin h-5 w-5 mr-3" viewBox="0 0 24 24">
                                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
-                                            strokeWidth="4"></circle>
+                                        strokeWidth="4"></circle>
                                     <path className="opacity-75" fill="currentColor"
-                                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                 </svg>
                             )}
                             <span>Login</span>
@@ -109,7 +111,7 @@ export default function Login() {
                         </div>
                     }
 
-                    <hr className="mb-6 border-t"/>
+                    <hr className="mb-6 border-t" />
 
                     <div className="text-center">
                         <a className="inline-block text-sm text-blue-500 align-baseline hover:text-blue-800" href="/password_reset">
@@ -118,7 +120,7 @@ export default function Login() {
                     </div>
                     <div className="text-center">
                         <a className="inline-block text-sm text-blue-500 align-baseline hover:text-blue-800"
-                           href="/register">
+                            href="/register">
                             No account? Register!
                         </a>
                     </div>

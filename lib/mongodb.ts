@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 let isConnected = false;
 
-export default async function connectToDb() {
+export async function connectToDb() {
     if (isConnected) {
         console.log('Already connected to database');
         return;
@@ -53,13 +53,16 @@ export default async function connectToDb() {
     }
 }
 
-/*
-mongoose.connection.on('connected', () => {
-        console.log('Already connected to database');
+export async function disconnectFromDb() {
+    if (!isConnected) {
+        console.log('No connection to close');
         return;
-    });
-mongoose.connection.on('error', (err) => {
-    console.log('Connection String: ' + dbString);
-    console.error('Database connection error: ' + err);
-});
- */
+    }
+
+    try {
+        await mongoose.connection.close();
+    } catch (err) {
+        console.error('Database disconnection error');
+        throw err;
+    }
+}

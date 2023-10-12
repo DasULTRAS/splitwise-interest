@@ -1,6 +1,6 @@
-import mongoose, { Document, Model, Schema } from 'mongoose';
+import mongoose from 'mongoose';
 
-const UserSchema = new Schema({
+const UserSchema = new mongoose.Schema({
     username: {
         type: String, 
         required: true, 
@@ -23,7 +23,4 @@ const UserSchema = new Schema({
     },
 });
 
-// Überprüfen Sie, ob das Modell bereits existiert, bevor Sie es erneut kompilieren
-const UserModel: Model<Document> = mongoose.models.User || mongoose.model('User', UserSchema);
-
-export default UserModel;
+export default mongoose.models.User || mongoose.model('User', UserSchema);
