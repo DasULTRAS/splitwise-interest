@@ -1,0 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,800;0,900;1,100;1,200;1,300;1,400;1,900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+button {
+    @apply font-mono text-blue-800 py-1 px-2 rounded;
+}
+
+button:hover {
+    @apply bg-neutral-800/10 shadow shadow-blue-300 dark:shadow-blue-400;
+}
+
+input {
+    @apply font-mono p-1 text-black bg-white rounded;
+}
+
+label {
+    @apply font-thin text-sm;
+}
