@@ -32,6 +32,9 @@ export const options: NextAuthOptions = {
                         return null;
                     }
 
+                    user.lastLogin = Date.now();
+                    await user.save();
+
                     // Next Auth.js only shows name not username
                     user.name = user.username;
                     return user;
