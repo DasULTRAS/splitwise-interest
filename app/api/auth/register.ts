@@ -1,8 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import bcrypt from 'bcrypt';
-import User from '../../../lib/models/User';
-import { checkEmail, checkPassword, checkUsername } from '../../../utils/validation';
-import { connectToDb } from '../../../lib/mongodb';
+import User from '@/models/User';
+import { checkEmail, checkPassword, checkUsername } from '@/utils/validation';
+import { connectToDb } from '@/utils/mongodb';
 
 const saltRounds = 10;
 

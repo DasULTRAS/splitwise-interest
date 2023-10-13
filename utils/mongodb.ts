@@ -1,11 +1,9 @@
 import mongoose from 'mongoose';
 
-let isConnected = false;
-
 export async function connectToDb() {
-    if (isConnected) {
-        console.log('Already connected to database');
-        return;
+    if (mongoose.connection.readyState >= 1) {
+        // if connection is open return the instance of the databse for cleaner queries
+        return mongoose.connection.db;
     }
 
     const { DB_USER, DB_PASS, DB_NAME, DB_HOST, DB_PORT } = process.env;
@@ -18,29 +16,24 @@ export async function connectToDb() {
 
     // Setting up connection events
     mongoose.connection.on('connected', () => {
-        isConnected = true;
         console.log('Database connected.');
     });
     mongoose.connection.on('reconnected', () => {
-        isConnected = true;
         console.error('Database reconnected.');
     });
     mongoose.connection.on('close', () => {
-        isConnected = false;
         console.error('Database connection closed.');
     });
     mongoose.connection.on('disconnected', () => {
-        isConnected = false;
         console.error('Database disconnected.');
     });
     mongoose.connection.on('error', (err) => {
-        isConnected = true;
         console.log('Connection String: ' + dbString);
         console.error('Database connection error: ' + err);
     });
 
     try {
-        await mongoose.connect(dbString, {
+        return await mongoose.connect(dbString, {
             authSource: 'admin',
             connectTimeoutMS: 10000,
             socketTimeoutMS: 5000,

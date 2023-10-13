@@ -1,4 +1,5 @@
-import type {Metadata} from 'next'
+import type { Metadata } from 'next'
+import Navbar from './navbar'
 
 // These styles apply to every route in the application
 import './globals.css'
@@ -16,7 +17,14 @@ export default function RootLayout(
     }) {
     return (
         <html lang="de">
-        <body>{children}</body>
+            <body className="h-screen flex flex-col">
+                <header>
+                    <Navbar />
+                </header>
+                <main className="flex-grow">
+                    {children}
+                </main>
+            </body>
         </html>
     )
 }

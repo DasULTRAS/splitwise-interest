@@ -4,8 +4,13 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+    @apply text-black/90 dark:text-white/90 bg-white text-black;
+    font: raleway;
+}
+
 button {
-    @apply font-mono text-blue-800 py-1 px-2 rounded;
+    @apply font-mono text-blue-800 dark:shadow-blue-200 py-1 px-2 rounded;
 }
 
 button:hover {

@@ -2,6 +2,9 @@
 
 import React, { useEffect, useState } from "react";
 import { signIn } from 'next-auth/react';
+import RegisterButton from "../registerButton";
+import MessageText from "../messageText";
+import ForgetPasswordButton from "../forgetPasswordButton";
 
 export default function Register() {
     interface InputErrors {
@@ -29,7 +32,7 @@ export default function Register() {
     const [showPasswordConfirm, setShowPasswordConfirm] = useState<boolean>(false);
     const [message, setMessage] = useState<string>("");
 
-    const  handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault(); // prevent the default form submit event (page reload)
 
         setLoading(true);
@@ -46,7 +49,7 @@ export default function Register() {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ username, email, password })
+                body: { 'username': username, 'email': email, 'password': password }
             });
 
             const responseData: ErrorResponse = await response.json();
@@ -56,10 +59,11 @@ export default function Register() {
             }
             setInputErrors({ username: "", email: "", password: "" });
             setMessage(responseData.message || "Account created successfully!");
-            
+
             const user = await signIn('credentials', {
                 username: username,
-                password: password
+                password: password,
+                callbackUrl: '/'
             }) as LoginResponse;
 
             if (user.ok) {
@@ -81,7 +85,7 @@ export default function Register() {
         if (message) {
             timer = setTimeout(() => {
                 setMessage(''); // Setzen Sie die Nachricht nach 5 Sekunden zurück
-            }, 5000);
+            }, 10000);
         }
 
         // Cleanup Funktion, um sicherzustellen, dass der Timer gelöscht wird, wenn die Komponente unmontiert wird
@@ -165,24 +169,13 @@ export default function Register() {
                     </div>
 
                     {message &&
-                        <div className="mb-4 text-center">
-                            <p className="italic text-black">{message}</p>
-                        </div>
+                        <MessageText message={message} />
                     }
 
                     <hr className="mb-6 border-t" />
 
-                    <div className="text-center">
-                        <a className="inline-block text-sm text-blue-500 align-baseline hover:text-blue-800" href="/password_reset">
-                            Forgot Password?
-                        </a>
-                    </div>
-                    <div className="text-center">
-                        <a className="inline-block text-sm text-blue-500 align-baseline hover:text-blue-800"
-                            href="/login">
-                            Already have an account? Login!
-                        </a>
-                    </div>
+                    <ForgetPasswordButton />
+                    <RegisterButton />
                 </form>
             </div>
         </div>

@@ -1,12 +1,13 @@
 'use client'
 
 import React, { useState } from "react";
-import { signIn, useSession, getSession } from 'next-auth/react';
+import { redirect } from 'next/navigation'
+import { signIn, useSession } from 'next-auth/react';
+import RegisterButton from "../registerButton";
+import MessageText from "../messageText";
+import ForgetPasswordButton from "../forgetPasswordButton";
 
 export default function Login() {
-    interface ErrorResponse {
-        message: string,
-    }
     interface LoginResponse {
         error: string,
         ok: boolean,
@@ -29,7 +30,7 @@ export default function Login() {
             const user = await signIn('credentials', {
                 username: idString,
                 password: password,
-                redirect: false,
+                callbackUrl: '/'
             }) as LoginResponse;
 
             if (user.ok) {
@@ -106,24 +107,13 @@ export default function Login() {
                     </div>
 
                     {message &&
-                        <div className="mb-4 text-center">
-                            <p className="italic text-black">{message}</p>
-                        </div>
+                        <MessageText message={message}/>
                     }
 
                     <hr className="mb-6 border-t" />
 
-                    <div className="text-center">
-                        <a className="inline-block text-sm text-blue-500 align-baseline hover:text-blue-800" href="/password_reset">
-                            Forgot Password?
-                        </a>
-                    </div>
-                    <div className="text-center">
-                        <a className="inline-block text-sm text-blue-500 align-baseline hover:text-blue-800"
-                            href="/register">
-                            No account? Register!
-                        </a>
-                    </div>
+                    <ForgetPasswordButton />
+                    <RegisterButton />
                 </form>
             </div>
         </div>

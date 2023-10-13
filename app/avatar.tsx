@@ -1,21 +1,21 @@
-import React from 'react';
+import { options } from "@/app/api/auth/[...nextauth]/options";
+import { getServerSession } from "next-auth/next";
+import LoginButton from "./(auth)/loginButton";
+import { SessionProvider } from "next-auth/react";
 
-interface UserAvatarProps {
-    isLoggedIn?: boolean,
-    userName?: string
-}
+export default async function UserAvatar() {
+    const session = await getServerSession(options);
 
-const UserAvatar: React.FC<UserAvatarProps> = ({isLoggedIn = false, userName = 'anonymous'}) => {
     return (
         <div>
-            {isLoggedIn ?
-                <h2>{userName}</h2> :
-                <a href="/login">
-                    <h2>Not Logged In</h2>
-                </a>
+            {session &&
+                <div>
+                    <h2>{session?.user?.name}</h2>
+                    {session?.user?.image && <img src={session?.user?.image} alt="User Avatar" />}
+                    
+                </div> 
             }
+            <LoginButton user={session?.user} />
         </div>
     );
 };
-
-export default UserAvatar;
