@@ -1,6 +1,6 @@
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import { getServerSession } from "next-auth/next";
-import LoginButton from "./(auth)/loginButton";
+import LoginButton from "@/components/ui/buttons/loginButton";
 import { SessionProvider } from "next-auth/react";
 
 export default async function UserAvatar() {

@@ -1,4 +1,4 @@
-import UserAvatar from "@/app/avatar";
+import UserAvatar from "@/components/ui/navbar/avatar";
 
 export default function Navbar() {
     return (
