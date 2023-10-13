@@ -13,7 +13,7 @@ export const options: NextAuthOptions = {
                 username: { label: "username", type: "text" },
                 password: { label: "Password", type: "password" }
             },
-            async authorize(credentials: LoginCredentials) {
+            async authorize(credentials) {
                 // Logik zur Überprüfung der Anmeldeinformationen
                 try {
                     const searchField = checkEmail(credentials.username) ? 'username' : 'email';
