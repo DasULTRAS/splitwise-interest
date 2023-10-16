@@ -16,7 +16,7 @@ export default function RootLayout(
         children: React.ReactNode
     }) {
     return (
-        <html lang="de">
+        <html>
             <body className="h-screen flex flex-col">
                 <header>
                     <Navbar />

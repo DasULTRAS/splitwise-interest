@@ -3,9 +3,9 @@
 import React, { useState } from "react";
 import { redirect } from 'next/navigation'
 import { signIn, useSession } from 'next-auth/react';
-import RegisterButton from "../registerButton";
-import MessageText from "../messageText";
-import ForgetPasswordButton from "../forgetPasswordButton";
+import RegisterButton from "../../../components/ui/buttons/registerButton";
+import MessageText from "../../../components/ui/text/messageText";
+import ForgetPasswordButton from "../../../components/ui/buttons/forgetPasswordButton";
 
 export default function Login() {
     interface LoginResponse {
@@ -50,7 +50,7 @@ export default function Login() {
     return (
         <div className="container mx-auto w-full max-w-2xl p-5">
             <h3 className="text-2xl text-center mb-2">Login</h3>
-            <div className="bg-white rounded-lg shadow-neutral-900 shadow-xl">
+            <div className="rounded-lg bg-white shadow-neutral-900 shadow-xl">
                 <form className="px-8 pt-6 pb-8 bg-white rounded" onSubmit={handleSubmit}>
                     <div className="mb-4">
                         <label className="block mb-2 text-sm font-bold text-gray-700">Benutzername oder E-Mail</label>
@@ -107,7 +107,7 @@ export default function Login() {
                     </div>
 
                     {message &&
-                        <MessageText message={message}/>
+                        <MessageText message={message} />
                     }
 
                     <hr className="mb-6 border-t" />

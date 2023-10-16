@@ -2,9 +2,9 @@
 
 import React, { useEffect, useState } from "react";
 import { signIn } from 'next-auth/react';
-import RegisterButton from "../registerButton";
-import MessageText from "../messageText";
-import ForgetPasswordButton from "../forgetPasswordButton";
+import RegisterButton from "../../../components/ui/buttons/registerButton";
+import MessageText from "../../../components/ui/text/messageText";
+import ForgetPasswordButton from "../../../components/ui/buttons/forgetPasswordButton";
 
 export default function Register() {
     interface InputErrors {
