@@ -12,7 +12,10 @@ export default function Register() {
     }
 
     interface ErrorResponse {
-        errors: InputErrors;
+        errors?: InputErrors;
+        message: string;
+    }
+    interface RegisterResponse {
         message: string;
     }
     interface LoginResponse {
@@ -47,12 +50,12 @@ export default function Register() {
             const response = await fetch("/api/auth/register", {
                 method: "POST",
                 headers: {
-                    'Content-Type': 'application/json'
+                    "Content-Type": "application/json"
                 },
-                body: { 'username': username, 'email': email, 'password': password }
+                body: JSON.stringify({ username, email, password })
             });
 
-            const responseData: ErrorResponse = await response.json();
+            const responseData: RegisterResponse = await response.json();
             if (!response.ok) {
                 setMessage(responseData.message || `Error: ${response.statusText}`);
                 return;
@@ -154,7 +157,7 @@ export default function Register() {
                         <button
                             className="flex w-fit px-4 py-2 font-bold text-white bg-blue-500 disabled:bg-blue-500/50 rounded-full hover:bg-blue-700 focus:outline-none focus:shadow-outline"
                             type="submit"
-                            disabled={loading || username.length < 3 || email.length < 4 || password.length < 8 || passwordConfirm.length < 8}
+                            disabled={loading || username.length < 3 || email.length < 4 || password.length < 8 || password !== passwordConfirm}
                         >
                             {loading && (
                                 <svg className="m-auto animate-spin h-5 w-5 mr-3" viewBox="0 0 24 24">

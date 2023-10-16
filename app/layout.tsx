@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import Navbar from '../components/ui/navbar/navbar'
+import Navbar from '@/components/ui/navbar/navbar'
 
 // These styles apply to every route in the application
 import './globals.css'

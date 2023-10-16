@@ -66,8 +66,8 @@ export const options: NextAuthOptions = {
         signOut: '/login',
     },
     events: {
-        async signIn(message) { console.log(message) },
-        async signOut(message) { console.log(message) },
-        async createUser(message) { console.log(message) }
+        async signIn(message) { console.log(`User ${message?.user?.username} logged in with ${message.account?.type}.`); },
+        async signOut(message) { console.log(`User ${message?.token?.name} logged out.`); },
+        async createUser(message) { console.log("User created: ", message); }
     },
 };
