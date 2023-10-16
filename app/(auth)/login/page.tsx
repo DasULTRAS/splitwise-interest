@@ -1,11 +1,10 @@
 'use client'
 
 import React, { useState } from "react";
-import { redirect } from 'next/navigation'
-import { signIn, useSession } from 'next-auth/react';
-import RegisterButton from "../../../components/ui/buttons/registerButton";
-import MessageText from "../../../components/ui/text/messageText";
-import ForgetPasswordButton from "../../../components/ui/buttons/forgetPasswordButton";
+import { signIn } from 'next-auth/react';
+import RegisterButton from "@/components/ui/buttons/registerButton";
+import MessageText from "@/components/ui/text/messageText";
+import ForgetPasswordButton from "@/components/ui/buttons/forgetPasswordButton";
 
 export default function Login() {
     interface LoginResponse {
