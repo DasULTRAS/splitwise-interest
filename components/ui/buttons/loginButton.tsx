@@ -1,15 +1,14 @@
 'use client'
 
 import React, { useState } from "react";
+import { DefaultUser } from "next-auth";
 import { signOut } from 'next-auth/react';
 
-interface nextAuthUser {
-    name?: string | null | undefined; 
-    email?: string | null | undefined;
-    image?: string | null | undefined;
-};
+interface LoginButtonProps {
+    user?: DefaultUser;
+}
 
-export default function LoginButton({ user }: nextAuthUser | undefined ) {
+export default function LoginButton({ user }: LoginButtonProps) {
     const [loading, setLoading] = useState(false);
 
     const handleClick = async () => {
