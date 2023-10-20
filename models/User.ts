@@ -14,7 +14,7 @@ const UserSchema = new mongoose.Schema({
         unique: [true, "Email Exist"],
         validate: {
             validator: function (email: string) {
-                return !!checkEmail(email);
+                return !checkEmail(email);
             },
             message: (props: { value: string }) => `${props.value} is not a valid email address!`
         }
@@ -26,6 +26,16 @@ const UserSchema = new mongoose.Schema({
     avatar: {
         type: String as any,
         required: false
+    },
+    splitwise: {
+        consumerKey: {
+            type: String as any,
+            required: false
+        },
+        consumerSecret: {
+            type: String as any,
+            required: false
+        },
     },
     createdAt: {
         type: Date as any,

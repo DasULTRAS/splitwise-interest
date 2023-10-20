@@ -24,3 +24,21 @@ input {
 label {
     @apply font-thin text-sm;
 }
+
+/* Custom ID classes */
+
+#btn-save {
+    @apply w-fit px-4 py-2 font-bold text-white bg-blue-500 rounded-full;
+}
+
+#btn-save:disabled {
+    @apply bg-blue-500/50;
+}
+
+#btn-save:hover {
+    @apply bg-blue-700;
+}
+
+#btn-save:focus {
+    @apply outline-none shadow-md;
+}

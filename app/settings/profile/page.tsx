@@ -95,13 +95,11 @@ export default function ProfileSettings() {
     } finally {
       setLoading(false);
     }
-
-    console.log("submitting", event);
   };
 
   return (
-    <div>
-      <h1 className="text-3xl font-bold">Profile</h1>
+    <div className="p-8 w-full">
+      <h1 className="text-center text-3xl font-bold">Profile</h1>
       {
         session ?
           <>
@@ -109,7 +107,7 @@ export default function ProfileSettings() {
               onSubmit={handleSubmit}>
 
               {avatar && <Image src={avatar} alt="User Avatar" height={180} width={180} />}
-              <input title="avatar_upload" type="file" accept="image/*" onChange={handleAvatarUpload} />
+              <input className="my-5" title="avatar_upload" type="file" accept="image/*" onChange={handleAvatarUpload} />
 
               <div className="mb-6 flex justify-center">
                 <button
@@ -124,7 +122,7 @@ export default function ProfileSettings() {
             </form>
             {message && <MessageText message={message} />}
           </>
-          : <LoadingCircle />
+          : <LoadingCircle className={"flex justify-center items-center"} />
       }
     </div >
   );

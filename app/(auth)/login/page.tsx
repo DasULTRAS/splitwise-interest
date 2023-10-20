@@ -95,7 +95,7 @@ export default function Login() {
                     </div>
 
                     {message &&
-                        <MessageText message={message} />
+                        <MessageText message={message} className="text-black" />
                     }
 
                     <hr className="mb-6 border-t" />

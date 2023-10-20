@@ -15,7 +15,7 @@ export default function Sidebar({ sidebarIsOpen, closeModal, session }: SidebarI
                 sidebarIsOpen &&
                 <div className="z-10 absolute left-0 top-0 h-screen w-screen bg-white/10"
                     onClick={closeModal}>
-                    <div className="flex flex-col p-5 ml-auto top-0 h-screen w-1/4 bg-black/80 rounded-2xl">
+                    <div className="flex flex-col p-6 ml-auto top-0 h-screen w-1/4 bg-black/80 rounded-2xl">
                         <div className="flex">
                             <p className="text-2xl">Sidebar</p>
                             <button title="btn_sidebar_close" className="ml-auto text-black" onClick={closeModal}>
