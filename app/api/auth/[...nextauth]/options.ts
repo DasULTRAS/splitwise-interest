@@ -16,6 +16,9 @@ export const options: NextAuthOptions = {
             async authorize(credentials) {
                 // Logik zur Überprüfung der Anmeldeinformationen
                 try {
+                    // Make sure username is in lowercase
+                    credentials.username = credentials.username.toLowerCase();
+
                     const searchField = checkEmail(credentials.username) ? 'username' : 'email';
 
                     await connectToDb();
@@ -32,6 +35,7 @@ export const options: NextAuthOptions = {
                         return null;
                     }
 
+                    // Updated latest login
                     user.lastLogin = Date.now();
                     await user.save();
 

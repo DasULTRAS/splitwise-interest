@@ -66,7 +66,6 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
         // Save the new user
         await newUser.save();
-        
         return NextResponse.json(
             { message: 'User successfully saved!' },
             { status: 201 }

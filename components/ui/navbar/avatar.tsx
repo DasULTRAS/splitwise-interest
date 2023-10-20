@@ -2,12 +2,29 @@
 
 import Image from "next/image";
 import { Session } from "next-auth";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import LoginButton from "@/components/ui/buttons/loginButton";
 import Sidebar from "../sidebar/sidebar";
 
 export default function UserAvatar({ session }: { session: Session | null | undefined }) {
     const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
+    const [avatar, setAvatar] = useState("");
+
+    useEffect(() => {
+        const fetchAvatar = async () => {
+            const response = await fetch("/api/user/avatar", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+            const data = await response.json();
+            setAvatar(data?.avatar);
+        };
+
+        if (session)
+            fetchAvatar();
+    }, [session]);
 
     const handleClick = () => {
         setSidebarIsOpen(!sidebarIsOpen);
@@ -20,8 +37,10 @@ export default function UserAvatar({ session }: { session: Session | null | unde
                     <div className="onhover:bg-black/90 rounded-2xl"
                         onClick={handleClick}>
                         {
-                            session?.user?.image
-                                ? <Image src={session?.user?.image} alt="User Avatar" />
+                            avatar
+                                ? <div className="relative inline-flex items-center justify-center w-10 h-10 overflow-hidden rounded-full">
+                                    <Image src={avatar} alt="User Avatar" height={100} width={100} />
+                                </div>
                                 : <div className="relative inline-flex items-center justify-center w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
                                     <span className="font-medium text-gray-600 dark:text-gray-300">{session.user?.name?.substring(0, 2)}</span>
                                 </div>

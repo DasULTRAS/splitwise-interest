@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { AuthProvider } from "@/app/api/auth/[...nextauth]/provider"
 import Navbar from '@/components/ui/navbar/navbar'
 
 // These styles apply to every route in the application
@@ -12,13 +13,15 @@ export const metadata: Metadata = {
 export default function RootLayout({ children, }: { children: React.ReactNode }) {
     return (
         <html>
-            <body className="h-screen flex flex-col">
+            <body className="h-screen w-screen flex flex-col">
+                <AuthProvider>
                     <header>
                         <Navbar />
                     </header>
-                    <main className="flex-grow">
+                    <main className="h-full w-full">
                         {children}
                     </main>
+                </AuthProvider>
             </body>
         </html>
     )

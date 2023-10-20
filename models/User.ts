@@ -21,6 +21,10 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: [true, "Please provide a password!"],
     },
+    avatar: {
+        type: String,
+        required: false
+    },
     createdAt: {
         type: Date, 
         default: Date.now
@@ -31,7 +35,7 @@ const UserSchema = new mongoose.Schema({
     },
     lastLogin: {
         type: Date, 
-        default: Date.now
+        default: null
     }
 });
 

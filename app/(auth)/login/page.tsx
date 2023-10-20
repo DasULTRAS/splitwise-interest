@@ -5,6 +5,8 @@ import { signIn } from 'next-auth/react';
 import RegisterButton from "@/components/ui/buttons/registerButton";
 import MessageText from "@/components/ui/text/messageText";
 import ForgetPasswordButton from "@/components/ui/buttons/forgetPasswordButton";
+import LoadingCircle from "@/components/ui/symbols/loadingCircle";
+import { checkPassword, checkUsername } from "@/utils/validation";
 
 export default function Login() {
     interface LoginResponse {
@@ -26,17 +28,11 @@ export default function Login() {
         setLoading(true);
 
         try {
-            const user = await signIn('credentials', {
+            await signIn('credentials', {
                 username: idString,
                 password: password,
                 callbackUrl: '/'
             }) as LoginResponse;
-
-            if (user.ok) {
-                setMessage(`Login successful!`);
-            } else {
-                setMessage("Login failed!");
-            }
         } catch (error: any) {
             setMessage(`Error: ${error.message || 'Unknown error'}`);
         } finally {
@@ -91,16 +87,9 @@ export default function Login() {
                         <button
                             className="flex w-fit px-4 py-2 font-bold text-white bg-blue-500 disabled:bg-blue-500/50 rounded-full hover:bg-blue-700 focus:outline-none focus:shadow-outline"
                             type="submit"
-                            disabled={loading || (idString.length < 3) || (password.length < 8)}
+                            disabled={loading || checkUsername(idString) || checkPassword(password)}
                         >
-                            {loading && (
-                                <svg className="m-auto animate-spin h-5 w-5 mr-3" viewBox="0 0 24 24">
-                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
-                                        strokeWidth="4"></circle>
-                                    <path className="opacity-75" fill="currentColor"
-                                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                </svg>
-                            )}
+                            {loading && <LoadingCircle />}
                             <span>Login</span>
                         </button>
                     </div>
