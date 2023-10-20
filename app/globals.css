@@ -27,18 +27,18 @@ label {
 
 /* Custom ID classes */
 
-#btn-save {
+#btn_save {
     @apply w-fit px-4 py-2 font-bold text-white bg-blue-500 rounded-full;
 }
 
-#btn-save:disabled {
+#btn_save:disabled {
     @apply bg-blue-500/50;
 }
 
-#btn-save:hover {
+#btn_save:hover {
     @apply bg-blue-700;
 }
 
-#btn-save:focus {
+#btn_save:focus {
     @apply outline-none shadow-md;
 }

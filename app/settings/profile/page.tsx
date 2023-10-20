@@ -1,7 +1,5 @@
 "use client";
 
-import { Session } from "next-auth";
-import { getSession } from "next-auth/react"
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import LoadingCircle from "@/components/ui/symbols/loadingCircle";
@@ -12,18 +10,28 @@ export default function ProfileSettings() {
   const [avatar, setAvatar] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(true);
-  const [session, setSession] = useState<Session | null>(null);
 
   useEffect(() => {
-    const fetchSession = async () => {
-      const currentSession = await getSession();
-      if (!session && currentSession) {
-        setSession(currentSession);
-        setLoading(false);
-      }
+    const fetchAvatar = async () => {
+      setLoading(true);
+      const response = await fetch("/api/user/avatar", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setAvatar(data?.avatar);
+      } else 
+        setMessage("Error while fetching old avatar: " + response.statusText);
+        
+      setLoading(false);
     };
 
-    fetchSession();
+    if (!avatar)
+      fetchAvatar();
   }, []);
 
   // clear message after 10 seconds
@@ -100,30 +108,26 @@ export default function ProfileSettings() {
   return (
     <div className="p-8 w-full">
       <h1 className="text-center text-3xl font-bold">Profile</h1>
-      {
-        session ?
-          <>
-            <form className="flex flex-col justify-center items-center"
-              onSubmit={handleSubmit}>
 
-              {avatar && <Image src={avatar} alt="User Avatar" height={180} width={180} />}
-              <input className="my-5" title="avatar_upload" type="file" accept="image/*" onChange={handleAvatarUpload} />
+      <form className="flex flex-col justify-center items-center"
+        onSubmit={handleSubmit}>
 
-              <div className="mb-6 flex justify-center">
-                <button
-                  className="flex w-fit px-4 py-2 font-bold bg-blue-500 disabled:bg-blue-500/50 rounded-full hover:bg-blue-700 focus:outline-none focus:shadow-outline"
-                  type="submit"
-                  disabled={loading || !avatar}
-                >
-                  {loading && <LoadingCircle />}
-                  <span>Save</span>
-                </button>
-              </div>
-            </form>
-            {message && <MessageText message={message} />}
-          </>
-          : <LoadingCircle className={"flex justify-center items-center"} />
-      }
+        {avatar && <Image src={avatar} alt="User Avatar" height={180} width={180} />}
+        <input className="my-5" title="avatar_upload" type="file" accept="image/*" onChange={handleAvatarUpload} disabled={loading} />
+
+        <div className="mb-6 flex justify-center">
+          <button
+            id="btn_save"
+            className="flex"
+            type="submit"
+            disabled={loading || !avatar}
+          >
+            {loading && <LoadingCircle />}
+            <span>Save</span>
+          </button>
+        </div>
+      </form>
+      {message && <MessageText message={message} />}
     </div >
   );
 }
