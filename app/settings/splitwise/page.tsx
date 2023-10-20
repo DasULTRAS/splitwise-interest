@@ -106,12 +106,12 @@ export default function SplitwiseSettings() {
                         <span>Save</span>
                     </button>
                 </div>
-
-                {message && <>
-                    <hr className="my-3" />
-                    <MessageText message={message} />
-                </>}
             </form>
+
+            {message && <>
+                <hr className="my-3" />
+                <MessageText message={message} />
+            </>}
         </div>
     )
 }

@@ -32,7 +32,7 @@ export default function ProfileSettings() {
 
     if (!avatar)
       fetchAvatar();
-  }, []);
+  }, [avatar]);
 
   // clear message after 10 seconds
   useEffect(() => {
@@ -127,7 +127,11 @@ export default function ProfileSettings() {
           </button>
         </div>
       </form>
-      {message && <MessageText message={message} />}
+
+      {message && <>
+        <hr className="my-3" />
+        <MessageText message={message} />
+      </>}
     </div >
   );
 }

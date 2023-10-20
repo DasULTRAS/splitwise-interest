@@ -23,6 +23,12 @@ export async function GET(req: NextRequest) {
         await connectToDb();
         const user = await User.findOne({ ["username"]: session.user?.name })
 
+        if (!user.avatar)
+            return NextResponse.json(
+                { message: "Avatar in User Object not found." },
+                { status: 404 }
+            );
+
         return NextResponse.json(
             { avatar: user.avatar },
             { status: 201 }

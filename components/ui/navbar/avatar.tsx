@@ -16,7 +16,8 @@ export default function UserAvatar({ session }: { session: Session | null | unde
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json"
-                }
+                },
+                cache: 'force-cache' 
             });
             const data = await response.json();
             setAvatar(data?.avatar);

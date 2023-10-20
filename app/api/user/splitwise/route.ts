@@ -24,7 +24,7 @@ export async function GET() {
         if (!user.splitwise.consumerKey || !user.splitwise.consumerSecret)
             return NextResponse.json(
                 { message: 'Splitwise Data in User not found.' },
-                { status: 403 }
+                { status: 404 }
             );
 
         return NextResponse.json(
