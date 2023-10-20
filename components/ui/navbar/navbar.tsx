@@ -16,12 +16,13 @@ export default async function Navbar() {
                     <Image src={favicon} alt="Logo" width={40} height={40} />
                 </a>
             </div>
-            <h1>Navigation</h1>
+
             <nav>
                 <ul>
                     <li><a href="/">Home</a></li>
                 </ul>
             </nav>
+
             <UserAvatar session={session} />
         </div>
     );

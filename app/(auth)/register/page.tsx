@@ -154,7 +154,7 @@ export default function Register() {
                         <button
                             className="flex w-fit px-4 py-2 font-bold text-white bg-blue-500 disabled:bg-blue-500/50 rounded-full hover:bg-blue-700 focus:outline-none focus:shadow-outline"
                             type="submit"
-                            disabled={loading || checkUsername(username) || checkEmail(email) || checkPassword(password) || password !== passwordConfirm}
+                            disabled={loading || !!checkUsername(username) || !!checkEmail(email) || !!checkPassword(password) || password !== passwordConfirm}
                         >
                             {loading && <LoadingCircle />}
                             <span>Register Account</span>

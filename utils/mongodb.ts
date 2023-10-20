@@ -47,7 +47,7 @@ export async function connectToDb() {
 }
 
 export async function disconnectFromDb() {
-    if (!isConnected) {
+    if (mongoose.connection.readyState === 0) {
         console.log('No connection to close');
         return;
     }

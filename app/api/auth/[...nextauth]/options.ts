@@ -16,6 +16,10 @@ export const options: NextAuthOptions = {
             async authorize(credentials) {
                 // Logik zur Überprüfung der Anmeldeinformationen
                 try {
+                    if (!credentials || !credentials.username || !credentials.password) {
+                        // If no credentials are provided, return null
+                        return null;
+                    }
                     // Make sure username is in lowercase
                     credentials.username = credentials.username.toLowerCase();
 
@@ -70,7 +74,7 @@ export const options: NextAuthOptions = {
         signOut: '/login',
     },
     events: {
-        async signIn(message) { console.log(`User ${message?.user?.username} logged in with ${message.account?.type}.`); },
+        async signIn(message) { console.log(`User ${message?.user?.name} logged in with ${message.account?.type}.`); },
         async signOut(message) { console.log(`User ${message?.token?.name} logged out.`); },
         async createUser(message) { console.log("User created: ", message); }
     },

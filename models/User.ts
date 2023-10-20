@@ -1,40 +1,42 @@
-import mongoose from 'mongoose';
+import mongoose, {mongo} from 'mongoose';
+import {checkEmail} from "@/utils/validation"
 
 const UserSchema = new mongoose.Schema({
     username: {
-        type: String, 
-        required: true, 
-        unique: [true, "Username Exist"], 
+        type: String as any,
+        required: true,
+        unique: [true, "Username Exist"],
         minlength: [3, "Minimum 3 characters required!"],
     },
     email: {
-        type: String, 
-        required: [true, "Please provide an email!"], 
-        unique: [true, "Email Exist"], 
+        type: String as any,
+        required: [true, "Please provide an email!"],
+        unique: [true, "Email Exist"],
         validate: {
-            validator: function (v) {
-                return /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(v);
-            }, message: props => `${props.value} is not a valid email address!`
+            validator: function (email: string) {
+                return !!checkEmail(email);
+            },
+            message: (props: { value: string }) => `${props.value} is not a valid email address!`
         }
     },
     password: {
-        type: String,
+        type: String as any,
         required: [true, "Please provide a password!"],
     },
     avatar: {
-        type: String,
+        type: String as any,
         required: false
     },
     createdAt: {
-        type: Date, 
+        type: Date as any,
         default: Date.now
     },
     updatedAt: {
-        type: Date, 
+        type: Date as any,
         default: Date.now
     },
     lastLogin: {
-        type: Date, 
+        type: Date as any,
         default: null
     }
 });

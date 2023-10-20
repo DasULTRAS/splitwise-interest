@@ -18,7 +18,7 @@ interface Data {
     password: string,
 }
 
-export async function POST(req: NextRequest, res: NextResponse) {
+export async function POST(req: NextRequest) {
     const data = await req.json() as Data;
     const email: string = data?.email?.toLowerCase();
     const username: string = data?.username?.toLowerCase();
@@ -38,7 +38,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
     }
 
     try {
-        connectToDb();
+        await connectToDb();
         // Check for existing email or username
         const existingUserByEmail = await User.findOne({ email: email });
         const existingUserByUsername = await User.findOne({ username: username });

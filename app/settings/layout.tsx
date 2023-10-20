@@ -2,6 +2,7 @@ import Image from "next/image";
 import { Session } from "next-auth";
 import { getServerSession } from "next-auth/next";
 import { options } from "@/app/api/auth/[...nextauth]/options";
+import React from "react";
 
 export default async function SettingsLayout({ children, }: { children: React.ReactNode }) {
     const session: Session | null = await getServerSession(options);
@@ -18,7 +19,9 @@ export default async function SettingsLayout({ children, }: { children: React.Re
                         <h1 className="text-2xl font-mono font-bold">{session?.user?.name}</h1>
                     </div>
 
-                    <h2 className="my-5 underline">Settings</h2>
+                <hr className="mb-6 border-t" />
+
+                <h2 className="my-5 underline">Settings</h2>
                     <ul>
                         <li>
                             <a href="/settings/profile">Profile</a>

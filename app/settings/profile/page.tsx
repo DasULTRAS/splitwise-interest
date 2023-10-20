@@ -101,7 +101,7 @@ export default function ProfileSettings() {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold text-black">Profile</h1>
+      <h1 className="text-3xl font-bold">Profile</h1>
       {
         session ?
           <>
@@ -113,7 +113,7 @@ export default function ProfileSettings() {
 
               <div className="mb-6 flex justify-center">
                 <button
-                  className="flex w-fit px-4 py-2 font-bold text-white bg-blue-500 disabled:bg-blue-500/50 rounded-full hover:bg-blue-700 focus:outline-none focus:shadow-outline"
+                  className="flex w-fit px-4 py-2 font-bold bg-blue-500 disabled:bg-blue-500/50 rounded-full hover:bg-blue-700 focus:outline-none focus:shadow-outline"
                   type="submit"
                   disabled={loading || !avatar}
                 >

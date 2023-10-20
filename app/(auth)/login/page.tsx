@@ -87,7 +87,7 @@ export default function Login() {
                         <button
                             className="flex w-fit px-4 py-2 font-bold text-white bg-blue-500 disabled:bg-blue-500/50 rounded-full hover:bg-blue-700 focus:outline-none focus:shadow-outline"
                             type="submit"
-                            disabled={loading || checkUsername(idString) || checkPassword(password)}
+                            disabled={loading || !!checkUsername(idString) || !!checkPassword(password)}
                         >
                             {loading && <LoadingCircle />}
                             <span>Login</span>

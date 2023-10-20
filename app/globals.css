@@ -5,8 +5,8 @@
 @tailwind utilities;
 
 body {
-    @apply text-black/90 dark:text-white/90 bg-white text-black;
-    font: raleway;
+    @apply text-black text-opacity-90 dark:text-white dark:text-opacity-90 bg-white dark:bg-gray-800;
+    font-family: 'Raleway', Verdana;
 }
 
 button {
