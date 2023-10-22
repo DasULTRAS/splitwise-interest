@@ -1,38 +1,13 @@
-import { getServerSession } from "next-auth/next";
-import { Session } from 'next-auth';
+import { Friend, Group} from '@/utils/splitwise/datatypes';
+import Splitwise from '@/utils/splitwise/splitwise';
 
-const Splitwise = require('splitwise');
-import { Friend, Group } from '@/utils/splitwise/datatypes';
-
-import User from '@/models/User';
-import { connectToDb } from '@/utils/mongodb';
-import { options } from "@/app/api/auth/[...nextauth]/options";
 import UnauthorizedPage from '@/components/ui/unauthorised/page';
 import WebImage from "@/components/ui/WebImage";
 
 export default async function Friend({ params }: { params: { id: string } }) {
-    // Get Usersession
-    const session: Session | null = await getServerSession(options);
-    if (!session) {
-        return (<UnauthorizedPage />)
-    }
-
-    // Get User from DB
-    await connectToDb();
-    const user = await User.findOne({ ["username"]: session.user?.name })
-
-    // Check if User and atributes exists
-    if (!user || !user.splitwise || !user.splitwise.consumerKey || !user.splitwise.consumerSecret)
-        return (<UnauthorizedPage href={"/settings/splitwise"}
-            anchorText={"Your Splitwise Credentials are not set up, make it here."} />)
-
-    // Get Splitwise Data
-    const sw = Splitwise({
-        consumerKey: user.splitwise.consumerKey,
-        consumerSecret: user.splitwise.consumerSecret
-    });
-
     try {
+        const sw = (await Splitwise.getInstance()).splitwise;
+
         const friend: Friend = await sw.getFriend({ id: params.id });
         var groups: Group[] = [];
 
@@ -71,10 +46,26 @@ export default async function Friend({ params }: { params: { id: string } }) {
                                                     const bal = foundGroup?.balance[0];
                                                     return bal ? <p className="ml-auto">{bal.amount} {bal.currency_code}</p> : <p>Not Found</p>;
                                                 })()}
-
                                             </div>
 
                                             <h3 className="truncate whitespace-nowrap overflow-hidden font-mono">{group.name}</h3>
+
+                                            <div className="flex flex-col items-center">
+                                                {
+                                                    group.original_debts.map((originalDebt: Debt) => {
+                                                        if (originalDebt.from === friend.id) {
+                                                            return (<p key={`${friend.id}-${group.id}-${originalDebt.from}-${originalDebt.to}`}
+                                                                className="text-green-500"
+                                                            >{originalDebt.amount} {originalDebt.currency_code}</p>);
+                                                        } else if (originalDebt.to === friend.id) {
+                                                            return (<p key={`${friend.id}-${group.id}-${originalDebt.from}-${originalDebt.to}`}
+                                                                className="text-red-500"
+                                                            >{originalDebt.amount} {originalDebt.currency_code}</p>);
+                                                        }
+                                                        return null; // Geben Sie null zurück, wenn keine der Bedingungen erfüllt ist.
+                                                    })
+                                                }
+                                            </div>
                                         </li>
                                     ))}
                                 </ul>
@@ -84,12 +75,7 @@ export default async function Friend({ params }: { params: { id: string } }) {
                 </div>
             </>
         );
-    } catch {
+    } catch(e) {
         return <UnauthorizedPage />
     }
-
-    // const group: Group = await sw.getGroup({id: 0})
-    // console.log("group 0: ", group)
-
-
 }
