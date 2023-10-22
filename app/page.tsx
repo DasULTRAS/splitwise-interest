@@ -9,7 +9,7 @@ export default function Home() {
       </a>
       <h1 className="text-4xl font-bold text-center">Welcome to the Splitwise interest Calculator</h1>
       <p className="mt-4 text-xl text-center">
-          Are there individuals who owe you money, and you're looking to earn some interest on it? <br/>
+          Are there individuals who owe you money, and you are looking to earn some interest on it? <br/>
           Discover our app – the perfect solution for you. Sign in and select the interest plan that suits your needs.
       </p>
     </div>

@@ -69,6 +69,7 @@ export async function POST(req: NextRequest) {
         // Update User
         user.splitwise.consumerKey = data.consumerKey;
         user.splitwise.consumerSecret = data.consumerSecret;
+        user.updatedAt = Date.now();
         await user.save();
 
         return NextResponse.json(

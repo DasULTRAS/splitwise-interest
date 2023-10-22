@@ -3,6 +3,7 @@ import Splitwise, {getInventedDebts} from '@/utils/splitwise/splitwise';
 
 import UnauthorizedPage from '@/components/ui/unauthorised/page';
 import WebImage from "@/components/ui/WebImage";
+import WeeklyRateForm from "@/app/dashboard/friends/[id]/weeklyRateForm";
 
 export default async function Friend({params}: { params: { id: number } }) {
     try {
@@ -41,8 +42,10 @@ export default async function Friend({params}: { params: { id: number } }) {
                                 <h2 className="text-xl font-extralight underline">Balance
                                     - {friend.balance[0].amount} {friend.balance[0].currency_code}</h2>
 
-                                <h2 className="text-lg font-extralight">Invented Debts
-                                    - {inventedDebts} {friend.balance[0].currency_code}</h2>
+                                    <div className="my-5 flex flex-col justify-between px-5 items-center">
+                                        <WeeklyRateForm friend_id={friend.id}/>
+                                        <p>on {inventedDebts} {friend.balance[0].currency_code}</p>
+                                    </div>
 
                                 <ul>
                                     {groups.map((group: Group) => (

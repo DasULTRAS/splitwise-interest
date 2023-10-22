@@ -65,8 +65,9 @@ export async function POST(req: NextRequest) {
         });
 
         // Save the new user
+        newUser.updatedAt = Date.now();
         await newUser.save();
-        
+
         return NextResponse.json(
             { message: 'User successfully saved!' },
             { status: 201 }

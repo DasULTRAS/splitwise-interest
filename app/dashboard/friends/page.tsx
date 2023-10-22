@@ -1,3 +1,9 @@
+import User from '@/models/User';
+import { connectToDb } from '@/utils/mongodb';
+import { getServerSession } from "next-auth/next";
+import { options } from "@/app/api/auth/[...nextauth]/options";
+import { Session } from 'next-auth';
+
 import Splitwise from '@/utils/splitwise/splitwise'
 import { Friend } from '@/utils/splitwise/datatypes';
 
@@ -6,9 +12,24 @@ import FriendCard from "./friendCard";
 
 export default async function FriendsDashboard() {
     try {
-        const sw = (await Splitwise.getInstance()).splitwise;
+        // Get Usersession
+        const session: Session | null = await getServerSession(options);
+        if (!session)
+            return <UnauthorizedPage />
 
+        // Get User from DB
+        await connectToDb();
+        const user = await User.findOne({ ["username"]: session.user?.name })
+
+        const sw = (await Splitwise.getInstance()).splitwise;
         const friends: Friend[] = await sw.getFriends();
+
+        const getWeeklyRate = function (id: number) {
+            const interest = user.splitwise.interests.find((interest: { friend_id: number, weeklyRate: number }) => interest.friend_id === id)
+            if (interest?.weeklyRate)
+                return interest.weeklyRate;
+            else return null;
+        }
 
         return (
             <div className="px-10 pb-5">
@@ -16,7 +37,7 @@ export default async function FriendsDashboard() {
                 <div className="flex flex-wrap gap-4 justify-center">
                     {
                         friends.map((friend: Friend) => (
-                            <FriendCard key={friend.id} friend={friend} />
+                            <FriendCard key={friend.id} friend={friend} weeklyRate={getWeeklyRate(friend.id)} />
                         ))
                     }
                 </div>

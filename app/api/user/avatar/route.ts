@@ -62,6 +62,7 @@ export async function POST(req: NextRequest) {
         const user = await User.findOne({["username"]: session.user?.name})
 
         user.avatar = data.avatar;
+        user.updatedAt = Date.now();
         await user.save();
 
         return NextResponse.json(

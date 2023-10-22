@@ -41,6 +41,7 @@ export const options: NextAuthOptions = {
 
                     // Updated latest login
                     user.lastLogin = Date.now();
+                    user.updatedAt = Date.now();
                     await user.save();
 
                     // Next Auth.js only shows name not username

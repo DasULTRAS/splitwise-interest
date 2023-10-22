@@ -41,7 +41,7 @@ const UserSchema = new mongoose.Schema({
                 type: Number as any,
                 required: true
             },
-            ratePerWeek: {
+            weeklyRate: {
                 type: Number as any,
                 required: true
             },

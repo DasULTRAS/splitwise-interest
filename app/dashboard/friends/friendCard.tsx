@@ -1,9 +1,8 @@
 import { Balance, Friend } from '@/utils/splitwise/datatypes';
 import WebImage from '@/components/ui/WebImage';
 
-export default function FriendCard({ friend }: { friend: Friend }) {
+export default function FriendCard({ friend, weeklyRate }: { friend: Friend, weeklyRate: number | null }) {
     const baseStyles = 'w-64 h-36 dark:bg-black/80 bg-blue-700 rounded-xl p-5 shadow-lg hover:shadow-xl transition-shadow';
-    const balanceStyle = 'text-sm mt-3';
     return (
         <>
             <a href={`/dashboard/friends/${friend.id}`} className={friend.balance.length > 0 ? `${baseStyles} shadow-red-700` : `${baseStyles} shadow-green-500`}>
@@ -18,11 +17,14 @@ export default function FriendCard({ friend }: { friend: Friend }) {
                         </div>
                     </div>
                 </div>
-                {friend.balance.map((bal: Balance, index) => (
-                    <p key={index} className={balanceStyle}>
-                        {`${bal.amount} ${bal.currency_code}`}
-                    </p>
-                ))}
+                <div className='flex mt-3'>
+                    {friend.balance.map((bal: Balance, index) => (
+                        <p key={index} className="text-sm">
+                            {`${bal.amount} ${bal.currency_code}`}
+                        </p>
+                    ))}
+                    <p className='ml-auto text-sm'>{weeklyRate == null ? "ND" : `${weeklyRate}%`}</p>
+                </div>
             </a>
         </>
     )

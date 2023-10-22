@@ -18,7 +18,7 @@ button:hover {
 }
 
 input {
-    @apply font-mono p-1 text-black bg-white rounded;
+    @apply font-mono p-1 rounded bg-transparent;
 }
 
 label {
