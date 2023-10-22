@@ -75,7 +75,7 @@ export default function SplitwiseSettings() {
     }
 
     return (
-        <div className="p-8">
+        <div>
             <h1 className="text-4xl font-bold">Splitwise Credentials</h1>
             <a href="https://secure.splitwise.com/oauth_clients" target="_blank">Where to find this Credentials?</a>
             <br />

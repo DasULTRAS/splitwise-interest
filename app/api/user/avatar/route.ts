@@ -7,7 +7,7 @@ import {Session} from 'next-auth';
 
 export async function GET() {
     try {
-        // Get Usersession
+        // Get User session
         const session: Session | null = await getServerSession(options);
         if (!session) {
             return NextResponse.json(

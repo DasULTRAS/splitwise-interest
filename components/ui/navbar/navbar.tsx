@@ -19,8 +19,8 @@ export default async function Navbar() {
 
             <nav className="mx-10  flex items-center">
                 <ul className="flex  items-center">
-                    <li className="mx-5"><a href="/">Home</a></li>
-                    <li className="mx-5"><a href="/dashboard">Dashboard</a></li>
+                    <li id="dsn_clickable" className="mx-5 rounded-2xl p-2"><a href="/">Home</a></li>
+                    <li id="dsn_clickable" className="mx-5 rounded-2xl p-2"><a href="/dashboard">Dashboard</a></li>
                 </ul>
             </nav>
 
