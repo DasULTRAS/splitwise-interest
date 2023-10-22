@@ -1,12 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import LoadingCircle from "@/components/ui/symbols/loadingCircle";
 import MessageText from "@/components/ui/text/messageText";
 
 export default function ProfileSettings() {
-  const [avatarFile, setAvatarFile] = useState<File>();
   const [avatar, setAvatar] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(true);
@@ -58,8 +57,7 @@ export default function ProfileSettings() {
     if (file)
       if (/^image\/(jpe?g|png|gif|svg|ico)$/i.test(file.type)) {
         if (file.size / 1024 / 1024 < 2) {
-          setAvatarFile(file);
-          var reader = new FileReader();
+          let reader = new FileReader();
           reader.readAsDataURL(file)
 
           reader.onload = () => {

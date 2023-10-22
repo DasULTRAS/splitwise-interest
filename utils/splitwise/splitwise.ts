@@ -85,7 +85,7 @@ export async function getInventedDebts(user_id: number, friend_id: number) {
     const expenses: Expense[] = await sw.getExpenses({ friend_id: friend.id, dated_after: getLastMonday().toISOString(), limit: 0 });
 
     // Sum all transactions in last two weeks
-    var userInterest = 0;
+    let userInterest = 0;
     expenses.forEach(expense => {
         expense.repayments.forEach(repayment => {
 
@@ -97,7 +97,7 @@ export async function getInventedDebts(user_id: number, friend_id: number) {
     });
 
     // remove debts from last two weeks
-    var inventedDebts: number = -1 * userInterest;
+    let inventedDebts: number = -1 * userInterest;
     // add general debts
     if (friend.balance[0])
         inventedDebts += Number(friend.balance[0].amount);
