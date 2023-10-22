@@ -1,16 +1,14 @@
-import exp from "constants";
-
 export interface Balance {
     currency_code: string,
     amount: string,
-};
+}
 
 export interface Debt {
     from: number,
     to: number,
     amount: string,
     currency_code: string
-};
+}
 
 export interface Group {
     id: number,
@@ -47,7 +45,7 @@ export interface Group {
         xlarge: string
     },
     invite_link: string
-};
+}
 
 export interface Friend {
     id: number,
@@ -56,23 +54,23 @@ export interface Friend {
     email: string | null,
     registration_status: string,
     picture: {
-        small: string | null,
-        medium: string | null,
-        large: string | null
+        small: string,
+        medium: string,
+        large: string,
     },
     balance: Balance[],
     groups: {
         group_id: number,
-        balance: number
+        balance: Balance[]
     }[],
     updated_at: string
-};
+}
 
 export interface Repayment {
     from: number,
     to: number,
     amount: string,
-};
+}
 
 export interface User {
     id: number,
@@ -86,7 +84,7 @@ export interface User {
         large?: string
     },
     custom_picture?: false
-};
+}
 
 export interface Expense {
     id: number,
@@ -132,4 +130,4 @@ export interface Expense {
         owed_share: string,
         net_balance: string,
     }[]
-};
+}

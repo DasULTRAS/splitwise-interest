@@ -1,5 +1,5 @@
-import mongoose, {mongo} from 'mongoose';
-import {checkEmail} from "@/utils/validation"
+import mongoose from 'mongoose';
+import { checkEmail } from "@/utils/validation"
 
 const UserSchema = new mongoose.Schema({
     username: {
@@ -36,6 +36,16 @@ const UserSchema = new mongoose.Schema({
             type: String as any,
             required: false
         },
+        interests: [{
+            friend_id: {
+                type: Number as any,
+                required: true
+            },
+            ratePerWeek: {
+                type: Number as any,
+                required: true
+            },
+        }],
     },
     createdAt: {
         type: Date as any,

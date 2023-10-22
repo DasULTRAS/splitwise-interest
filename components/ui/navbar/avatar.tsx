@@ -1,12 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import { Session } from "next-auth";
-import { useState, useEffect } from "react";
+import {Session} from "next-auth";
+import {useState, useEffect} from "react";
 import LoginButton from "@/components/ui/buttons/loginButton";
 import Sidebar from "../sidebar/sidebar";
 
-export default function UserAvatar({ session }: { session: Session | null | undefined }) {
+export default function UserAvatar({session}: { session: Session | null | undefined }) {
     const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
     const [avatar, setAvatar] = useState("");
 
@@ -20,11 +20,11 @@ export default function UserAvatar({ session }: { session: Session | null | unde
                 cache: 'force-cache'
             });
             const data = await response.json();
-            setAvatar(data?.avatar);
+            return data?.avatar;
         };
 
         if (session)
-            fetchAvatar();
+            fetchAvatar().then(avatar => setAvatar(avatar));
     }, [session]);
 
     const handleClick = () => {
@@ -34,18 +34,21 @@ export default function UserAvatar({ session }: { session: Session | null | unde
     return (
         <>
             {session ?
-                <div id="dsn_clickable" className="relative inline-flex items-center justify-center overflow-hidden rounded-full"
-                    onClick={handleClick}>
+                <div id="dsn_clickable"
+                     className="relative inline-flex items-center justify-center w-12 h-12 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600"
+                     onClick={handleClick}>
                     {
                         avatar ?
-                            <Image src={avatar} alt="User Avatar" height={50} width={50} />
+                            <Image src={avatar} alt="User Avatar" height={50} width={50}/>
                             :
-                            <span className="font-medium text-gray-600 dark:text-gray-300">{session.user?.name?.substring(0, 2)}</span>
+                            <span className="font-medium text-gray-600 dark:text-gray-300">
+                                {session.user?.name?.substring(0, 2)}
+                            </span>
                     }
                 </div>
-                : <LoginButton />
+                : <LoginButton/>
             }
-            <Sidebar sidebarIsOpen={sidebarIsOpen} closeModal={() => setSidebarIsOpen(false)} session={session} />
+            <Sidebar sidebarIsOpen={sidebarIsOpen} closeModal={() => setSidebarIsOpen(false)} session={session}/>
         </>
     );
 };
