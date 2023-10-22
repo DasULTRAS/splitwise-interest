@@ -18,7 +18,7 @@ export default function RootLayout({ children, }: { children: React.ReactNode })
                     <header>
                         <Navbar />
                     </header>
-                    <main className="h-full w-full">
+                    <main>
                         {children}
                     </main>
                 </AuthProvider>

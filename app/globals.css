@@ -42,3 +42,7 @@ label {
 #btn_save:focus {
     @apply outline-none shadow-md;
 }
+
+#dsn_clickable:hover {
+    @apply shadow-md shadow-blue-600;
+}
