@@ -18,7 +18,7 @@ export default function RootLayout({ children, }: { children: React.ReactNode })
                     <header>
                         <Navbar />
                     </header>
-                    <main>
+                    <main className='overflow-x-hidden'>
                         {children}
                     </main>
                 </AuthProvider>

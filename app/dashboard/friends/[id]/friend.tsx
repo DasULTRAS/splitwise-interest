@@ -1,12 +1,11 @@
 import { Balance, Friend } from '@/utils/splitwise/datatypes';
-import WebImage from './WebImage';
+import WebImage from '@/components/ui/WebImage';
 
-export default function FriendCard({ friend }: { friend: Friend }) {
-    const baseStyles = 'w-64 h-36 dark:bg-black/80 bg-blue-700 rounded-xl p-5 shadow-lg hover:shadow-xl transition-shadow';
+export default function Friend({ friend }: { friend: Friend }) {
     const balanceStyle = 'text-sm mt-3';
     return (
         <>
-            <div className={friend.balance.length > 0 ? `${baseStyles} shadow-red-700` : `${baseStyles} shadow-green-500`}>
+            <div className="w-64 h-36 dark:bg-black/80 bg-blue-700 rounded-xl p-5 shadow-lg transition-shadow">
                 <div className="flex items-center space-x-4" key={friend.id}>
                     {friend.picture.small &&
                         <WebImage src={friend.picture.small} className="rounded-full" height={55} width={55} />

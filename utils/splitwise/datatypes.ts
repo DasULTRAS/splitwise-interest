@@ -5,9 +5,48 @@ export interface Balance {
     amount: string,
 };
 
+export interface Debt {
+    from: number,
+    to: number,
+    amount: string,
+    currency_code: string
+};
+
 export interface Group {
-    group_id: number,
-    balance: Balance[],
+    id: number,
+    name: string,
+    group_type: "apartment" | "house" | "trip" | "other",
+    updated_at: string,
+    simplify_by_default: boolean,
+    members: {
+        id: number,
+        first_name: string,
+        last_name: string,
+        email: string,
+        registration_status: "confirmed" | "dummy" | "invited",
+        picture: {
+            small: string,
+            medium: string,
+            large: string
+        },
+        balance: Balance[]
+    }[]
+    original_debts: Debt[],
+    simplified_debts: Debt[],
+    avatar: {
+        original: string | null,
+        xxlarge: string,
+        xlarge: string,
+        large: string,
+        medium: string,
+        small: string
+    },
+    custom_avatar: true,
+    cover_photo: {
+        xxlarge: string,
+        xlarge: string
+    },
+    invite_link: string
 };
 
 export interface Friend {
@@ -22,7 +61,10 @@ export interface Friend {
         large: string | null
     },
     balance: Balance[],
-    groups: Group[],
+    groups: {
+        group_id: number,
+        balance: number
+    }[],
     updated_at: string
 };
 
