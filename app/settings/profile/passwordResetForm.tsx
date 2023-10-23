@@ -1,12 +1,11 @@
 "use client";
 
-import {checkPassword, checkUsername} from "@/utils/validation";
+import { checkPassword } from "@/utils/validation";
 import LoadingCircle from "@/components/ui/symbols/loadingCircle";
 import MessageText from "@/components/ui/text/messageText";
 import ForgetPasswordButton from "@/components/ui/buttons/forgetPasswordButton";
 import RegisterButton from "@/components/ui/buttons/registerButton";
-import React, {useEffect, useState} from "react";
-import {signIn} from "next-auth/react";
+import React, { useEffect, useState } from "react";
 
 export default function PasswordResetForm() {
     const [password, setPassword] = useState<string>("");
@@ -33,7 +32,7 @@ export default function PasswordResetForm() {
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({password})
+                body: JSON.stringify({ password })
             });
 
             const data = await res.json();
@@ -92,11 +91,11 @@ export default function PasswordResetForm() {
                                 />
                                 {(field === "Password" ? password : passwordConfirm) &&
                                     <button className="ml-2" type="button" tabIndex={-1}
-                                            onMouseDown={() => field === "Password" ? setShowPassword(true) : setShowPasswordConfirm(true)}
-                                            onMouseUp={() => field === "Password" ? setShowPassword(false) : setShowPasswordConfirm(false)}
-                                            onMouseLeave={() => field === "Password" ? setShowPassword(false) : setShowPasswordConfirm(false)}
-                                            onTouchStart={() => field === "Password" ? setShowPassword(true) : setShowPasswordConfirm(true)}
-                                            onTouchEnd={() => field === "Password" ? setShowPassword(false) : setShowPasswordConfirm(false)}
+                                        onMouseDown={() => field === "Password" ? setShowPassword(true) : setShowPasswordConfirm(true)}
+                                        onMouseUp={() => field === "Password" ? setShowPassword(false) : setShowPasswordConfirm(false)}
+                                        onMouseLeave={() => field === "Password" ? setShowPassword(false) : setShowPasswordConfirm(false)}
+                                        onTouchStart={() => field === "Password" ? setShowPassword(true) : setShowPasswordConfirm(true)}
+                                        onTouchEnd={() => field === "Password" ? setShowPassword(false) : setShowPasswordConfirm(false)}
                                     >show</button>}
                             </div>
                         </div>
@@ -109,19 +108,19 @@ export default function PasswordResetForm() {
                         type="submit"
                         disabled={loading || !!checkPassword(password) || password !== passwordConfirm}
                     >
-                        {loading && <LoadingCircle/>}
+                        {loading && <LoadingCircle />}
                         <span>Change Password</span>
                     </button>
                 </div>
 
                 {message &&
-                    <MessageText message={message} className="text-black"/>
+                    <MessageText message={message} className="text-black" />
                 }
 
-                <hr className="mb-6 border-t"/>
+                <hr className="mb-6 border-t" />
 
-                <ForgetPasswordButton/>
-                <RegisterButton/>
+                <ForgetPasswordButton />
+                <RegisterButton />
             </form>
         </>
     );

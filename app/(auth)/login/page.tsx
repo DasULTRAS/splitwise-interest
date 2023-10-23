@@ -7,8 +7,6 @@ import MessageText from "@/components/ui/text/messageText";
 import ForgetPasswordButton from "@/components/ui/buttons/forgetPasswordButton";
 import LoadingCircle from "@/components/ui/symbols/loadingCircle";
 import { checkPassword, checkUsername } from "@/utils/validation";
-import {headers} from "next/headers";
-import {attribute} from "postcss-selector-parser";
 
 export default function Login() {
     interface LoginResponse {
@@ -29,16 +27,20 @@ export default function Login() {
 
         setLoading(true);
 
-        // Get callback URL from query parameters
-        const params = new URLSearchParams(window.location.search);
-        const callbackUrl = params.get('callbackUrl');
-
         try {
-            await signIn('credentials', {
+            const user = await signIn('credentials', {
                 username: idString,
                 password: password,
-                callbackUrl: callbackUrl || '/dashboard'
+                callbackUrl: '/dashboard',
             }) as LoginResponse;
+
+            console.log(user);
+
+            if (user.ok) {
+                setMessage("Login successful!");
+            } else {
+                setMessage("Login failed!");
+            }
         } catch (error: any) {
             setMessage(`Error: ${error.message || 'Unknown error'}`);
         } finally {

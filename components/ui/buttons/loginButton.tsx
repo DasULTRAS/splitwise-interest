@@ -13,7 +13,7 @@ export default function LoginButton({ user }: LoginButtonProps) {
 
     const handleClick = async () => {
         setLoading(true);
-        await signOut();
+        await signOut({ callbackUrl: '/' });
         setLoading(false);
     };
 

@@ -79,4 +79,9 @@ export const options: NextAuthOptions = {
         async signOut(message) { console.log(`User ${message?.token?.name} logged out.`); },
         async createUser(message) { console.log("User created: ", message); }
     },
+    callbacks: {
+        async redirect({ url }) {
+            return Promise.resolve(url)
+        }
+    },
 };

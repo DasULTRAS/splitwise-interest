@@ -63,13 +63,13 @@ export default function Register() {
             const user = await signIn('credentials', {
                 username: username,
                 password: password,
-                callbackUrl: '/'
+                callbackUrl: '/dashboard',
             }) as LoginResponse;
 
             if (user.ok) {
-                setMessage("Login successful!");
+                setMessage("Account created successfully!, Login successful!");
             } else {
-                setMessage("Login failed!");
+                setMessage("Account was created, but Login failed?");
             }
         } catch (error: any) {
             setMessage(`Error: ${error.message || 'Unknown error'}`);
