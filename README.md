@@ -37,3 +37,7 @@ Docker build command using buildx Tools.
 ```bash
 docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t dasultras/splitwise-interest:latest --push .
 ```
+Sry arm/v7 :D
+```bash
+docker buildx build --platform linux/amd64,linux/arm64 -t dasultras/splitwise-interest:latest --push .
+```

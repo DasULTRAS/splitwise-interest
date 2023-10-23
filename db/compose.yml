@@ -12,6 +12,8 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${DB_USER}
       MONGO_INITDB_ROOT_PASSWORD: ${DB_PASS}
+    env_file:
+      - ../.env
 
   mongo-express:
     image: mongo-express
@@ -23,3 +25,5 @@ services:
       ME_CONFIG_MONGODB_ADMINPASSWORD: ${DB_PASS}
       ME_CONFIG_MONGODB_URL: mongodb://${DB_USER}:${DB_PASS}@mongo:27017/
     depends_on: [ mongo ]
+    env_file:
+      - ../.env
