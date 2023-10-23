@@ -136,7 +136,7 @@ export default function Register() {
                                         onChange={(event) => field === "Password" ? setPassword(event.target.value) : setPasswordConfirm(event.target.value)}
                                     />
                                     {(field === "Password" ? password : passwordConfirm) &&
-                                        <button className="ml-2" type="button"
+                                        <button className="ml-2" type="button" tabIndex={-1}
                                             onMouseDown={() => field === "Password" ? setShowPassword(true) : setShowPasswordConfirm(true)}
                                             onMouseUp={() => field === "Password" ? setShowPassword(false) : setShowPasswordConfirm(false)}
                                             onMouseLeave={() => field === "Password" ? setShowPassword(false) : setShowPasswordConfirm(false)}

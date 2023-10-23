@@ -4,6 +4,7 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import LoadingCircle from "@/components/ui/symbols/loadingCircle";
 import MessageText from "@/components/ui/text/messageText";
+import PasswordResetForm from "@/app/settings/profile/passwordResetForm";
 
 export default function ProfileSettings() {
   const [avatar, setAvatar] = useState("");
@@ -127,9 +128,12 @@ export default function ProfileSettings() {
       </form>
 
       {message && <>
-        <hr className="my-3" />
         <MessageText message={message} />
       </>}
+
+      <hr className="mb-6 border-t"/>
+
+      <PasswordResetForm />
     </div >
   );
 }

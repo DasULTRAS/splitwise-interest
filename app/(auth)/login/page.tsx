@@ -78,7 +78,7 @@ export default function Login() {
                                 value={password}
                                 onChange={(event) => setPassword(event.target.value)}
                             />
-                            <button className="ml-2" type="button"
+                            <button className="ml-2" type="button" tabIndex={-1}
                                 onMouseDown={() => setShowPassword(true)}
                                 onMouseUp={() => setShowPassword(false)}
                                 onMouseLeave={() => setShowPassword(false)}

@@ -4,7 +4,7 @@ import User from '@/models/User';
 import { checkEmail, checkPassword, checkUsername } from '@/utils/validation';
 import { connectToDb } from '@/utils/mongodb';
 
-const saltRounds = 10;
+export const saltRounds = 10;
 
 interface Errors {
     email?: string;
