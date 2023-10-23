@@ -21,6 +21,7 @@ export default async function Navbar() {
                 <ul className="flex  items-center">
                     <li id="dsn_clickable" className="mx-5 rounded-2xl p-2"><a href="/">Home</a></li>
                     <li id="dsn_clickable" className="mx-5 rounded-2xl p-2"><a href="/dashboard">Dashboard</a></li>
+                    <li id="dsn_clickable" className="mx-5 rounded-2xl p-2"><a href="/action">Action</a></li>
                 </ul>
             </nav>
 

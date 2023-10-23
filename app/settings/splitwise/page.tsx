@@ -68,8 +68,10 @@ export default function SplitwiseSettings() {
 
         if (response.ok)
             setMessage("Data saved successfully");
-        else
-            setMessage("Error while saving: " + response.statusText);
+        else {
+            const data = await response.json();
+            setMessage("Error while saving: " + data.message || response.statusText);
+        }
 
         setLoading(false);
     }

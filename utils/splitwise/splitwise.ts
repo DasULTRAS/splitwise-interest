@@ -6,7 +6,7 @@ import { connectToDb } from '@/utils/mongodb';
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import { Expense, Friend } from "./datatypes";
 
-function getLastMonday(daysAgo: number = 14) {
+export function getLastMonday(daysAgo: number = 14) {
     const now = new Date();
 
     // Setzt die Uhrzeit auf 0 Uhr
@@ -30,7 +30,7 @@ function getLastMonday(daysAgo: number = 14) {
     return now;
 }
 
-function roundUpToTwoDecimals(num:number) {
+export function roundUpToTwoDecimals(num: number) {
     return Math.ceil(num * 100) / 100;
 }
 
@@ -41,6 +41,11 @@ export default class Splitwise {
 
     private constructor() {
 
+    }
+
+    public static async resetInstance() {
+        Splitwise.instance = new Splitwise();
+        await Splitwise.instance.initialize();
     }
 
     // Asynchrone Initialisierungsmethode
@@ -85,22 +90,23 @@ export async function getInventedDebts(user_id: number, friend_id: number) {
     const expenses: Expense[] = await sw.getExpenses({ friend_id: friend.id, dated_after: getLastMonday().toISOString(), limit: 0 });
 
     // Sum all transactions in last two weeks
-    let userInterest = 0;
-    expenses.forEach(expense => {
-        expense.repayments.forEach(repayment => {
-
-            if (repayment.from === friend.id && repayment.to === user_id) {
-                userInterest += Number(repayment.amount);
-            }
-
-        });
-    });
-
-    // remove debts from last two weeks
-    let inventedDebts: number = -1 * userInterest;
+    let inventedDebts = 0;
     // add general debts
     if (friend.balance[0])
         inventedDebts += Number(friend.balance[0].amount);
+
+    expenses.forEach(expense => {
+        if (!expense.deleted_at)
+            expense.repayments.forEach(repayment => {
+
+                if (repayment.from === friend.id && repayment.to === user_id) {
+                    inventedDebts -= Number(repayment.amount);
+                } /* else if (repayment.from === user_id && repayment.to === friend.id) {
+                    inventedDebts -= Number(repayment.amount);
+                }*/
+            });
+    });
+
     // if he has payed some things in the last two weeks the balance could get less zero
     if (inventedDebts < 0)
         inventedDebts = 0;

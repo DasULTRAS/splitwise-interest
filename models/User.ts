@@ -28,6 +28,10 @@ const UserSchema = new mongoose.Schema({
         required: false
     },
     splitwise: {
+        id: {
+            type: Number as any,
+            required: false
+        },
         consumerKey: {
             type: String as any,
             required: false
