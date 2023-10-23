@@ -9,7 +9,7 @@ export default async function SettingsLayout({ children, }: { children: React.Re
 
 
     return (
-        <div className="flex">
+        <div className="flex h-full">
             <div className="h-full p-6 bg-black/80">
                     <div className="flex-row justify-between">
                         {
@@ -25,6 +25,9 @@ export default async function SettingsLayout({ children, }: { children: React.Re
                     <ul className="space-y-2">
                         <li>
                             <a href="/settings/profile">Profile</a>
+                        </li>
+                        <li>
+                            <a href="/settings/password">Password</a>
                         </li>
                         <li>
                             <a href="/settings/splitwise">Splitwise</a>

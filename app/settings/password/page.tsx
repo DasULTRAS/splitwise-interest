@@ -7,7 +7,7 @@ import ForgetPasswordButton from "@/components/ui/buttons/forgetPasswordButton";
 import RegisterButton from "@/components/ui/buttons/registerButton";
 import React, { useEffect, useState } from "react";
 
-export default function PasswordResetForm() {
+export default function PasswordChangeForm() {
     const [password, setPassword] = useState<string>("");
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -68,7 +68,7 @@ export default function PasswordResetForm() {
     const inputStyles = "w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline";
 
     return (
-        <>
+        <div className="w-full mt-5 mx-5">
             <h1 className="text-center text-3xl font-bold">Change Password</h1>
             <form className="px-8 pt-6 pb-8 rounded" onSubmit={handleSubmit}>
                 <div className="md:flex md:justify-between mb-4 w-full">
@@ -122,6 +122,6 @@ export default function PasswordResetForm() {
                 <ForgetPasswordButton />
                 <RegisterButton />
             </form>
-        </>
+        </div>
     );
 }

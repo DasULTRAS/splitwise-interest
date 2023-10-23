@@ -77,18 +77,19 @@ export default function SplitwiseSettings() {
     }
 
     return (
-        <div className="mx-10 mt-10">
-            <h1 className="text-4xl font-bold">Splitwise Credentials</h1>
+        <div className="mt-5 mx-5 w-full flex flex-col items-center">
+            <h1 className="text-4xl font-bold text-center">Splitwise Credentials</h1>
             <a href="https://secure.splitwise.com/oauth_clients" target="_blank">Where to find this Credentials?</a>
             <br />
 
             <div className="my-5" />
 
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className="w-full max-96 sm:w-96">
                 {(["Consumer Key", "Consumer Secret"] as const).map((field: string, index) => (
-                    <div className="flex flex-col mb-4" key={index}>
+                    <div className="flex flex-col mb-4 w-full" key={index}>
                         <label className="block">{field}</label>
                         <input
+                            className="w-full border"
                             id={field.toLowerCase()}
                             type={field.toLowerCase()}
                             autoComplete={field.toLowerCase()}

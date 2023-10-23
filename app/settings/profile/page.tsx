@@ -4,7 +4,6 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import LoadingCircle from "@/components/ui/symbols/loadingCircle";
 import MessageText from "@/components/ui/text/messageText";
-import PasswordResetForm from "@/app/settings/profile/passwordResetForm";
 
 export default function ProfileSettings() {
   const [avatar, setAvatar] = useState("");
@@ -24,9 +23,9 @@ export default function ProfileSettings() {
       if (response.ok) {
         const data = await response.json();
         setAvatar(data?.avatar);
-      } else 
+      } else
         setMessage("Error while fetching old avatar: " + response.statusText);
-        
+
       setLoading(false);
     };
 
@@ -105,14 +104,15 @@ export default function ProfileSettings() {
   };
 
   return (
-    <div className="p-8 w-full">
+    <div className="mt-5 mx-5 w-full">
       <h1 className="text-center text-3xl font-bold">Profile</h1>
 
       <form className="flex flex-col justify-center items-center"
         onSubmit={handleSubmit}>
 
         {avatar && <Image src={avatar} alt="User Avatar" height={180} width={180} />}
-        <input className="my-5" title="avatar_upload" type="file" accept="image/*" onChange={handleAvatarUpload} disabled={loading} />
+        <input className="my-5 block w-full text-sm border border-gray-300 rounded-lg cursor-pointer focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" 
+        title="avatar_upload" type="file" accept="image/*" onChange={handleAvatarUpload} disabled={loading} />
 
         <div className="mb-6 flex justify-center">
           <button
@@ -130,10 +130,6 @@ export default function ProfileSettings() {
       {message && <>
         <MessageText message={message} />
       </>}
-
-      <hr className="mb-6 border-t"/>
-
-      <PasswordResetForm />
     </div >
   );
 }
