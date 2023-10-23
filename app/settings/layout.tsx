@@ -22,7 +22,7 @@ export default async function SettingsLayout({ children, }: { children: React.Re
                 <hr className="mb-6 border-t" />
 
                 <h2 className="my-5 underline">Settings</h2>
-                    <ul>
+                    <ul className="space-y-2">
                         <li>
                             <a href="/settings/profile">Profile</a>
                         </li>

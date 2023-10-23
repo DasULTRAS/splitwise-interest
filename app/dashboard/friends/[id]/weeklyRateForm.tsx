@@ -1,7 +1,6 @@
 "use client";
 
 import React, {useEffect, useState} from "react";
-import {set} from "mongoose";
 import MessageText from "@/components/ui/text/messageText";
 
 export default function WeeklyRateForm({friend_id}: { friend_id: number }) {

@@ -18,7 +18,7 @@ export default function LoginButton({ user }: LoginButtonProps) {
     };
 
     return (
-        <>
+        <div className="h-full flex items-center">
             {user ?
                 <button onClick={handleClick}>
                     {loading && (
@@ -33,6 +33,6 @@ export default function LoginButton({ user }: LoginButtonProps) {
                     <h2>Login</h2>
                 </a>
             }
-        </>
+        </div>
     );
 };

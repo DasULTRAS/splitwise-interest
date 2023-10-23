@@ -1,4 +1,4 @@
-export default function LoadingCircle({ className, height, width }: { className?: string, height: string, width: string }) {
+export default function LoadingCircle({ className, height, width }: { className?: string, height?: string, width?: string }) {
     if (!height)
         height = "5";
     if (!width)

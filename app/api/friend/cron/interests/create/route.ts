@@ -32,7 +32,7 @@ export async function GET() {
 
                 let lastInterest: Expense | undefined = undefined;
                 expenses.forEach((expense: Expense) => {
-                    if (!expense.deleted_at && expense.category.id === 4 && expense.description.includes("Zins"))
+                    if (!expense.deleted_at && expense.category?.id === 4 && expense.description.includes("Zins"))
                         expense.repayments.forEach(repayment => {
                             if (repayment.from === friend.friend_id && repayment.to === user.splitwise.id) {
                                 lastInterest = expense;

@@ -118,7 +118,7 @@ export interface Expense {
     category: {
         id: number,
         name: string
-    }[],
+    },
     receipt: {
         large: string | null,
         original: string | null
