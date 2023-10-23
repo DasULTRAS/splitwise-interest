@@ -18,6 +18,10 @@ start the Mongo DB server with docker-compose in the _**db**_ directory
 docker-compose up -d
 ```
 
+**MONGO EXPRESS**
+> admin
+> pass
+
 ### Site
 
 First, run the development server:
