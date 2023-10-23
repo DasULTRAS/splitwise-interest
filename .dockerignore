@@ -1,4 +1,20 @@
+# IDE
 .idea/
-README.md
+.vscode/
+# Database
+db/
+# NMP
 node_modules/
+npm-debug.log
+# Next
+.next
+# Docker
 compose.yml
+Dockerfile
+.dockerignore
+.env*
+# GIT
+.git
+.gitignore
+# MISC
+README.md
