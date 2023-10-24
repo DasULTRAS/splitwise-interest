@@ -6,6 +6,18 @@ import { connectToDb } from '@/utils/mongodb';
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import { Expense, Friend } from "./datatypes";
 
+async function getUsername(){
+    // Get Usersession
+    const session: Session | null = await getServerSession(options);
+
+    // Stelle sicher, dass eine Session vorhanden ist
+    if (!session || !session.user || !session.user.name) {
+        throw new Error("No user session found.");
+    }
+
+    return session.user.name;
+}
+
 export function getLastMonday(daysAgo: number = 14) {
     const now = new Date();
 
@@ -36,7 +48,7 @@ export function roundUpToTwoDecimals(num: number) {
 
 // Splitwise Class unsing Singleton Princip
 export default class Splitwise {
-    private static instance: Splitwise;
+    private static instances: { [key: string]: Splitwise } = {};
     public splitwise: any;
 
     private constructor() {
@@ -44,23 +56,21 @@ export default class Splitwise {
     }
 
     public static async resetInstance() {
-        Splitwise.instance = new Splitwise();
-        await Splitwise.instance.initialize();
+        const username:string = await getUsername();
+
+        Splitwise.resetInstanceByUsername(username);
+    }
+
+    public static async resetInstanceByUsername(username: string) {
+        // Called at signOut Event
+        delete Splitwise.instances[username];
     }
 
     // Asynchrone Initialisierungsmethode
-    public async initialize(): Promise<void> {
-        // Get Usersession
-        const session: Session | null = await getServerSession(options);
-
-        // Stelle sicher, dass eine Session vorhanden ist
-        if (!session || !session.user || !session.user.name) {
-            throw new Error("No user session found.");
-        }
-
+    public async initialize(username:string): Promise<void> {
         // Get User from DB
         await connectToDb();
-        const user = await User.findOne({ ["username"]: session.user.name });
+        const user = await User.findOne({ ["username"]: username });
 
         // Stelle sicher, dass ein User gefunden wurde
         if (!user || !user.splitwise) {
@@ -74,12 +84,18 @@ export default class Splitwise {
         });
     }
 
-    public static async getInstance(): Promise<Splitwise> {
-        if (!Splitwise.instance) {
-            Splitwise.instance = new Splitwise();
-            await Splitwise.instance.initialize();
+    private static async getInstanceByUsername(username: string): Promise<Splitwise> {
+        if (!Splitwise.instances[username]) {
+            Splitwise.instances[username] = new Splitwise();
+            await Splitwise.instances[username].initialize(username);
         }
-        return Splitwise.instance;
+        return Splitwise.instances[username];
+    }
+
+    public static async getInstance(): Promise<Splitwise> {
+        const username = await getUsername();
+
+       return await this.getInstanceByUsername(username);
     }
 }
 

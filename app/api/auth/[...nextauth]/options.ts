@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt';
 import User from '@/models/User';
 import { connectToDb } from '@/utils/mongodb';
 import { checkEmail } from '@/utils/validation';
+import Splitwise from '@/utils/splitwise/splitwise';
 
 export const options: NextAuthOptions = {
     providers: [
@@ -76,7 +77,12 @@ export const options: NextAuthOptions = {
     },
     events: {
         async signIn(message) { console.log(`User ${message?.user?.name} logged in with ${message.account?.type}.`); },
-        async signOut(message) { console.log(`User ${message?.token?.name} logged out.`); },
+        async signOut(message) {
+            console.log(`User ${message?.token?.name} logged out.`);
+            
+            if (message.token.name)
+                Splitwise.resetInstanceByUsername(message.token.name);
+        },
         async createUser(message) { console.log("User created: ", message); }
     },
     callbacks: {
