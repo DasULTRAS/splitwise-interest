@@ -24,6 +24,9 @@ export default async function FriendsDashboard() {
         const sw = (await Splitwise.getInstance()).splitwise;
         const friends: Friend[] = await sw.getFriends();
 
+        // Sort friends by name
+        friends.sort((a, b) => a.first_name.localeCompare(b.first_name));
+
         const getWeeklyRate = function (id: number) {
             const interest = user.splitwise.interests.find((interest: { friend_id: number, weeklyRate: number }) => interest.friend_id === id)
             if (interest?.weeklyRate)
