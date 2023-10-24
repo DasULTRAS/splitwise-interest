@@ -23,7 +23,10 @@ export default function FriendCard({ friend, weeklyRate }: { friend: Friend, wee
                             {`${bal.amount} ${bal.currency_code}`}
                         </p>
                     ))}
-                    <p className='ml-auto text-sm'>{weeklyRate == null ? "ND" : `${weeklyRate}%`}</p>
+
+                    {weeklyRate != null &&
+                        <p className='ml-auto text-sm'>{weeklyRate}%</p>
+                    }
                 </div>
             </a>
         </>
