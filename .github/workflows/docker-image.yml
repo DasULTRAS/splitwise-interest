@@ -29,7 +29,6 @@ jobs:
         with:
           context: .
           push: true
-          tags: dasultras/splitwise-interest:latest
+          tags: dasultras/splitwise-interest:latest,dasultras/splitwise-interest:0.1.1
           no-cache: true
           platforms: linux/amd64,linux/arm64,linux/arm/v7
-          

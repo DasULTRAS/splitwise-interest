@@ -16,5 +16,6 @@ Dockerfile
 # GIT
 .git
 .gitignore
+.github
 # MISC
 README.md
