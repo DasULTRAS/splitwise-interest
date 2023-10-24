@@ -10,7 +10,7 @@ export default function Trigger() {
 
     const trigger = async function () {
         setLoading(true);
-        const res = await fetch("/api/friend/cron/interests/create");
+        const res = await fetch("/api/friend/interests/create");
         if (res.ok) {
             const data = await res.json();
             setMessage(data.message);

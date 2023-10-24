@@ -13,6 +13,7 @@ export async function GET() {
                 { status: 400 });
 
         console.log("CRON RUN");
+        console.error("CRON RUN");
         return NextResponse.json(
             {
                 message: "CRON RUN.",
