@@ -6,8 +6,13 @@ on:
       - 'main'
 
 jobs:
-  docker:
+  docker-build:
+    name: Docker Build & Push - ${{ matrix.context }}
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        context: [ '.', 'cron' ]
+        tags: [ 'dasultras/splitwise-interest', 'dasultras/curl-cron' ]
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -27,8 +32,8 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
-          context: .
+          context: ${{ matrix.context }}
           push: true
-          tags: dasultras/splitwise-interest:latest,dasultras/splitwise-interest:0.1.1
+          tags: ${{ matrix.tags }}:latest,${{ matrix.tags }}:0.1.1
           no-cache: true
-          platforms: linux/amd64,linux/arm64,linux/arm/v7
+          platforms: linux/amd64,linux/arm64

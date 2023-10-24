@@ -70,3 +70,23 @@ const UserSchema = new mongoose.Schema({
 });
 
 export default mongoose.models.User || mongoose.model('User', UserSchema);
+
+export interface MongoUser {
+    username: string,
+    email: string,
+    password: string,
+    avatar: string,
+    splitwise: {
+        id: number,
+        consumerKey: string,
+        consumerSecret: string,
+        interests: {
+            friend_id: number,
+            weeklyRate: number,
+        }[],
+    },
+    createdAt: Date,
+    updatedAt: Date,
+    lastPasswordUpdatedAt: Date,
+    lastLogin: Date,
+}
