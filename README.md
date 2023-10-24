@@ -8,6 +8,7 @@ A simple web app to calculate the interest on the splitwise balance.
 
 1. Use the `.env.example` file to create a `.env` file in the _root directory_ of the project.
 2. Add the values for the environment variables.
+3. And duplicate the `.env` file in the _**db**_ directory.
 
 ### DB
 
