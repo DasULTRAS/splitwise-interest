@@ -49,7 +49,7 @@ export interface Group {
 
 export interface Friend {
     id: number,
-    first_name: string | null,
+    first_name: string,
     last_name: string | null,
     email: string | null,
     registration_status: string,
