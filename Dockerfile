@@ -50,6 +50,15 @@ RUN chown nextjs:nodejs .next
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
+# Cron-Job
+# Installiere Cron und curl
+RUN apk add --no-cache curl
+# Cron-Job Skript
+RUN echo '#!/bin/sh' >> crontab.sh \
+    && echo 'curl -X GET http://localhost:80/api/friend/cron' >> crontab.sh \
+    && chmod +x /app/crontab.sh \
+    && echo $(crontab -l; echo "0 * * * * /app/cronjob.sh") | crontab -
+
 USER nextjs
 
 EXPOSE 80
