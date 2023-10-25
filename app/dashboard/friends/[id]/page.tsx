@@ -25,12 +25,12 @@ export default async function Friend({params}: { params: { id: number } }) {
 
         return (
             <>
-                <div className="flex flex-col justify-center items-center p-10">
-                    <div className="flex justify-center items-center m-5">
-                        <WebImage className="rounded-full m-5" src={friend.picture.medium} width={75}/>
+                <div className="flex flex-col items-center justify-center p-10">
+                    <div className="m-5 flex items-center justify-center">
+                        <WebImage className="m-5 rounded-full" src={friend.picture.medium} width={75}/>
                         <div className="flex flex-col">
                             <p>{friend.id}</p>
-                            <h1 className="text-4xl font-bold text-center">{friend.first_name} {friend?.last_name}</h1>
+                            <h1 className="text-center text-4xl font-bold">{friend.first_name} {friend?.last_name}</h1>
                         </div>
                     </div>
 
@@ -42,14 +42,14 @@ export default async function Friend({params}: { params: { id: number } }) {
                                 <h2 className="text-xl font-extralight underline">Balance
                                     - {friend.balance[0].amount} {friend.balance[0].currency_code}</h2>
 
-                                    <div className="my-5 flex flex-col justify-between px-5 items-center">
-                                        <WeeklyRateForm friend_id={friend.id}/>
-                                        <p>on {inventedDebts} {friend.balance[0].currency_code}</p>
-                                    </div>
+                                <div className="my-5 flex flex-col items-center justify-between px-5">
+                                    <WeeklyRateForm friend_id={friend.id}/>
+                                    <p>on {inventedDebts} {friend.balance[0].currency_code}</p>
+                                </div>
 
                                 <ul>
                                     {groups.map((group: Group) => (
-                                        <li key={group.id} className="flex flex-col bg-black/20 rounded-2xl m-2 p-2">
+                                        <li key={group.id} className="m-2 flex flex-col rounded-2xl bg-black/20 p-2">
                                             <div className="flex">
                                                 <WebImage src={group.avatar.medium} className="rounded-full"
                                                           width={25}/>
@@ -62,7 +62,7 @@ export default async function Friend({params}: { params: { id: number } }) {
                                                 })()}
                                             </div>
 
-                                            <h3 className="truncate whitespace-nowrap overflow-hidden font-mono">{group.name}</h3>
+                                            <h3 className="overflow-hidden truncate whitespace-nowrap font-mono">{group.name}</h3>
                                         </li>
                                     ))}
                                 </ul>

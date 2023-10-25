@@ -1,12 +1,12 @@
 'use client'
 
-import React, { useState } from "react";
-import { signIn } from 'next-auth/react';
+import React, {useState} from "react";
+import {signIn} from 'next-auth/react';
 import RegisterButton from "@/components/ui/buttons/registerButton";
 import MessageText from "@/components/ui/text/messageText";
 import ForgetPasswordButton from "@/components/ui/buttons/forgetPasswordButton";
 import LoadingCircle from "@/components/ui/symbols/loadingCircle";
-import { checkPassword, checkUsername } from "@/utils/validation";
+import {checkPassword, checkUsername} from "@/utils/validation";
 
 export default function Login() {
     interface LoginResponse {
@@ -52,11 +52,11 @@ export default function Login() {
 
     return (
         <div className="container mx-auto w-full max-w-2xl p-5">
-            <h3 className="text-2xl text-center mb-2">Login</h3>
-            <div className="rounded-lg bg-white shadow-neutral-900 shadow-xl">
-                <form className="px-8 pt-6 pb-8 bg-white rounded" onSubmit={handleSubmit}>
+            <h3 className="mb-2 text-center text-2xl">Login</h3>
+            <div className="rounded-lg bg-white shadow-xl shadow-neutral-900">
+                <form className="rounded bg-white px-8 pt-6 pb-8" onSubmit={handleSubmit}>
                     <div className="mb-4">
-                        <label className="block mb-2 text-sm font-bold text-gray-700">Benutzername oder E-Mail</label>
+                        <label className="mb-2 block text-sm font-bold text-gray-700">Benutzername oder E-Mail</label>
                         <input
                             className={inputStyles}
                             id="idString"
@@ -67,8 +67,8 @@ export default function Login() {
                         />
                     </div>
 
-                    <div className="w-full mb-4">
-                        <label className="block mb-2 text-sm font-bold text-gray-700">Password</label>
+                    <div className="mb-4 w-full">
+                        <label className="mb-2 block text-sm font-bold text-gray-700">Password</label>
                         <div
                             className={`flex items-center justify-between ${inputStyles}`}>
                             <input
@@ -81,11 +81,11 @@ export default function Login() {
                                 onChange={(event) => setPassword(event.target.value)}
                             />
                             <button className="ml-2" type="button" tabIndex={-1}
-                                onMouseDown={() => setShowPassword(true)}
-                                onMouseUp={() => setShowPassword(false)}
-                                onMouseLeave={() => setShowPassword(false)}
-                                onTouchStart={() => setShowPassword(true)}
-                                onTouchEnd={() => setShowPassword(false)}
+                                    onMouseDown={() => setShowPassword(true)}
+                                    onMouseUp={() => setShowPassword(false)}
+                                    onMouseLeave={() => setShowPassword(false)}
+                                    onTouchStart={() => setShowPassword(true)}
+                                    onTouchEnd={() => setShowPassword(false)}
                             >show
                             </button>
                         </div>
@@ -93,23 +93,23 @@ export default function Login() {
 
                     <div className="mb-6 flex justify-center">
                         <button
-                            className="flex w-fit px-4 py-2 font-bold text-white bg-blue-500 disabled:bg-blue-500/50 rounded-full hover:bg-blue-700 focus:outline-none focus:shadow-outline"
+                            className="flex w-fit rounded-full bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700 focus:shadow-outline focus:outline-none disabled:bg-blue-500/50"
                             type="submit"
                             disabled={loading || !!checkUsername(idString) || !!checkPassword(password)}
                         >
-                            {loading && <LoadingCircle />}
+                            {loading && <LoadingCircle/>}
                             <span>Login</span>
                         </button>
                     </div>
 
                     {message &&
-                        <MessageText message={message} className="text-black" />
+                        <MessageText message={message} className="text-black"/>
                     }
 
-                    <hr className="mb-6 border-t" />
+                    <hr className="mb-6 border-t"/>
 
-                    <ForgetPasswordButton />
-                    <RegisterButton />
+                    <ForgetPasswordButton/>
+                    <RegisterButton/>
                 </form>
             </div>
         </div>

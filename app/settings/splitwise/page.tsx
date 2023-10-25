@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import MessageText from "@/components/ui/text/messageText";
 import LoadingCircle from "@/components/ui/symbols/loadingCircle";
 
@@ -77,43 +77,42 @@ export default function SplitwiseSettings() {
     }
 
     return (
-        <div className="mt-5 mx-5 w-full flex flex-col items-center">
-            <h1 className="text-4xl font-bold text-center">Splitwise Credentials</h1>
+        <div className="mx-5 mt-5 flex w-full flex-col items-center">
+            <h1 className="text-center text-4xl font-bold">Splitwise Credentials</h1>
             <a href="https://secure.splitwise.com/oauth_clients" target="_blank">Where to find this Credentials?</a>
-            <br />
+            <br/>
 
-            <div className="my-5" />
+            <div className="my-5"/>
 
             <form onSubmit={handleSubmit} className="w-full max-96 sm:w-96">
                 {(["Consumer Key", "Consumer Secret"] as const).map((field: string, index) => (
-                    <div className="flex flex-col mb-4 w-full" key={index}>
+                    <div className="mb-4 flex w-full flex-col" key={index}>
                         <label className="block">{field}</label>
-                        <input
-                            className="w-full border"
-                            id={field.toLowerCase()}
-                            type={field.toLowerCase()}
-                            autoComplete={field.toLowerCase()}
-                            placeholder={field}
-                            disabled={loading}
-                            value={field === "Consumer Key" ? consumerKey : consumerSecret}
-                            onChange={(event) => field === "Consumer Key" ? setConsumerKey(event.target.value) : setConsumerSecret(event.target.value)}
+                        <input className="w-full border"
+                               id={field.toLowerCase()}
+                               type={field.toLowerCase()}
+                               autoComplete={field.toLowerCase()}
+                               placeholder={field}
+                               disabled={loading}
+                               value={field === "Consumer Key" ? consumerKey : consumerSecret}
+                               onChange={(event) => field === "Consumer Key" ? setConsumerKey(event.target.value) : setConsumerSecret(event.target.value)}
                         />
                     </div>
                 ))}
 
                 <div className="mb-6 flex justify-center">
                     <button className="flex" id="btn_save"
-                        type="submit"
-                        disabled={loading || !consumerKey || !consumerSecret}>
-                        {loading && <LoadingCircle />}
+                            type="submit"
+                            disabled={loading || !consumerKey || !consumerSecret}>
+                        {loading && <LoadingCircle/>}
                         <span>Save</span>
                     </button>
                 </div>
             </form>
 
             {message && <>
-                <hr className="my-3" />
-                <MessageText message={message} />
+                <hr className="my-3"/>
+                <MessageText message={message}/>
             </>}
         </div>
     )
