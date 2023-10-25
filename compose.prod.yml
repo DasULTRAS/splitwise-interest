@@ -9,6 +9,18 @@ services:
     env_file:
       - stack.env
 
+  cron:
+    build:
+      context: cron
+    image: dasultras/curl-cron:latest
+    restart: unless-stopped
+    environment:
+      - CURL_HOST=app
+      - CURL_PORT=80
+    env_file:
+      - stack.env
+    depends_on: [ app ]
+
   db:
     image: mongo
     restart: unless-stopped
