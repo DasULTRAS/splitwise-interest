@@ -18,11 +18,10 @@ export default function WeeklyRateForm({friend_id}: { friend_id: number }) {
                 setMessage(data.message);
                 setWeeklyRate(0);
             }
-            setLoading(false);
         };
 
         if (weeklyRate === -1)
-            fetchWeeklyRate();
+            fetchWeeklyRate().then(() => setLoading(false));
     }, [weeklyRate]);
 
     // clear message after 5 seconds
@@ -49,7 +48,7 @@ export default function WeeklyRateForm({friend_id}: { friend_id: number }) {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ weeklyRate })
+            body: JSON.stringify({weeklyRate})
         });
 
         const data = await res.json();
@@ -66,9 +65,9 @@ export default function WeeklyRateForm({friend_id}: { friend_id: number }) {
     return (
         <form className="flex flex-col" onSubmit={handleSubmit}>
             <label htmlFor="weeklyRate" className="text-center">Weekly Rate</label>
-            <div className="flex justify-center items-center">
+            <div className="flex items-center justify-center">
                 <input
-                    className="w-16 peer rounded-2xl border border-blue-gray-200 bg-transparent px-3 py-2.5 outline outline-0 transition-all appearance-none focus:border-pink-500 disabled:border-0 disabled:bg-blue-gray-50"
+                    className="w-16 appearance-none rounded-2xl border bg-transparent px-3 outline outline-0 transition-all peer border-blue-gray-200 py-2.5 focus:border-pink-500 disabled:bg-blue-gray-50 disabled:border-0"
                     type="number" name="weeklyRate" id="weeklyRate"
                     value={weeklyRate} disabled={loading}
                     onChange={e => {

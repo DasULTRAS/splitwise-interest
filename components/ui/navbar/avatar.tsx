@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import {Session} from "next-auth";
-import {useState, useEffect} from "react";
+import {useEffect, useState} from "react";
 import LoginButton from "@/components/ui/buttons/loginButton";
 import Sidebar from "../sidebar/sidebar";
 
@@ -35,7 +35,7 @@ export default function UserAvatar({session}: { session: Session | null | undefi
         <>
             {session ?
                 <div id="dsn_clickable"
-                     className="relative inline-flex items-center justify-center w-12 h-12 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600"
+                     className="relative inline-flex h-12 w-12 items-center justify-center overflow-hidden rounded-full bg-gray-100 dark:bg-gray-600"
                      onClick={handleClick}>
                     {
                         avatar ?
