@@ -58,7 +58,7 @@ export default class Splitwise {
     public static async resetInstance() {
         const username: string = await getUsername();
 
-        Splitwise.resetInstanceByUsername(username);
+        await Splitwise.resetInstanceByUsername(username);
     }
 
     public static async resetInstanceByUsername(username: string) {
@@ -84,7 +84,7 @@ export default class Splitwise {
         });
     }
 
-    private static async getInstanceByUsername(
+    public static async getInstanceByUsername(
         username: string
     ): Promise<Splitwise> {
         if (!Splitwise.instances[username]) {

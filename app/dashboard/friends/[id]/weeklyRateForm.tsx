@@ -18,11 +18,10 @@ export default function WeeklyRateForm({friend_id}: { friend_id: number }) {
                 setMessage(data.message);
                 setWeeklyRate(0);
             }
-            setLoading(false);
         };
 
         if (weeklyRate === -1)
-            fetchWeeklyRate();
+            fetchWeeklyRate().then(() => setLoading(false));
     }, [weeklyRate]);
 
     // clear message after 5 seconds

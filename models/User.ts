@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { checkEmail } from "@/utils/validation"
+import {checkEmail, checkPassword} from "@/utils/validation"
 
 const UserSchema = new mongoose.Schema({
     username: {
@@ -22,6 +22,12 @@ const UserSchema = new mongoose.Schema({
     password: {
         type: String as any,
         required: [true, "Please provide a password!"],
+        validate: {
+            validator: function (password: string) {
+                return !checkPassword(password);
+            },
+            message: (props: { value: string }) => `${props.value} is an unacceptable password!`
+        }
     },
     avatar: {
         type: String as any,

@@ -28,11 +28,9 @@ export default function SplitwiseSettings() {
                 setConsumerSecret(data.consumerSecret);
             } else
                 setMessage("Error while data fetching: " + response.statusText);
-
-            setLoading(false);
         };
 
-        fetchSplitwiseCredentials();
+        fetchSplitwiseCredentials().then(() => setLoading(false));
     }, []);
 
     // clear message after 10 seconds

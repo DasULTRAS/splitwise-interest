@@ -25,12 +25,10 @@ export default function ProfileSettings() {
                 setAvatar(data?.avatar);
             } else
                 setMessage("Error while fetching old avatar: " + response.statusText);
-
-            setLoading(false);
         };
 
         if (!avatar)
-            fetchAvatar();
+            fetchAvatar().then(() => setLoading(false));
     }, [avatar]);
 
     // clear message after 10 seconds

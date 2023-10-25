@@ -81,7 +81,7 @@ export const options: NextAuthOptions = {
             console.log(`User ${message?.token?.name} logged out.`);
             
             if (message.token.name)
-                Splitwise.resetInstanceByUsername(message.token.name);
+                await Splitwise.resetInstanceByUsername(message.token.name);
         },
         async createUser(message) { console.log("User created: ", message); }
     },
