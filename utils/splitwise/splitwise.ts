@@ -1,12 +1,14 @@
-import { getServerSession } from "next-auth/next";
-import { Session } from 'next-auth';
-const Sw = require('splitwise');
-import User from '@/models/User';
-import { connectToDb } from '@/utils/mongodb';
-import { options } from "@/app/api/auth/[...nextauth]/options";
-import { Expense, Friend } from "./datatypes";
+import {getServerSession} from "next-auth/next";
+import {Session} from 'next-auth';
 
-async function getUsername(){
+import User from '@/models/User';
+import {connectToDb} from '@/utils/mongodb';
+import {options} from "@/app/api/auth/[...nextauth]/options";
+import {Expense, Friend} from "./datatypes";
+
+const Sw = require('splitwise');
+
+async function getUsername() {
     // Get Usersession
     const session: Session | null = await getServerSession(options);
 
@@ -28,11 +30,11 @@ export function getLastMonday(daysAgo: number = 14) {
     const currentDayOfWeek = now.getDay();
 
     // Ermittelt die Anzahl der Tage, die seit dem letzten Sonntag vergangen sind
-    // Wenn heute Sonntag ist, ist der Wert 0, ansonsten addieren wir 1, 
+    // Wenn heute Sonntag ist, ist der Wert 0, ansonsten addieren wir 1,
     // um zum vorherigen Sonntag zu gelangen
-    const daysSinceLastMonday = (currentDayOfWeek === 1) ? 0 : currentDayOfWeek;
+    const daysSinceLastMonday = currentDayOfWeek === 1 ? 0 : currentDayOfWeek;
 
-    // Ermittelt die Anzahl der Tage, die zurückgegangen werden müssen, um zwei Wochen 
+    // Ermittelt die Anzahl der Tage, die zurückgegangen werden müssen, um zwei Wochen
     // vorherigen Sonntag zu erreichen. Dies umfasst 14 Tage plus die Tage seit dem letzten Sonntag.
     const daysToGoBack = daysAgo + daysSinceLastMonday;
 
@@ -51,12 +53,10 @@ export default class Splitwise {
     private static instances: { [key: string]: Splitwise } = {};
     public splitwise: any;
 
-    private constructor() {
-
-    }
+    private constructor() {}
 
     public static async resetInstance() {
-        const username:string = await getUsername();
+        const username: string = await getUsername();
 
         Splitwise.resetInstanceByUsername(username);
     }
@@ -67,10 +67,10 @@ export default class Splitwise {
     }
 
     // Asynchrone Initialisierungsmethode
-    public async initialize(username:string): Promise<void> {
+    public async initialize(username: string): Promise<void> {
         // Get User from DB
         await connectToDb();
-        const user = await User.findOne({ ["username"]: username });
+        const user = await User.findOne({["username"]: username});
 
         // Stelle sicher, dass ein User gefunden wurde
         if (!user || !user.splitwise) {
@@ -80,11 +80,13 @@ export default class Splitwise {
         // Get Splitwise Data
         this.splitwise = Sw({
             consumerKey: user.splitwise.consumerKey,
-            consumerSecret: user.splitwise.consumerSecret
+            consumerSecret: user.splitwise.consumerSecret,
         });
     }
 
-    private static async getInstanceByUsername(username: string): Promise<Splitwise> {
+    private static async getInstanceByUsername(
+        username: string
+    ): Promise<Splitwise> {
         if (!Splitwise.instances[username]) {
             Splitwise.instances[username] = new Splitwise();
             await Splitwise.instances[username].initialize(username);
@@ -95,26 +97,32 @@ export default class Splitwise {
     public static async getInstance(): Promise<Splitwise> {
         const username = await getUsername();
 
-       return await this.getInstanceByUsername(username);
+        return await this.getInstanceByUsername(username);
     }
 }
 
-export async function getInventedDebts(user_id: number, friend_id: number) {
-    const sw = (await Splitwise.getInstance()).splitwise;
+export async function getInventedDebts(
+    user_id: number,
+    friend_id: number,
+    splitwise?: any
+) {
+    if (!splitwise) splitwise = (await Splitwise.getInstance()).splitwise;
 
-    const friend: Friend = await sw.getFriend({ id: friend_id });
-    const expenses: Expense[] = await sw.getExpenses({ friend_id: friend.id, dated_after: getLastMonday().toISOString(), limit: 0 });
+    const friend: Friend = await splitwise.getFriend({id: friend_id});
+    const expenses: Expense[] = await splitwise.getExpenses({
+        friend_id: friend.id,
+        dated_after: getLastMonday().toISOString(),
+        limit: 0,
+    });
 
     // Sum all transactions in last two weeks
     let inventedDebts = 0;
     // add general debts
-    if (friend.balance[0])
-        inventedDebts += Number(friend.balance[0].amount);
+    if (friend.balance[0]) inventedDebts += Number(friend.balance[0].amount);
 
-    expenses.forEach(expense => {
+    expenses.forEach((expense) => {
         if (!expense.deleted_at)
-            expense.repayments.forEach(repayment => {
-
+            expense.repayments.forEach((repayment) => {
                 if (repayment.from === friend.id && repayment.to === user_id) {
                     inventedDebts -= Number(repayment.amount);
                 } /* else if (repayment.from === user_id && repayment.to === friend.id) {
@@ -124,8 +132,7 @@ export async function getInventedDebts(user_id: number, friend_id: number) {
     });
 
     // if he has payed some things in the last two weeks the balance could get less zero
-    if (inventedDebts < 0)
-        inventedDebts = 0;
+    if (inventedDebts < 0) inventedDebts = 0;
 
     return roundUpToTwoDecimals(inventedDebts);
 }
