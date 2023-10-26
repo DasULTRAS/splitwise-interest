@@ -16,13 +16,13 @@ export default async function SettingsLayout({children,}: { children: React.Reac
                         session?.user?.image &&
                         <Image src={session?.user?.image} alt="Avatar" width={40} height={40}/>
                     }
-                    <h1 className="font-mono text-2xl font-bold">{session?.user?.name}</h1>
+                    <h1 className="text-white font-mono text-2xl font-bold">{session?.user?.name}</h1>
                 </div>
 
                 <hr className="mb-6 border-t"/>
 
-                <h2 className="my-5 underline">Settings</h2>
-                <ul className="space-y-2">
+                <h2 className="text-white my-5 underline">Settings</h2>
+                <ul className="text-white space-y-2">
                     <li>
                         <a href="/settings/profile">Profile</a>
                     </li>

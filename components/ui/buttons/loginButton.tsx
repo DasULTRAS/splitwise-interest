@@ -20,7 +20,7 @@ export default function LoginButton({user}: LoginButtonProps) {
     return (
         <div className="flex h-full items-center">
             {user ?
-                <button onClick={handleClick}>
+                <button className="text-white" onClick={handleClick}>
                     {loading && (
                         <svg className="m-auto mr-3 h-5 w-5 animate-spin" viewBox="0 0 24 24">
                             <circle className="opacity-25" cx="12" cy="12" r="10"
@@ -30,7 +30,7 @@ export default function LoginButton({user}: LoginButtonProps) {
                         </svg>)}
                     Logout</button> :
                 <a href="/login">
-                    <h2>Login</h2>
+                    <h2 className="text-white">Login</h2>
                 </a>
             }
         </div>
