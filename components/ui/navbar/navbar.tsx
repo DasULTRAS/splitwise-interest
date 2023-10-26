@@ -8,10 +8,10 @@ export default async function Navbar() {
     const session: Session | null = await getServerSession(options);
 
     return (
-        <div className="sticky row-span-3 flex h-16 w-screen bg-white/30 px-4 py-2 dark:bg-black/30">
+        <div className="sticky row-span-3 flex w-screen bg-white/30 px-4 py-3 dark:bg-black/30">
             <div className="w-1/5">
-                <a title="favicon" href="/">
-                    <Image src="/favicon.ico" alt="Logo" width={50} height={50}/>
+                <a title="home" href="/">
+                    <Image src="/favicon.ico" alt="favicon" width={48} height={48}/>
                 </a>
             </div>
 
