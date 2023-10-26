@@ -4,8 +4,6 @@ import UserAvatar from "@/components/ui/navbar/avatar";
 import {getServerSession} from "next-auth/next";
 import {options} from "@/app/api/auth/[...nextauth]/options";
 
-import favicon from "@/app/favicon.ico";
-
 export default async function Navbar() {
     const session: Session | null = await getServerSession(options);
 
@@ -13,7 +11,7 @@ export default async function Navbar() {
         <div className="sticky row-span-3 flex h-16 w-screen bg-white/30 px-4 py-2 dark:bg-black/30">
             <div className="w-1/5">
                 <a title="favicon" href="/">
-                    <Image src={favicon} alt="Logo" width={50} height={50}/>
+                    <Image src="/favicon.ico" alt="Logo" width={50} height={50}/>
                 </a>
             </div>
 
