@@ -9,11 +9,14 @@ import React from "react";
 export const metadata: Metadata = {
     title: 'Splitwise interest calculator',
     description: 'A Webapp to automatically calculate interest on Splitwise.',
+    applicationName: 'Splitwise interest calculator',
+    manifest: '/manifest.json',
+    themeColor: '#ffffff',
 }
 
 export default function RootLayout({children,}: { children: React.ReactNode }) {
     return (
-        <html>
+        <html lang="en">
         <body className="flex h-screen w-screen flex-col">
         <AuthProvider>
             <header>
