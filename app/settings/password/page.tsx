@@ -65,29 +65,30 @@ export default function PasswordChangeForm() {
     return (
         <div className="mx-5 mt-5 w-full">
             <h1 className="text-center text-3xl font-bold">Change Password</h1>
+
             <form className="rounded pt-6 pb-8" onSubmit={handleSubmit}>
                 <div className="mb-4 w-full md:flex md:justify-between">
                     <InputPassword
-                        placeholder={"Password"}
-                        className={"w-full md:w-1/2 mb-4 md:mb-0 md:mr-2"}
+                        placeholder="Password"
+                        className="w-full md:w-1/2 mb-4 md:mb-0 md:mr-2"
                         value={password}
                         onChange={(event) => setPassword(event.target.value)}
                         inputError={password && checkPassword(password)} />
 
                     <InputPassword
-                        placeholder={"Password Confirm"}
-                        className={"w-full md:w-1/2 md:ml-2"}
+                        placeholder="Password Confirm"
+                        className="w-full md:w-1/2 md:ml-2"
                         value={passwordConfirm}
                         onChange={(event) => setPasswordConfirm(event.target.value)}
                         inputError={passwordConfirm && checkPassword(passwordConfirm)} />
                 </div>
 
-                <div className="mb-6 flex justify-center">
+                <div className="mb-6 w-full flex justify-center">
                     <button
-                        className="flex w-fit rounded-full bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700 focus:shadow-outline focus:outline-none disabled:bg-blue-500/50"
+                        id="btn_save"
+                        className="flex"
                         type="submit"
-                        disabled={loading || !!checkPassword(password) || password !== passwordConfirm}
-                    >
+                        disabled={loading || !!checkPassword(password) || password !== passwordConfirm}>
                         {loading && <LoadingCircle />}
                         <span>Change Password</span>
                     </button>

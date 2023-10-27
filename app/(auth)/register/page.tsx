@@ -2,12 +2,12 @@
 
 import React, { useEffect, useState } from "react";
 import { signIn } from 'next-auth/react';
-import RegisterButton from "@/components/ui/buttons/registerButton";
-import MessageText from "@/components/ui/text/messageText";
 import ForgetPasswordButton from "@/components/ui/buttons/forgetPasswordButton";
+import RegisterButton from "@/components/ui/buttons/registerButton";
 import LoadingCircle from "@/components/ui/symbols/loadingCircle";
-import { checkEmail, checkPassword, checkUsername } from "@/utils/validation";
 import { InputPassword, InputText } from "@/components/ui/input";
+import MessageText from "@/components/ui/text/messageText";
+import { checkEmail, checkPassword, checkUsername } from "@/utils/validation";
 
 export default function Register() {
 
@@ -106,9 +106,9 @@ export default function Register() {
                         inputError={username && checkUsername(username)} />
 
                     <InputText
-                        id={"email"}
-                        placeholder={"Email"}
-                        className={"text-gray-700"}
+                        id="email"
+                        placeholder="Email"
+                        className="text-gray-700"
                         disabled={loading}
                         value={email}
                         onChange={(event) => setEmail(event.target.value)}
@@ -133,12 +133,12 @@ export default function Register() {
                             inputError={passwordConfirm && checkPassword(passwordConfirm)} />
                     </div>
 
-                    <div className="mb-6 flex justify-center">
+                    <div className="mb-6 w-full flex justify-center">
                         <button
-                            className="flex w-fit rounded-full bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700 focus:shadow-outline focus:outline-none disabled:bg-blue-500/50"
+                            id="btn_save"
+                            className="flex"
                             type="submit"
-                            disabled={loading || !!checkUsername(username) || !!checkEmail(email) || !!checkPassword(password) || password !== passwordConfirm}
-                        >
+                            disabled={loading || !!checkUsername(username) || !!checkEmail(email) || !!checkPassword(password) || password !== passwordConfirm}>
                             {loading && <LoadingCircle />}
                             <span>Register Account</span>
                         </button>

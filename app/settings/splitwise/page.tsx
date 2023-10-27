@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import MessageText from "@/components/ui/text/messageText";
 import LoadingCircle from "@/components/ui/symbols/loadingCircle";
+import MessageText from "@/components/ui/text/messageText";
 import { InputText } from "@/components/ui/input";
 
 export default function SplitwiseSettings() {
@@ -85,20 +85,23 @@ export default function SplitwiseSettings() {
 
             <form onSubmit={handleSubmit} className="w-full max-96 sm:w-96">
                 <InputText
-                    id={"consumer_key"}
-                    placeholder={"Consumer Key"}
+                    id="consumer_key"
+                    placeholder="Consumer Key"
                     disabled={loading}
                     value={consumerKey}
                     onChange={(event) => setConsumerKey(event.target.value)} />
+
                 <InputText
-                    id={"consumer_secret"}
-                    placeholder={"Consumer Secret"}
+                    id="consumer_secret"
+                    placeholder="Consumer Secret"
                     disabled={loading}
                     value={consumerSecret}
                     onChange={(event) => setConsumerSecret(event.target.value)} />
 
-                <div className="mb-6 flex justify-center">
-                    <button className="flex" id="btn_save"
+                <div className="mb-6 w-full flex justify-center">
+                    <button
+                        id="btn_save"
+                        className="flex"
                         type="submit"
                         disabled={loading || !consumerKey || !consumerSecret}>
                         {loading && <LoadingCircle />}

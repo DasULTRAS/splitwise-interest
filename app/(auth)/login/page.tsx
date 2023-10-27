@@ -2,12 +2,12 @@
 
 import React, { useState } from "react";
 import { signIn } from 'next-auth/react';
-import RegisterButton from "@/components/ui/buttons/registerButton";
-import MessageText from "@/components/ui/text/messageText";
 import ForgetPasswordButton from "@/components/ui/buttons/forgetPasswordButton";
+import RegisterButton from "@/components/ui/buttons/registerButton";
 import LoadingCircle from "@/components/ui/symbols/loadingCircle";
 import { checkPassword, checkUsername } from "@/utils/validation";
 import { InputPassword, InputText } from "@/components/ui/input";
+import MessageText from "@/components/ui/text/messageText";
 
 export default function Login() {
     interface LoginResponse {
@@ -54,22 +54,22 @@ export default function Login() {
 
                     <InputText
                         className="text-gray-700"
-                        placeholder={"Benutzername oder E-Mail"}
-                        id={"username"}
+                        placeholder="Benutzername oder E-Mail"
+                        id="username"
                         value={idString}
                         onChange={(event) => setIdString(event.target.value)} />
                     <InputPassword
                         className="text-gray-700"
-                        placeholder={"Password"}
+                        placeholder="Password"
                         value={password}
                         onChange={(event) => setPassword(event.target.value)} />
 
-                    <div className="mb-6 flex justify-center">
+                    <div className="mb-6 w-full flex justify-center">
                         <button
-                            className="flex w-fit rounded-full bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700 focus:shadow-outline focus:outline-none disabled:bg-blue-500/50"
+                            id="btn_save"
+                            className="flex"
                             type="submit"
-                            disabled={loading || !!checkUsername(idString) || !!checkPassword(password)}
-                        >
+                            disabled={loading || !!checkUsername(idString) || !!checkPassword(password)}>
                             {loading && <LoadingCircle />}
                             <span>Login</span>
                         </button>

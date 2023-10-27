@@ -4,14 +4,14 @@ import React, { useState } from "react";
 
 const inputStyles = "w-full px-3 py-2 mb-3 text-sm leading-tight border rounded shadow appearance-none focus:outline-none focus:shadow-outline";
 
-export function InputText({ id, placeholder, className, disabled, value, onChange, inputError }: { id?: string, placeholder?: string, className?: string, disabled?: boolean, value: string, onChange: React.ChangeEventHandler<HTMLInputElement>, inputError?: string }) {
+export function InputText({ id, placeholder, className, disabled, value, onChange, inputError }: { id: string, placeholder?: string, className?: string, disabled?: boolean, value: string, onChange: React.ChangeEventHandler<HTMLInputElement>, inputError?: string }) {
 
     return (
-        <div className={`mb-4 ${className}`} key={id}>
+        <div className={`mb-4 ${className}`}>
             <label className="mb-2 block text-sm font-bold">{placeholder}</label>
             <input
-                className={inputStyles}
                 id={id}
+                className={inputStyles}
                 type="text"
                 placeholder={placeholder}
                 disabled={disabled}
