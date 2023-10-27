@@ -1,11 +1,11 @@
 import User from '@/models/User';
-import {connectToDb} from '@/utils/mongodb';
-import {getServerSession} from "next-auth/next";
-import {options} from "@/app/api/auth/[...nextauth]/options";
-import {Session} from 'next-auth';
+import { connectToDb } from '@/utils/mongodb';
+import { getServerSession } from "next-auth/next";
+import { options } from "@/app/api/auth/[...nextauth]/options";
+import { Session } from 'next-auth';
 
 import Splitwise from '@/utils/splitwise/splitwise'
-import {Friend} from '@/utils/splitwise/datatypes';
+import { Friend } from '@/utils/splitwise/datatypes';
 
 import UnauthorizedPage from '@/components/ui/unauthorised/page';
 import FriendCard from "./friendCard";
@@ -15,11 +15,16 @@ export default async function FriendsDashboard() {
         // Get Usersession
         const session: Session | null = await getServerSession(options);
         if (!session)
-            return <UnauthorizedPage/>
+            return <UnauthorizedPage />
 
         // Get User from DB
         await connectToDb();
-        const user = await User.findOne({["username"]: session.user?.name})
+        const user = await User.findOne({ ["username"]: session.user?.name })
+
+        if (!user.splitwise.id)
+            return <UnauthorizedPage
+                href='/settings/splitwise'
+                anchorText="Please click here to set up your Splitwise connection first." />
 
         const sw = (await Splitwise.getInstance()).splitwise;
         const friends: Friend[] = await sw.getFriends();
@@ -43,13 +48,13 @@ export default async function FriendsDashboard() {
                 <div className="flex flex-wrap justify-center gap-4">
                     {
                         friends.map((friend: Friend) => (
-                            <FriendCard key={friend.id} friend={friend} weeklyRate={getWeeklyRate(friend.id)}/>
+                            <FriendCard key={friend.id} friend={friend} weeklyRate={getWeeklyRate(friend.id)} />
                         ))
                     }
                 </div>
             </div>
         );
     } catch (e) {
-        return (<UnauthorizedPage/>);
+        return (<UnauthorizedPage />);
     }
 }

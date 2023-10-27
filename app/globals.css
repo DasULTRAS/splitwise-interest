@@ -22,7 +22,7 @@ input {
 }
 
 label {
-    @apply font-thin text-sm;
+    @apply font-light text-sm;
 }
 
 /* Custom ID classes */

@@ -75,7 +75,7 @@ export async function createInterests(user: MongoUser) {
     if (interests.length > 0)
         return NextResponse.json(
             {
-                message: "New Interests Created.",
+                message: `${user.username} has charged  new interest.`,
                 interests: interests,
                 username: user.username,
                 splitwise: user.splitwise,
@@ -85,7 +85,7 @@ export async function createInterests(user: MongoUser) {
     else
         return NextResponse.json(
             {
-                message: "No new Interests Created.",
+                message: "No new interest charged.",
                 username: user.username,
                 splitwise: user.splitwise,
             },

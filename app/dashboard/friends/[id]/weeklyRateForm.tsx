@@ -1,9 +1,9 @@
 "use client";
 
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import MessageText from "@/components/ui/text/messageText";
 
-export default function WeeklyRateForm({friend_id}: { friend_id: number }) {
+export default function WeeklyRateForm({ friend_id }: { friend_id: number }) {
     const [weeklyRate, setWeeklyRate] = useState(-1);
     const [message, setMessage] = useState("");
     const [loading, setLoading] = useState(true);
@@ -22,7 +22,7 @@ export default function WeeklyRateForm({friend_id}: { friend_id: number }) {
 
         if (weeklyRate === -1)
             fetchWeeklyRate().then(() => setLoading(false));
-    }, [weeklyRate]);
+    }, [friend_id, weeklyRate]);
 
     // clear message after 5 seconds
     useEffect(() => {
@@ -48,7 +48,7 @@ export default function WeeklyRateForm({friend_id}: { friend_id: number }) {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({weeklyRate})
+            body: JSON.stringify({ weeklyRate })
         });
 
         const data = await res.json();
@@ -73,11 +73,11 @@ export default function WeeklyRateForm({friend_id}: { friend_id: number }) {
                     onChange={e => {
                         if (parseInt(e.target.value) >= 0)
                             setWeeklyRate(parseInt(e.target.value))
-                    }}/>
+                    }} />
                 <p className="ml-1">%</p>
             </div>
             <button id="dsn-clickable" className="text-black dark:text-white" type="submit">save</button>
-            <MessageText message={message}/>
+            <MessageText message={message} />
         </form>
     );
 }

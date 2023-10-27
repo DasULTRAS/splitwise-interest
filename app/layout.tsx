@@ -1,19 +1,21 @@
-import type {Metadata} from 'next'
-import {AuthProvider} from "@/app/api/auth/[...nextauth]/provider"
-import Navbar from '@/components/ui/navbar/navbar'
+import React from "react";
+import type { Metadata } from 'next';
+import { AuthProvider } from "@/app/api/auth/[...nextauth]/provider";
+import Navbar from '@/components/ui/navbar/navbar';
+import manifest from '@/app/manifest';
 
 // These styles apply to every route in the application
 import './globals.css'
-import React from "react";
 
 export const metadata: Metadata = {
-    title: 'Splitwise interest calculator',
-    description: 'A Webapp to automatically calculate interest on Splitwise.',
+    title: manifest().name,
+    description: manifest().description,
+    themeColor: manifest().theme_color,
 }
 
-export default function RootLayout({children,}: { children: React.ReactNode }) {
+export default function RootLayout({ children, }: { children: React.ReactNode }) {
     return (
-        <html>
+        <html lang="en">
         <body className="flex h-screen w-screen flex-col">
         <AuthProvider>
             <header>

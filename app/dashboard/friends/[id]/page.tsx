@@ -1,22 +1,22 @@
-import {Friend, Group, User} from '@/utils/splitwise/datatypes';
-import Splitwise, {getInventedDebts} from '@/utils/splitwise/splitwise';
+import { Friend, Group, User } from '@/utils/splitwise/datatypes';
+import Splitwise, { getInventedDebts } from '@/utils/splitwise/splitwise';
 
 import UnauthorizedPage from '@/components/ui/unauthorised/page';
-import WebImage from "@/components/ui/WebImage";
+import WebImage from "@/components/ui/images/WebImage";
 import WeeklyRateForm from "@/app/dashboard/friends/[id]/weeklyRateForm";
 
-export default async function Friend({params}: { params: { id: number } }) {
+export default async function Friend({ params }: { params: { id: number } }) {
     try {
         const sw = (await Splitwise.getInstance()).splitwise;
 
-        const friend: Friend = await sw.getFriend({id: params.id});
+        const friend: Friend = await sw.getFriend({ id: params.id });
         const me: User = await sw.getCurrentUser();
         const groups: Group[] = [];
 
         // Verwendung einer for...of-Schleife für asynchrone Operationen
         for (const group of friend.groups) {
             if (group.balance.length > 0) {
-                const newGroup = await sw.getGroup({id: group.group_id});
+                const newGroup = await sw.getGroup({ id: group.group_id });
                 groups.push(newGroup);
             }
         }

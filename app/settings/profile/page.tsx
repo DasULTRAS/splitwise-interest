@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import LoadingCircle from "@/components/ui/symbols/loadingCircle";
 import MessageText from "@/components/ui/text/messageText";
 
@@ -51,10 +51,10 @@ export default function ProfileSettings() {
         setLoading(true);
 
         const file = event.target.files?.[0];
-        // Check if file exists, has right datatype and smaller than 2mb
-        if (file)
+        // Check if file exists, has right datatype and smaller than 3mb
+        if (file) {
             if (/^image\/(jpe?g|png|gif|svg|ico)$/i.test(file.type)) {
-                if (file.size / 1024 / 1024 < 2) {
+                if (file.size / 1024 / 1024 < 3) {
                     let reader = new FileReader();
                     reader.readAsDataURL(file)
 
@@ -65,9 +65,10 @@ export default function ProfileSettings() {
                         setMessage("Error loading image");
                     }
                 } else
-                    setMessage(`Max Upload Size is 2MB (${file.size / 1024 / 1024}).`);
+                    setMessage(`Max Upload Size is 3MB (${file.size / 1024 / 1024}).`);
             } else
                 setMessage(`Unsupported datatype: ${file.type}`);
+        }
 
         setLoading(false);
     };
@@ -85,7 +86,7 @@ export default function ProfileSettings() {
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({avatar})
+                body: JSON.stringify({ avatar })
             });
 
             if (response.ok) {
@@ -106,27 +107,28 @@ export default function ProfileSettings() {
             <h1 className="text-center text-3xl font-bold">Profile</h1>
 
             <form className="flex flex-col items-center justify-center"
-                  onSubmit={handleSubmit}>
+                onSubmit={handleSubmit}>
 
-                {avatar && <Image src={avatar} alt="User Avatar" height={180} width={180}/>}
+                {avatar && <Image src={avatar} alt="User Avatar" height={180} width={180} />}
                 <input
                     className="my-5 block w-full cursor-pointer rounded-lg border border-gray-300 text-sm focus:outline-none dark:placeholder-gray-400 dark:border-gray-600 dark:bg-gray-700"
                     title="avatar_upload" type="file" accept="image/*" onChange={handleAvatarUpload}
-                    disabled={loading}/>
+                    disabled={loading} />
 
                 <div className="mb-6 flex justify-center">
-                    <button id="btn_save"
-                            className="flex"
-                            type="submit"
-                            disabled={loading || !avatar}>
-                        {loading && <LoadingCircle/>}
+                    <button
+                        id="btn_save"
+                        className="flex"
+                        type="submit"
+                        disabled={loading || !avatar}>
+                        {loading && <LoadingCircle />}
                         <span>Save</span>
                     </button>
                 </div>
             </form>
 
             {message && <>
-                <MessageText message={message}/>
+                <MessageText message={message} />
             </>}
         </div>
     );

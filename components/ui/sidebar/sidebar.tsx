@@ -18,8 +18,9 @@ export default function Sidebar({sidebarIsOpen, closeModal, session}: SidebarIsO
                     <div
                         className="top-0 ml-auto flex h-screen w-3/4 flex-col rounded-2xl bg-black/80 p-6 md:w-2/4 lg:w-1/4">
                         <div className="flex">
-                            <p className="text-2xl">Sidebar</p>
-                            <button title="btn_sidebar_close" className="ml-auto text-black" onClick={closeModal}>
+                            <p className="text-2xl text-white">Sidebar</p>
+
+                            <button title="btn_sidebar_close" className="ml-auto text-white" onClick={closeModal}>
                                 <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
                                           d="M6 18L18 6M6 6l12 12"></path>
@@ -35,7 +36,7 @@ export default function Sidebar({sidebarIsOpen, closeModal, session}: SidebarIsO
                             </li>
                         </ul>
 
-                        <div className="mt-auto ml-auto">
+                        <div className="mt-auto ml-auto text-white">
                             <LoginButton user={session?.user as DefaultUser}/>
                         </div>
                     </div>
