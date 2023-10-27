@@ -6,11 +6,11 @@ const asciiFormat = /^[\x00-\x7F]*$/;
  * @param email string that will be checked
  * @returns an empty string if the email is valid, otherwise a string with an error message
  */
-export function checkEmail(email: string): string {
+export function checkEmail(email: string): string | undefined{
     if (!mailFormat.test(email)) {
         return 'No valid email address!';
     }
-    return '';
+    return undefined;
 }
 
 /**
@@ -18,11 +18,11 @@ export function checkEmail(email: string): string {
  * @param password string that will be checked
  * @returns an empty string if the password is valid, otherwise a string with an error message
  */
-export function checkPassword(password: string): string {
+export function checkPassword(password: string): string | undefined{
     if (password.length < 8) {
         return 'Minimum 8 characters required!';
     }
-    return '';
+    return undefined;
 }
 
 /**
