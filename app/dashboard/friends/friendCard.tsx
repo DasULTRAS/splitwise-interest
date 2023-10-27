@@ -1,5 +1,5 @@
 import {Balance, Friend} from '@/utils/splitwise/datatypes';
-import WebImage from '@/components/ui/WebImage';
+import WebImage from '@/components/ui/images/WebImage';
 
 export default function FriendCard({friend, weeklyRate}: { friend: Friend, weeklyRate: number | null }) {
     const baseStyles = 'w-64 h-36 dark:bg-black/80 bg-blue-700 rounded-xl p-5 shadow-lg hover:shadow-xl transition-shadow';

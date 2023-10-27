@@ -1,6 +1,6 @@
 import React from "react";
-import type {Metadata} from 'next';
-import {AuthProvider} from "@/app/api/auth/[...nextauth]/provider";
+import type { Metadata } from 'next';
+import { AuthProvider } from "@/app/api/auth/[...nextauth]/provider";
 import Navbar from '@/components/ui/navbar/navbar';
 import manifest from '@/app/manifest';
 
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     themeColor: manifest().theme_color,
 }
 
-export default function RootLayout({children,}: { children: React.ReactNode }) {
+export default function RootLayout({ children, }: { children: React.ReactNode }) {
     return (
         <html lang="en">
         <body className="flex h-screen w-screen flex-col">
