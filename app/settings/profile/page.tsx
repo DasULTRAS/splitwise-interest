@@ -51,10 +51,10 @@ export default function ProfileSettings() {
         setLoading(true);
 
         const file = event.target.files?.[0];
-        // Check if file exists, has right datatype and smaller than 2mb
+        // Check if file exists, has right datatype and smaller than 3mb
         if (file)
             if (/^image\/(jpe?g|png|gif|svg|ico)$/i.test(file.type)) {
-                if (file.size / 1024 / 1024 < 2) {
+                if (file.size / 1024 / 1024 < 3) {
                     let reader = new FileReader();
                     reader.readAsDataURL(file)
 
@@ -65,7 +65,7 @@ export default function ProfileSettings() {
                         setMessage("Error loading image");
                     }
                 } else
-                    setMessage(`Max Upload Size is 2MB (${file.size / 1024 / 1024}).`);
+                    setMessage(`Max Upload Size is 3MB (${file.size / 1024 / 1024}).`);
             } else
                 setMessage(`Unsupported datatype: ${file.type}`);
 

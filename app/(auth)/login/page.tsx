@@ -34,8 +34,6 @@ export default function Login() {
                 callbackUrl: '/dashboard',
             }) as LoginResponse;
 
-            console.log(user);
-
             if (user.ok) {
                 setMessage("Login successful!");
             } else {
