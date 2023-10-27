@@ -18,7 +18,7 @@ export default function Sidebar({sidebarIsOpen, closeModal, session}: SidebarIsO
                     <div
                         className="top-0 ml-auto flex h-screen w-3/4 flex-col rounded-2xl bg-black/80 p-6 md:w-2/4 lg:w-1/4">
                         <div className="flex">
-                            <p className="text-white text-2xl">Sidebar</p>
+                            <p className="text-2xl text-white">Sidebar</p>
 
                             <button title="btn_sidebar_close" className="ml-auto text-white" onClick={closeModal}>
                                 <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
