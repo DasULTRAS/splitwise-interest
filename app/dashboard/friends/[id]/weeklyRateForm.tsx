@@ -76,7 +76,7 @@ export default function WeeklyRateForm({ friend_id }: { friend_id: number }) {
                     }} />
                 <p className="ml-1">%</p>
             </div>
-            <button id="dsn-clickable" className="text-black dark:text-white" type="submit">save</button>
+            <button className="text-black dsn_clickable dark:text-white" type="submit">save</button>
             <MessageText message={message} />
         </form>
     );

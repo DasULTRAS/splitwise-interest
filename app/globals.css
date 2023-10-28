@@ -25,24 +25,40 @@ label {
     @apply font-light text-sm;
 }
 
+h1 {
+    @apply text-4xl font-bold;
+}
+
+h2 {
+    @apply text-3xl font-bold;
+}
+
+h3 {
+    @apply text-2xl font-bold;
+}
+
 /* Custom ID classes */
 
-#btn_save {
+.a_link {
+    @apply italic hover:underline;
+}
+
+.btn_save {
     @apply w-fit px-4 py-2 font-bold text-white bg-blue-500 rounded-full;
 }
 
-#btn_save:disabled {
+.btn_save:disabled {
     @apply bg-blue-500/50;
 }
 
-#btn_save:hover {
+.btn_save:hover {
     @apply bg-blue-700;
 }
 
-#btn_save:focus {
+.btn_save:focus {
     @apply outline-none shadow-md;
 }
 
-#dsn_clickable:hover {
+.dsn_clickable:hover {
     @apply shadow-md shadow-blue-600;
 }
