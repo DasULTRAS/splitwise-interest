@@ -117,8 +117,7 @@ export default function ProfileSettings() {
 
                 <div className="mb-6 flex justify-center">
                     <button
-                        id="btn_save"
-                        className="flex"
+                        className="flex btn_save"
                         type="submit"
                         disabled={loading || !avatar}>
                         {loading && <LoadingCircle />}

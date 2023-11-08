@@ -27,15 +27,16 @@ export default async function Friend({ params }: { params: { id: number } }) {
             <>
                 <div className="flex flex-col items-center justify-center p-10">
                     <div className="m-5 flex items-center justify-center">
-                        <WebImage className="m-5 rounded-full" src={friend.picture.medium} width={75}/>
+                        <WebImage className="m-5 rounded-full" src={friend.picture.medium} width={75} />
                         <div className="flex flex-col">
                             <p>{friend.id}</p>
                             <h1 className="text-center text-4xl font-bold">{friend.first_name} {friend?.last_name}</h1>
                         </div>
                     </div>
 
-                    <hr/>
+                    <hr />
 
+                    { /* TODO: Zinsen werden nicht angezeigt, wenn schulden beglichen */}
                     {
                         friend.balance.length > 0 ?
                             <>
@@ -43,7 +44,7 @@ export default async function Friend({ params }: { params: { id: number } }) {
                                     - {friend.balance[0].amount} {friend.balance[0].currency_code}</h2>
 
                                 <div className="my-5 flex flex-col items-center justify-between px-5">
-                                    <WeeklyRateForm friend_id={friend.id}/>
+                                    <WeeklyRateForm friend_id={friend.id} />
                                     <p>on {inventedDebts} {friend.balance[0].currency_code}</p>
                                 </div>
 
@@ -52,7 +53,7 @@ export default async function Friend({ params }: { params: { id: number } }) {
                                         <li key={group.id} className="m-2 flex flex-col rounded-2xl bg-black/20 p-2">
                                             <div className="flex">
                                                 <WebImage src={group.avatar.medium} className="rounded-full"
-                                                          width={25}/>
+                                                    width={25} />
                                                 {(() => {
                                                     const foundGroup = friend.groups.find(friendGroup => friendGroup.group_id === group.id);
                                                     const bal = foundGroup?.balance[0];
@@ -73,6 +74,6 @@ export default async function Friend({ params }: { params: { id: number } }) {
             </>
         );
     } catch (e) {
-        return <UnauthorizedPage/>
+        return <UnauthorizedPage />
     }
 }
