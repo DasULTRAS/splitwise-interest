@@ -9,40 +9,42 @@ body {
     font-family: 'Raleway', Verdana, monospace;
 }
 
-button {
-    @apply font-mono text-blue-800 dark:shadow-blue-200 py-1 px-2 rounded;
-}
-
-button:hover {
-    @apply bg-neutral-800/10 shadow shadow-blue-300 dark:shadow-blue-400;
-}
-
 input {
-    @apply font-mono p-1 rounded bg-transparent;
+    @apply bg-transparent;
 }
 
-label {
+.inp_default {
+    @apply font-mono p-1 rounded;
+}
+
+.lbl_default {
     @apply font-light text-sm;
 }
 
-/* Custom ID classes */
+.btn_default {
+    @apply font-mono text-blue-800 dark:text-blue-200 shadow-blue-600 py-1 px-2 rounded;
+}
 
-#btn_save {
+.btn_default:hover {
+    @apply bg-neutral-800/10 shadow shadow-blue-300 dark:shadow-blue-400;
+}
+
+.btn_clickable:hover {
+    @apply shadow-md shadow-blue-600;
+}
+
+.btn_save {
     @apply w-fit px-4 py-2 font-bold text-white bg-blue-500 rounded-full;
 }
 
-#btn_save:disabled {
+.btn_save:disabled {
     @apply bg-blue-500/50;
 }
 
-#btn_save:hover {
+.btn_save:hover {
     @apply bg-blue-700;
 }
 
-#btn_save:focus {
+.btn_save:focus {
     @apply outline-none shadow-md;
-}
-
-#dsn_clickable:hover {
-    @apply shadow-md shadow-blue-600;
 }

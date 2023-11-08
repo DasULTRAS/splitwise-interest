@@ -3,6 +3,7 @@ import UserAvatar from "@/components/ui/navbar/avatar";
 import { getServerSession } from "next-auth/next";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import Favicon from "@/components/ui/images/favicon";
+import Link from "next/link";
 
 export default async function Navbar() {
     const session: Session | null = await getServerSession(options);
@@ -17,9 +18,9 @@ export default async function Navbar() {
 
             <nav className="flex w-4/6 items-center">
                 <ul className="flex w-full justify-between space-x-2">
-                    <li id="dsn_clickable" className="rounded-2xl p-2"><a href="/">Home</a></li>
-                    <li id="dsn_clickable" className="rounded-2xl p-2"><a href="/dashboard">Dashboard</a></li>
-                    <li id="dsn_clickable" className="rounded-2xl p-2"><a href="/action">Action</a></li>
+                    <li className="btn_clickable rounded-2xl p-2"><Link href="/">Home</Link></li>
+                    <li className="btn_clickable rounded-2xl p-2"><Link href="/dashboard">Dashboard</Link></li>
+                    <li className="btn_clickable rounded-2xl p-2"><Link href="/action">Action</Link></li>
                 </ul>
             </nav>
 

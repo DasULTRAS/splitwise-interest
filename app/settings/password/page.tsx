@@ -85,8 +85,7 @@ export default function PasswordChangeForm() {
 
                 <div className="mb-6 w-full flex justify-center">
                     <button
-                        id="btn_save"
-                        className="flex"
+                        className="btn_save flex"
                         type="submit"
                         disabled={loading || !!checkPassword(password) || password !== passwordConfirm}>
                         {loading && <LoadingCircle />}

@@ -4,19 +4,20 @@ import React, { useEffect, useState } from "react";
 import MessageText from "@/components/ui/text/messageText";
 
 export default function WeeklyRateForm({ friend_id }: { friend_id: number }) {
-    const [weeklyRate, setWeeklyRate] = useState(-1);
-    const [message, setMessage] = useState("");
-    const [loading, setLoading] = useState(true);
+    const [weeklyRate, setWeeklyRate] = useState<number | undefined>(-1);
+    const [message, setMessage] = useState<string>("");
+    const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
         const fetchWeeklyRate = async () => {
             const res = await fetch(`/api/friend/weeklyRate/${friend_id}/`);
             const data = await res.json();
+
             if (res.ok) {
                 setWeeklyRate(data.weeklyRate);
             } else {
-                setMessage(data.message);
                 setWeeklyRate(0);
+                setMessage(data.message);
             }
         };
 
@@ -52,31 +53,34 @@ export default function WeeklyRateForm({ friend_id }: { friend_id: number }) {
         });
 
         const data = await res.json();
-        if (res.ok) {
+
+        if (res.ok)
             setWeeklyRate(data.weeklyRate);
-            setMessage(data.message);
-        } else {
-            setMessage(data.message);
+        else
             setWeeklyRate(0);
-        }
+
+        setMessage(data.message);
+
         setLoading(false);
     }
 
     return (
         <form className="flex flex-col" onSubmit={handleSubmit}>
             <label htmlFor="weeklyRate" className="text-center">Weekly Rate</label>
+
             <div className="flex items-center justify-center">
                 <input
                     className="w-16 appearance-none rounded-2xl border bg-transparent px-3 outline outline-0 transition-all peer border-blue-gray-200 py-2.5 focus:border-pink-500 disabled:bg-blue-gray-50 disabled:border-0"
                     type="number" name="weeklyRate" id="weeklyRate"
-                    value={weeklyRate} disabled={loading}
+                    value={weeklyRate} 
+                    disabled={loading}
                     onChange={e => {
-                        if (parseInt(e.target.value) >= 0)
-                            setWeeklyRate(parseInt(e.target.value))
+                        setWeeklyRate(e.target?.valueAsNumber);
                     }} />
                 <p className="ml-1">%</p>
             </div>
-            <button id="dsn-clickable" className="text-black dark:text-white" type="submit">save</button>
+
+            <button className="btn_clickable rounded-xl p-2 mx-auto" disabled={loading} type="submit">save</button>
             <MessageText message={message} />
         </form>
     );

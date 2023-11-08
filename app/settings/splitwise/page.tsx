@@ -100,8 +100,7 @@ export default function SplitwiseSettings() {
 
                 <div className="mb-6 w-full flex justify-center">
                     <button
-                        id="btn_save"
-                        className="flex"
+                        className="btn_save flex"
                         type="submit"
                         disabled={loading || !consumerKey || !consumerSecret}>
                         {loading && <LoadingCircle />}

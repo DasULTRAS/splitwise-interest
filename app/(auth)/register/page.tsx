@@ -135,8 +135,7 @@ export default function Register() {
 
                     <div className="mb-6 w-full flex justify-center">
                         <button
-                            id="btn_save"
-                            className="flex"
+                            className="btn_save flex"
                             type="submit"
                             disabled={loading || !!checkUsername(username) || !!checkEmail(email) || !!checkPassword(password) || password !== passwordConfirm}>
                             {loading && <LoadingCircle />}

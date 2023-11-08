@@ -37,8 +37,8 @@ export default function UserAvatar({ session }: { session: Session | null | unde
     return (
         <>
             {session ?
-                <div id="dsn_clickable"
-                    className="relative inline-flex h-12 w-12 items-center justify-center overflow-hidden rounded-full bg-gray-100 dark:bg-gray-600"
+                <div
+                    className="btn_clickable relative inline-flex h-12 w-12 items-center justify-center overflow-hidden rounded-full bg-gray-100 dark:bg-gray-600"
                     onClick={handleClick}>
                     {
                         avatar ?
