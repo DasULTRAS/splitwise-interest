@@ -29,28 +29,14 @@ export default function SplitwiseSettings() {
                 const data = await response.json();
                 setConsumerKey(data.consumerKey);
                 setConsumerSecret(data.consumerSecret);
-            } else
+            } else {
                 setMessage("Error while data fetching: " + response.statusText);
+                setTimeout(() => setMessage(""), 5000);
+            }
         };
 
         fetchSplitwiseCredentials().then(() => setLoading(false));
     }, []);
-
-    // clear message after 10 seconds
-    useEffect(() => {
-        let timer: ReturnType<typeof setTimeout>;
-        // Wenn 'message' einen Wert hat, setzen Sie einen Timer, um es zu löschen
-        if (message) {
-            timer = setTimeout(() => {
-                setMessage(''); // Setzen Sie die Nachricht nach 5 Sekunden zurück
-            }, 10000);
-        }
-
-        // Cleanup Funktion, um sicherzustellen, dass der Timer gelöscht wird, wenn die Komponente unmontiert wird
-        return () => {
-            clearTimeout(timer);
-        };
-    }, [message]);
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -73,14 +59,14 @@ export default function SplitwiseSettings() {
             const data = await response.json();
             setMessage("Error while saving: " + data.message || response.statusText);
         }
+        setTimeout(() => setMessage(""), 5000);
 
         setLoading(false);
     }
 
     return (
         <div className="m-5 flex w-full flex-col items-center">
-            <h1 className="text-center">Splitwise Credentials</h1>
-            <hr className="my-3" />
+            <h1 className="text-center mb-5">Splitwise Credentials</h1>
 
             <form onSubmit={handleSubmit} className="w-full sm:w-[22rem] lg:w-full">
                 <div className="w-full lg:flex lg:justify-center">
@@ -123,41 +109,46 @@ export default function SplitwiseSettings() {
                 <h2 className="mb-3 text-center">
                     <a className="a_link" href="https://secure.splitwise.com/oauth_clients" target="_blank" rel="noopener">Where to find this Credentials?</a>
                 </h2>
-                <div className="flex">
-                    <ol type="1" className="list-inside list-decimal">
-                        <li>
-                            Login at <a className="a_link" href="https://www.splitwise.com/login" target="_blank" rel="noopener">Splitwise.com</a>
-                        </li>
-                        <li>
-                            Open <a className="a_link" href="https://secure.splitwise.com/apps" target="_blank" rel="noopener">Your apps</a> by
-                            <ol type="a" className="ml-5 list-inside list-[lower-alpha]">
-                                <li>selecting the profile icon at the top right corner</li>
-                                <li>select the point <a className="a_link" href="https://secure.splitwise.com/account/settings" target="_blank" rel="noopener">Your account</a></li>
-                                <li>select the button <a className="a_link" href="https://secure.splitwise.com/apps" target="_blank" rel="noopener">Your apps</a> under Privacy & Security</li>
-                            </ol>
-                        </li>
-                        <li>
-                            Create a new app by clicking the button <a className="a_link" href="https://secure.splitwise.com/apps/new" target="_blank" rel="noopener">Register your application</a>
-                        </li>
-                        <li>
-                            Insert the data as shown in the photo
-                            <ul className="ml-5">
-                                <li>
-                                    <b>Application name:</b> <CopyButton text="Splitwise-Integration" />
-                                </li>
-                                <li>
-                                    <b>Application description:</b> <CopyButton text="Splitwise Interst Calculator" />
-                                </li>
-                                <li>
-                                    <b>Homepage URL:</b> <CopyButton text="https://splitwise.dasultras.de/" />
-                                </li>
-                            </ul>
-                        </li>
-                    </ol>
-
-                    <Image src="/screenshots/splitwise/register_new_app-form.jpg" width={350} height={50} alt="register_new_app-form" />
-                </div>
+                <p className="mb-3 text-center">
+                    <a className="a_link" href="https://secure.splitwise.com/apps/new" target="_blank" rel="noopener">Register an application</a> in your <a className="a_link" href="https://splitwise.com" target="_blank" rel="noopener">Splitwise</a> account.
+                    <br />
+                    Steps one and two are <b>optional</b>.
+                </p>
+                <ol type="1" className="list-inside list-decimal mr-5 space-y-5">
+                    <li>
+                        Login to <a className="a_link" href="https://www.splitwise.com/login" target="_blank" rel="noopener">Splitwise.com</a>
+                    </li>
+                    <li>
+                        Open the <a className="a_link" href="https://secure.splitwise.com/apps" target="_blank" rel="noopener">&quot;Your apps&quot;</a> by
+                        <ol type="a" className="ml-5 list-inside list-[lower-alpha]">
+                            <li>selecting the profile icon at the top right corner</li>
+                            <li>select the point <a className="a_link" href="https://secure.splitwise.com/account/settings" target="_blank" rel="noopener">&quot;Your account&quot;</a></li>
+                            <li>select the button <a className="a_link" href="https://secure.splitwise.com/apps" target="_blank" rel="noopener">&quot;Your apps&quot;</a> under Privacy & Security</li>
+                        </ol>
+                    </li>
+                    <li>
+                        Create a new app by clicking the button <a className="a_link" href="https://secure.splitwise.com/apps/new" target="_blank" rel="noopener">&quot;Register your application&quot;</a>
+                    </li>
+                    <li>
+                        Insert the data<br />
+                        and commit by clicking on <b>Register</b> Button.
+                        <ul className="ml-5">
+                            <li>
+                                <b>Application name:</b> <CopyButton text="Splitwise-Integration" />
+                            </li>
+                            <li>
+                                <b>Application description:</b> <CopyButton text="Splitwise Interst Calculator" />
+                            </li>
+                            <li>
+                                <b>Homepage URL:</b> <CopyButton text="https://splitwise.dasultras.de/" />
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        Copy the <b>Consumer Key</b> and <b>Consumer Secret</b> into the Formular at the top.
+                    </li>
+                </ol>
             </section>
         </div>
-    )
+    );
 }
