@@ -9,20 +9,8 @@ body {
     font-family: 'Raleway', Verdana, monospace;
 }
 
-button {
-    @apply font-mono text-blue-800 dark:shadow-blue-200 py-1 px-2 rounded;
-}
-
-button:hover {
-    @apply bg-neutral-800/10 shadow shadow-blue-300 dark:shadow-blue-400;
-}
-
 input {
-    @apply font-mono p-1 rounded bg-transparent;
-}
-
-label {
-    @apply font-light text-sm;
+    @apply bg-transparent;
 }
 
 h1 {
@@ -37,10 +25,28 @@ h3 {
     @apply text-2xl font-bold;
 }
 
-/* Custom ID classes */
-
 .a_link {
     @apply italic hover:underline;
+}
+
+.inp_default {
+    @apply font-mono p-1 rounded;
+}
+
+.lbl_default {
+    @apply font-light text-sm;
+}
+
+.btn_default {
+    @apply font-mono text-blue-800 dark:text-blue-200 shadow-blue-600 py-1 px-2 rounded;
+}
+
+.btn_default:hover {
+    @apply bg-neutral-800/10 shadow shadow-blue-300 dark:shadow-blue-400;
+}
+
+.btn_clickable:hover {
+    @apply shadow-md shadow-blue-600;
 }
 
 .btn_save {
@@ -57,8 +63,4 @@ h3 {
 
 .btn_save:focus {
     @apply outline-none shadow-md;
-}
-
-.dsn_clickable:hover {
-    @apply shadow-md shadow-blue-600;
 }

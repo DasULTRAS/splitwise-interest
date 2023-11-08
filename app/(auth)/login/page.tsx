@@ -66,7 +66,7 @@ export default function Login() {
 
                     <div className="mb-6 flex w-full justify-center">
                         <button
-                            className="flex btn_save"
+                            className="btn_save flex"
                             type="submit"
                             disabled={loading || !!checkUsername(idString) || !!checkPassword(password)}>
                             {loading && <LoadingCircle />}

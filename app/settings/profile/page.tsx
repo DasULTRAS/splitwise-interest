@@ -111,7 +111,7 @@ export default function ProfileSettings() {
 
                 {avatar && <Image src={avatar} alt="User Avatar" height={180} width={180} />}
                 <input
-                    className="my-5 block w-full cursor-pointer rounded-lg border border-gray-300 text-sm focus:outline-none dark:placeholder-gray-400 dark:border-gray-600 dark:bg-gray-700"
+                    className="max-w-sm inp_default my-5 block w-full cursor-pointer rounded-lg border border-gray-300 text-sm focus:outline-none dark:placeholder-gray-400 dark:border-gray-600 dark:bg-gray-700"
                     title="avatar_upload" type="file" accept="image/*" onChange={handleAvatarUpload}
                     disabled={loading} />
 

@@ -42,7 +42,7 @@ export function InputPassword({ id = "password", placeholder, className, value, 
                     value={value}
                     onChange={onChange}
                 />
-                <button className="ml-2 bg-white shadow-sm shadow-neutral-700 hover:bg-white/70" type="button" tabIndex={-1}
+                <button className="btn_default" type="button" tabIndex={-1}
                     onMouseDown={() => setShowPassword(true)}
                     onMouseUp={() => setShowPassword(false)}
                     onMouseLeave={() => setShowPassword(false)}
