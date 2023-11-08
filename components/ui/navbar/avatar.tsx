@@ -38,7 +38,7 @@ export default function UserAvatar({ session }: { session: Session | null | unde
         <>
             {session ?
                 <div
-                    className="relative inline-flex h-12 w-12 items-center justify-center overflow-hidden rounded-full bg-gray-100 dsn_clickable dark:bg-gray-600"
+                    className="btn_clickable relative inline-flex h-12 w-12 items-center justify-center overflow-hidden rounded-full bg-gray-100 dark:bg-gray-600"
                     onClick={handleClick}>
                     {
                         avatar ?
