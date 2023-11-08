@@ -133,9 +133,9 @@ export default function Register() {
                             inputError={passwordConfirm && checkPassword(passwordConfirm)} />
                     </div>
 
-                    <div className="mb-6 w-full flex justify-center">
+                    <div className="mb-6 flex w-full justify-center">
                         <button
-                            className="btn_save flex"
+                            className="flex btn_save"
                             type="submit"
                             disabled={loading || !!checkUsername(username) || !!checkEmail(email) || !!checkPassword(password) || password !== passwordConfirm}>
                             {loading && <LoadingCircle />}

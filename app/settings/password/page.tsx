@@ -70,20 +70,20 @@ export default function PasswordChangeForm() {
                 <div className="mb-4 w-full md:flex md:justify-between">
                     <InputPassword
                         placeholder="Password"
-                        className="w-full md:w-1/2 mb-4 md:mb-0 md:mr-2"
+                        className="mb-4 w-full md:mr-2 md:mb-0 md:w-1/2"
                         value={password}
                         onChange={(event) => setPassword(event.target.value)}
                         inputError={password && checkPassword(password)} />
 
                     <InputPassword
                         placeholder="Password Confirm"
-                        className="w-full md:w-1/2 md:ml-2"
+                        className="w-full md:ml-2 md:w-1/2"
                         value={passwordConfirm}
                         onChange={(event) => setPasswordConfirm(event.target.value)}
                         inputError={passwordConfirm && checkPassword(passwordConfirm)} />
                 </div>
 
-                <div className="mb-6 w-full flex justify-center">
+                <div className="mb-6 flex w-full justify-center">
                     <button
                         className="btn_save flex"
                         type="submit"

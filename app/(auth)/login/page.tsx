@@ -64,7 +64,7 @@ export default function Login() {
                         value={password}
                         onChange={(event) => setPassword(event.target.value)} />
 
-                    <div className="mb-6 w-full flex justify-center">
+                    <div className="mb-6 flex w-full justify-center">
                         <button
                             className="btn_save flex"
                             type="submit"
