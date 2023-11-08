@@ -9,8 +9,8 @@ export default async function SettingsLayout({children,}: { children: React.Reac
 
 
     return (
-        <div className="flex h-full">
-            <div className="h-full bg-black/80 p-6">
+        <div className="flex">
+            <div className="bg-black/80 p-6">
                 <div className="flex-row justify-between">
                     {
                         session?.user?.image &&
