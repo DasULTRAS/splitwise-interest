@@ -3,6 +3,7 @@ import { Session } from "next-auth";
 import { getServerSession } from "next-auth/next";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import React from "react";
+import Link from "next/link";
 
 export default async function SettingsLayout({ children, }: { children: React.ReactNode }) {
     const session: Session | null = await getServerSession(options);
@@ -24,13 +25,13 @@ export default async function SettingsLayout({ children, }: { children: React.Re
                 <h2 className="my-5 text-white underline">Settings</h2>
                 <ul className="text-white space-y-2">
                     <li>
-                        <a className="btn_clickable rounded-md p-1" href="/settings/profile">Profile</a>
+                        <Link className="btn_clickable rounded-md p-1" href="/settings/profile">Profile</Link>
                     </li>
                     <li>
-                        <a className="btn_clickable rounded-md p-1" href="/settings/password">Password</a>
+                        <Link className="btn_clickable rounded-md p-1" href="/settings/password">Password</Link>
                     </li>
                     <li>
-                        <a className="btn_clickable rounded-md p-1" href="/settings/splitwise">Splitwise</a>
+                        <Link className="btn_clickable rounded-md p-1" href="/settings/splitwise">Splitwise</Link>
                     </li>
                 </ul>
             </div>

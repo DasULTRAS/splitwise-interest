@@ -1,6 +1,7 @@
 import {DefaultUser, Session} from "next-auth";
 import LoginButton from '../buttons/loginButton';
 import React from "react";
+import Link from "next/link";
 
 interface SidebarIsOpenProps {
     sidebarIsOpen: boolean;
@@ -30,13 +31,13 @@ export default function Sidebar({sidebarIsOpen, closeModal, session}: SidebarIsO
 
                         <hr className="mb-6 border-t"/>
 
-                        <ul>
+                        <ul className="space-y-2 text-white">
                             <li>
-                                <a href="/settings" className="my-20 text-white">Settings</a>
+                                <Link href="/settings" className="btn_clickable p-2 rounded-2xl">Settings</Link>
                             </li>
                         </ul>
 
-                        <div className="flex ml-auto text-white items-center">
+                        <div className="flex mt-auto ml-auto text-white items-center">
                             <LoginButton user={session?.user as DefaultUser}/>
                         </div>
                     </div>
