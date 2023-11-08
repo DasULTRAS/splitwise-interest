@@ -114,24 +114,24 @@ export default function SplitwiseSettings() {
                     <br />
                     Steps one and two are <b>optional</b>.
                 </p>
-                <ol type="1" className="list-inside list-decimal mr-5 space-y-5">
+
+                <ol type="1" className="list-inside list-decimal mr-5 space-y-3">
                     <li>
                         Login to <a className="a_link" href="https://www.splitwise.com/login" target="_blank" rel="noopener">Splitwise.com</a>
                     </li>
                     <li>
-                        Open the <a className="a_link" href="https://secure.splitwise.com/apps" target="_blank" rel="noopener">&quot;Your apps&quot;</a> by
+                        Open the <a className="a_link" href="https://secure.splitwise.com/apps" target="_blank" rel="noopener">&quot;Your apps&quot;</a> Site by
                         <ol type="a" className="ml-5 list-inside list-[lower-alpha]">
-                            <li>selecting the profile icon at the top right corner</li>
-                            <li>select the point <a className="a_link" href="https://secure.splitwise.com/account/settings" target="_blank" rel="noopener">&quot;Your account&quot;</a></li>
-                            <li>select the button <a className="a_link" href="https://secure.splitwise.com/apps" target="_blank" rel="noopener">&quot;Your apps&quot;</a> under Privacy & Security</li>
+                            <li>selecting the profile icon in the top right corner</li>
+                            <li>selecting <a className="a_link" href="https://secure.splitwise.com/account/settings" target="_blank" rel="noopener">&quot;Your account&quot;</a></li>
+                            <li>select the <a className="a_link" href="https://secure.splitwise.com/apps" target="_blank" rel="noopener">&quot;Your apps&quot;</a> button under Privacy & Security</li>
                         </ol>
                     </li>
                     <li>
-                        Create a new app by clicking the button <a className="a_link" href="https://secure.splitwise.com/apps/new" target="_blank" rel="noopener">&quot;Register your application&quot;</a>
+                        Create a new application by clicking the <a className="a_link" href="https://secure.splitwise.com/apps/new" target="_blank" rel="noopener">&quot;Register your application&quot;</a> button.
                     </li>
                     <li>
-                        Insert the data<br />
-                        and commit by clicking on <b>Register</b> Button.
+                        Enter the data and commit by clicking the <b>Register</b> button.
                         <ul className="ml-5">
                             <li>
                                 <b>Application name:</b> <CopyButton text="Splitwise-Integration" />
@@ -145,7 +145,7 @@ export default function SplitwiseSettings() {
                         </ul>
                     </li>
                     <li>
-                        Copy the <b>Consumer Key</b> and <b>Consumer Secret</b> into the Formular at the top.
+                        Enter the <b>Consumer Key</b> and <b>Consumer Secret</b> in the form at the top.
                     </li>
                 </ol>
             </section>
