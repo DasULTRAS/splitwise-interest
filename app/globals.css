@@ -50,7 +50,7 @@ h3 {
 }
 
 .btn_save {
-    @apply w-fit px-4 py-2 font-bold text-white bg-blue-500 rounded-full;
+    @apply w-fit px-4 py-2 text-white bg-blue-500 rounded-full;
 }
 
 .btn_save:disabled {
@@ -63,4 +63,9 @@ h3 {
 
 .btn_save:focus {
     @apply outline-none shadow-md;
+}
+
+/* Things that not in Tailwind */
+.border-1 {
+    border-width: 1px;
 }

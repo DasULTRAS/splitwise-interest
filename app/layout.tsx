@@ -1,4 +1,3 @@
-import React from "react";
 import type { Metadata } from 'next';
 import { AuthProvider } from "@/app/api/auth/[...nextauth]/provider";
 import Navbar from '@/components/ui/navbar/navbar';
