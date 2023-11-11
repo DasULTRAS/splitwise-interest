@@ -1,27 +1,17 @@
 'use client'
 
 import React, { useEffect, useState } from "react";
-import { signIn } from 'next-auth/react';
+import { SignInResponse, signIn } from 'next-auth/react';
 import ForgetPasswordButton from "@/components/ui/buttons/forgetPasswordButton";
 import RegisterButton from "@/components/ui/buttons/registerButton";
 import LoadingCircle from "@/components/ui/symbols/loadingCircle";
 import { InputPassword, InputText } from "@/components/ui/input";
 import MessageText from "@/components/ui/text/messageText";
 import { checkEmail, checkPassword, checkUsername } from "@/utils/validation";
+import { useRouter } from "next/navigation";
 
 export default function Register() {
-
-    interface RegisterResponse {
-        message: string;
-    }
-
-    interface LoginResponse {
-        error: string,
-        ok: boolean,
-        status: number,
-        url: string | null,
-    }
-
+    const router = useRouter();
     const [email, setEmail] = useState<string>("");
     const [username, setUsername] = useState<string>("");
     const [password, setPassword] = useState<string>("");
@@ -49,24 +39,32 @@ export default function Register() {
                 body: JSON.stringify({ username, email, password })
             });
 
-            const responseData: RegisterResponse = await response.json();
+            const responseData: { message: string; } = await response.json();
             if (!response.ok) {
-                setMessage(responseData.message || `Error: ${response.statusText}`);
+                setMessage(`Register Error: ${response.statusText || responseData.message || 'Unknown error'}`);
                 return;
             }
-            setMessage(responseData.message || "Account created successfully!");
 
-            const user = await signIn('credentials', {
+            const res = await signIn('credentials', {
                 username: username,
                 password: password,
-                callbackUrl: '/dashboard',
-            }) as LoginResponse;
+                redirect: false,
+            }) as SignInResponse;
 
-            if (user.ok) {
+            // Redirect
+            if (!res) {
+                setMessage("Wait for redirect...");
+            } else if (res.ok) {
                 setMessage("Account created successfully!, Login successful!");
             } else {
                 setMessage("Account was created, but Login failed?");
             }
+
+            setTimeout(() => {
+                router.refresh();
+                router.replace("/");
+            }, 1000);
+
         } catch (error: any) {
             setMessage(`Error: ${error.message || 'Unknown error'}`);
         } finally {

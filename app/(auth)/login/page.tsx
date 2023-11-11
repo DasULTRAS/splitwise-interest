@@ -1,26 +1,21 @@
-'use client'
+"use client";
 
 import React, { useState } from "react";
-import { signIn } from 'next-auth/react';
+import { SignInResponse, signIn } from 'next-auth/react';
 import ForgetPasswordButton from "@/components/ui/buttons/forgetPasswordButton";
 import RegisterButton from "@/components/ui/buttons/registerButton";
 import LoadingCircle from "@/components/ui/symbols/loadingCircle";
 import { checkPassword, checkUsername } from "@/utils/validation";
 import { InputPassword, InputText } from "@/components/ui/input";
 import MessageText from "@/components/ui/text/messageText";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
-    interface LoginResponse {
-        error: string,
-        ok: boolean,
-        status: number,
-        url: string | null,
-    }
-
     const [idString, setIdString] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState<string>("");
+    const router = useRouter();
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -28,17 +23,29 @@ export default function Login() {
         setLoading(true);
 
         try {
-            const user = await signIn('credentials', {
+            const res = await signIn('credentials', {
                 username: idString,
                 password: password,
-                callbackUrl: '/dashboard',
-            }) as LoginResponse;
+                redirect: false
+            }) as SignInResponse;
 
-            if (user.ok) {
+            // Redirect
+            if (!res) {
+                setMessage("Wait for redirect...");
+            } else if (res.ok) {
                 setMessage("Login successful!");
             } else {
-                setMessage("Login failed!");
+                setMessage(`Login Error (${res.status}): ${res.status === 401 ? 'wrong Credentials' : res.error || 'Unknown error'}`);
             }
+
+            const url = new URL(window.location.href);
+            let callbackUrl: string = url.searchParams.get('callbackUrl') || "/dashboard";
+
+            setTimeout(() => {
+                router.refresh();
+                router.replace(callbackUrl);
+            }, 1000);
+
         } catch (error: any) {
             setMessage(`Error: ${error.message || 'Unknown error'}`);
         } finally {
