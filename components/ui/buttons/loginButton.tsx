@@ -21,7 +21,7 @@ export default function LoginButton({ user }: LoginButtonProps) {
     return (
         <div className="flex items-center">
             {user ?
-                <button className="btn_clickable p-2 rounded-2xl"
+                <button className="flex btn_clickable p-2 rounded-2xl"
                     type="button" onClick={handleClick}>
                     {loading && (
                         <svg className="m-auto mr-3 h-5 w-5 animate-spin" viewBox="0 0 24 24">
