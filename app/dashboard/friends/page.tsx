@@ -52,6 +52,7 @@ export default async function FriendsDashboard() {
                 </div>
             </div>
         );
+        
     } catch (e) {
         if (e instanceof Error) {
             if (e.message === "Not logged in")

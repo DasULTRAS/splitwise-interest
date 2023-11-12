@@ -3,7 +3,7 @@ import Splitwise, { getInventedDebts } from '@/utils/splitwise/splitwise';
 
 import UnauthorizedPage from '@/components/ui/unauthorisedPage';
 import WebImage from "@/components/images/WebImage";
-import WeeklyRateForm from "@/app/dashboard/friends/[id]/weeklyRateForm";
+import WeeklyRateForm from "@/app/dashboard/friends/[id]/RateSettingsForm";
 
 export default async function Friend({ params }: { params: { id: number } }) {
     try {
@@ -73,7 +73,14 @@ export default async function Friend({ params }: { params: { id: number } }) {
                 </div>
             </>
         );
+
     } catch (e) {
-        return <UnauthorizedPage />
+        if (e instanceof Error) {
+            if (e.message === "getFriends - getFriends - authentication failed - client error") {
+                return (<UnauthorizedPage
+                    href='/settings/splitwise'>Please click <b>here</b> correct your Splitwise credentials first.</UnauthorizedPage>);
+            }
+        }
+        throw new Error("Unknown error: in Dashboard", { cause: e });
     }
 }
