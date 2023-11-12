@@ -62,9 +62,8 @@ export default async function FriendsDashboard() {
             else if (e.message === "getFriends - getFriends - authentication failed - client error") {
                 return (<UnauthorizedPage
                     href='/settings/splitwise'>Please click <b>here</b> correct your Splitwise credentials first.</UnauthorizedPage>);
-            } else
-                throw e;
-        } else
-            throw e;
+            }
+        }
+        throw new Error("Unknown error: in Dashboard", { cause: e });
     }
 }
