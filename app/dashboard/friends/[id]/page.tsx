@@ -63,7 +63,7 @@ export default async function Friend({ params }: { params: { id: number } }) {
                                                 })()}
                                             </div>
 
-                                            <h3 className="overflow-hidden truncate whitespace-nowrap font-mono">{group.name}</h3>
+                                            <b className="overflow-hidden truncate whitespace-nowrap font-mono">{group.name}</b>
                                         </li>
                                     ))}
                                 </ul>
