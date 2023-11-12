@@ -37,7 +37,7 @@ export default async function Friend({ params }: { params: { id: number } }) {
                     friend.balance.length > 0 ?
                         <>
                             <h3 className="font-extralight underline">
-                                Balance - {friend.balance[0].amount} {friend.balance[0].currency_code}</h3>
+                                Balance: {friend.balance[0].amount} {friend.balance[0].currency_code}</h3>
                             <p>Currently included debts: {inventedDebts} {friend.balance[0].currency_code}</p>
 
                             <div className="my-5 flex flex-col items-center justify-between px-5">

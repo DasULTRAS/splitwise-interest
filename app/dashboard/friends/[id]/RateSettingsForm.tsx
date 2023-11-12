@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import MessageText from "@/components/text/messageText";
 import { Input } from "@/components/input";
 import { ArrowHeadDown, ArrowHeadUp } from "@/components/symbols/arrow";
+import { checkApy, checkCycles, checkMinDebtAge, checkNextDate } from "@/utils/validation";
 
 export default function WeeklyRateForm({ friend_id }: { friend_id: number }) {
     const [initialised, setInitialised] = useState<boolean>(false);
@@ -11,7 +12,7 @@ export default function WeeklyRateForm({ friend_id }: { friend_id: number }) {
     const [apy, setAPY] = useState<number>(0);
     const [cycles, setCycles] = useState<number>(7);
     const [minDebtAge, setMinDebtAge] = useState<number>(14);
-    const [nextDate, setNextDate] = useState<Date | null>(new Date(Date.now()));
+    const [nextDate, setNextDate] = useState<Date>(new Date(Date.now()));
     const [showAllSettings, setShowAllSettings] = useState<boolean>(false);
 
     const [message, setMessage] = useState<string>("");
@@ -19,14 +20,26 @@ export default function WeeklyRateForm({ friend_id }: { friend_id: number }) {
 
     useEffect(() => {
         const fetchValues = async () => {
-            const res = await fetch(`/api/friend/weeklyRate/${friend_id}/`);
-            const data = await res.json();
+            try {
+                const res = await fetch(`/api/friend/settings/${friend_id}/`);
+                const data = await res.json();
 
-            if (res.ok) {
-                setAPY(data.weeklyRate);
-            } else {
-                setMessage(data.message);
-                setInterval(() => setMessage(""), 5000);
+                if (res.ok) {
+                    setAPY(data?.settings?.apy);
+                    setCycles(data?.settings?.cycles);
+                    setMinDebtAge(data?.settings?.minDebtAge);
+                    setNextDate(new Date(data.settings.nextDate));
+                } else {
+                    setMessage(data.message);
+                    setTimeout(() => setMessage(""), 5000);
+                }
+            } catch (error) {
+                if (error instanceof TypeError) {
+                    setMessage("Error: " + error.message);
+                    setTimeout(() => setMessage(""), 10000);
+                } else {
+                    throw error;
+                }
             }
         };
 
@@ -42,25 +55,38 @@ export default function WeeklyRateForm({ friend_id }: { friend_id: number }) {
 
         setLoading(true);
 
-        const res = await fetch(`/api/friend/settings/${friend_id}/`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ apy, cycles, minDebtAge, nextDate })
-        });
+        try {
+            const nextDateISO = nextDate.toISOString();
+            const res = await fetch(`/api/friend/settings/${friend_id}/`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ settings: { apy, cycles, minDebtAge, nextDate: nextDateISO } })
+            });
 
-        const data = await res.json();
+            const data = await res.json();
 
-        if (res.ok) {
-            setAPY(data.apy);
-            setCycles(data.cycles);
-            setMinDebtAge(data.minDebtAge);
-            setNextDate(data.nextDate);
+            if (res.ok) {
+                setAPY(data?.settings?.apy || 0);
+                setCycles(data?.settings?.cycles || 7);
+                setMinDebtAge(data?.settings?.minDebtAge || 14);
+                setNextDate(new Date(data.settings.nextDate));
+
+                setMessage(data.message);
+                setTimeout(() => setMessage(""), 5000);
+            } else {
+                setMessage("Error: " + data.message);
+                setTimeout(() => setMessage(""), 10000);
+            }
+        } catch (error) {
+            if (error instanceof TypeError) {
+                setMessage("Error: " + error.message);
+            } else {
+                throw error;
+            }
+            setTimeout(() => setMessage(""), 10000);
         }
-
-        setMessage(data.message);
-        setInterval(() => setMessage(""), 1000);
 
         setLoading(false);
     }
@@ -83,9 +109,11 @@ export default function WeeklyRateForm({ friend_id }: { friend_id: number }) {
                     <Input id="apy" type="number"
                         placeholder="APY (%)"
                         className="md:w-24"
-                        value={apy.toString()}
+                        min={0}
+                        value={apy}
                         disabled={loading}
                         onChange={e => setAPY(e.target.valueAsNumber)}
+                        inputError={checkApy(apy)}
                     />
                 </div>
             </div>
@@ -109,26 +137,32 @@ export default function WeeklyRateForm({ friend_id }: { friend_id: number }) {
                         < Input type="number"
                             id="cycles-input" label="Days between two interests"
                             className="mb-4 md:mr-2"
-                            min={1} max={365} step={1}
+                            min={1} max={365}
                             value={cycles}
+                            disabled={loading}
                             onChange={(e) => setCycles(e.target.valueAsNumber)}
+                            inputError={checkCycles(cycles)}
                         />
 
                         {/* Number input for min age of days */}
                         <Input type="number"
                             id="min-age-input" label="Min Debt Age in Days"
                             className="mb-4 md:ml-2"
-                            min={0} max={365} step={1}
+                            min={1} max={365}
                             value={minDebtAge}
+                            disabled={loading}
                             onChange={(e) => setMinDebtAge(e.target.valueAsNumber)}
+                            inputError={checkMinDebtAge(minDebtAge)}
                         />
                     </div>
 
                     {/* Date input */}
                     <Input id="start-date" type="date" label="Next Date"
                         className="mb-4 w-full md:w-1/2"
-                        value={nextDate ? nextDate.toISOString().split('T')[0] : ''} // Format the date in YYYY-MM-DD format
-                        onChange={(e) => setNextDate(e.target.value ? new Date(e.target.value) : null)} // Handle null dates
+                        value={nextDate.toISOString().split('T')[0]} // Format the date in YYYY-MM-DD format
+                        disabled={loading}
+                        onChange={(e) => { if (e.target.value) setNextDate(new Date(e.target.value + 'T00:00:00Z')) }}
+                        inputError={checkNextDate(nextDate)}
                     />
                 </>
             }
