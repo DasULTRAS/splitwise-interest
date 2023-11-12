@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import User from '@/models/User';
+import User, { MongoUser } from '@/models/User';
 import { connectToDb } from '@/utils/mongodb';
 import { getServerSession } from "next-auth/next";
 import { options } from "@/app/api/auth/[...nextauth]/options";
@@ -100,35 +100,53 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
         // Get User from DB
         await connectToDb();
         const user = await User.findOne({ ["username"]: session.user?.name })
+        if (!user) {
+            return NextResponse.json(
+                { message: 'Unauthorized: Cant find User' },
+                { status: 401 }
+            );
+        }
 
         const id = parseInt(params?.id);
 
         // Get Data from User
         if (user?.splitwise?.interests && id) {
-            let interest = user.splitwise.interests.find((i: { friend_id: number, settings: Settings }) => i.friend_id === id);
+            let interest = user.splitwise.interests.find((i:{friend_id:number, settings:Settings}) => i.friend_id === id);
 
             if (!interest) {
-                user.splitwise.interests.push({ friend_id: params.id, settings: {} });
-                interest = user.splitwise.interests.find((i: { friend_id: number, settings: Settings }) => i.friend_id === id);
+                user.splitwise.interests.push({
+                    friend_id: Number.parseInt(params.id), settings: {
+                        apy: 0, cycles: 0, minDebtAge: 0, nextDate: new Date()
+                    }
+                });
+                interest = user.splitwise.interests.find((i:{friend_id:number, settings:Settings}) => i.friend_id === id);
             }
 
+            if (interest) {
+                interest.settings.apy = settings.apy;
+                interest.settings.cycles = settings.cycles;
+                interest.settings.minDebtAge = settings.minDebtAge;
 
-            interest.settings.apy = settings.apy;
-            interest.settings.cycles = settings.cycles;
-            interest.settings.minDebtAge = settings.minDebtAge;
+                if (!interest?.settings?.nextDate || !(interest.settings.nextDate?.toDateString() === settings.nextDate.toDateString()))
+                    interest.settings.nextDate = settings.nextDate;
 
-            if (!interest?.settings?.newDate || !interest.settings?.nextDate?.toDateString()?.localeCompare(settings.nextDate.toDateString()))
-                interest.settings.nextDate = settings.nextDate;
-
-            user.updatedAt = Date.now();
-            user.save();
-            return NextResponse.json(
-                {
-                    message: 'Settings successfully saved.',
-                    settings: interest.settings,
-                },
-                { status: 201 }
-            );
+                user.updatedAt = new Date();
+                user.save();
+                return NextResponse.json(
+                    {
+                        message: 'Settings successfully saved.',
+                        settings: interest.settings,
+                    },
+                    { status: 201 }
+                );
+            } else {
+                return NextResponse.json(
+                    {
+                        message: 'Cannot create Splitwise Settings.'
+                    },
+                    { status: 500 }
+                );
+            }
         } else {
             return NextResponse.json(
                 {

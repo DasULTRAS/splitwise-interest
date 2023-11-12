@@ -21,7 +21,8 @@ export default async function Friend({ params }: { params: { id: number } }) {
             }
         }
 
-        const inventedDebts = await getInventedDebts(me.id, friend.id);
+        // TODO: getInventedDebts() is not working properly
+        const inventedDebts = await getInventedDebts(me.id, friend.id, 1);
 
         return (
             <div className="flex flex-col items-center justify-center px-10 py-5">
@@ -76,6 +77,7 @@ export default async function Friend({ params }: { params: { id: number } }) {
                     href='/settings/splitwise'>Please click <b>here</b> correct your Splitwise credentials first.</UnauthorizedPage>);
             }
         }
+        console.log(e);
         throw new Error("Unknown error: in Dashboard", { cause: e });
     }
 }

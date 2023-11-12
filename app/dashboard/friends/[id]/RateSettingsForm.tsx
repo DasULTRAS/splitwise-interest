@@ -12,7 +12,7 @@ export default function WeeklyRateForm({ friend_id }: { friend_id: number }) {
     const [apy, setAPY] = useState<number>(0);
     const [cycles, setCycles] = useState<number>(7);
     const [minDebtAge, setMinDebtAge] = useState<number>(14);
-    const [nextDate, setNextDate] = useState<Date>(new Date(Date.now()));
+    const [nextDate, setNextDate] = useState<Date>(new Date());
     const [showAllSettings, setShowAllSettings] = useState<boolean>(false);
 
     const [message, setMessage] = useState<string>("");

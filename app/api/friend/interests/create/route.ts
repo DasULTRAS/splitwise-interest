@@ -1,15 +1,14 @@
-import {NextResponse} from "next/server";
-import User, {MongoUser} from "@/models/User";
-import {connectToDb} from "@/utils/mongodb";
-import {getServerSession} from "next-auth/next";
-import {options} from "@/app/api/auth/[...nextauth]/options";
-import {Session} from "next-auth";
+import { NextResponse } from "next/server";
+import User, { MongoUser } from "@/models/User";
+import { connectToDb } from "@/utils/mongodb";
+import { getServerSession } from "next-auth/next";
+import { options } from "@/app/api/auth/[...nextauth]/options";
+import { Session } from "next-auth";
 import Splitwise, {
-    getLastMonday,
     getInventedDebts,
     roundUpToTwoDecimals,
 } from "@/utils/splitwise/splitwise";
-import {Expense} from "@/utils/splitwise/datatypes";
+import { Expense } from "@/utils/splitwise/datatypes";
 
 export async function createInterests(user: MongoUser) {
     // Get Splitwise Connection
@@ -17,10 +16,11 @@ export async function createInterests(user: MongoUser) {
     const interests = [];
 
     for (const friend of user?.splitwise?.interests) {
-        if (friend.weeklyRate > 0) {
+        if (friend.settings.apy > 0 && friend.settings.nextDate < new Date()) {
+            const lastExceptedDay = new Date(Date.now() - friend.settings.cycles * 24 * 60 * 60 * 1000);
             const expenses: Expense[] = await sw.getExpenses({
                 friend_id: friend.friend_id,
-                dated_after: getLastMonday(0).toISOString(),
+                dated_after: lastExceptedDay.toISOString(),
                 limit: 0,
             });
 
@@ -38,20 +38,23 @@ export async function createInterests(user: MongoUser) {
                 const inventedDebt = await getInventedDebts(
                     user.splitwise.id,
                     friend.friend_id,
+                    friend.settings.minDebtAge,
                     sw
                 );
                 const interest = roundUpToTwoDecimals(
-                    (inventedDebt * friend.weeklyRate) / 100
+                    inventedDebt * friend.settings.apy / 100 * friend.settings.cycles / 365
                 );
 
                 if (interest > 0) {
                     const res = await sw.createExpense({
                         cost: interest,
-                        description: `Weekly Zins ${friend.weeklyRate}%`,
+                        description: `Zins ${friend.settings.apy}%`,
                         group_id: 0,
                         split_equally: false,
                         category_id: 4,
-                        details: `Automatically Generated: ${inventedDebt} * ${friend.weeklyRate} / 100 = ${interest}`,
+                        details: `Automatically Generated: ${inventedDebt} * ${friend.settings.apy} / 100 * ${friend.settings.cycles} / 365 = ${interest} 
+                        \n ${friend.settings.cycles} days between interests 
+                        \n ${lastExceptedDay.toLocaleDateString()} last excepted day`,
                         repeat_interval: "never",
                         users: [
                             {
@@ -75,12 +78,12 @@ export async function createInterests(user: MongoUser) {
     if (interests.length > 0)
         return NextResponse.json(
             {
-                message: `${user.username} has charged  new interest.`,
+                message: `${user.username} has charged new interest.`,
                 interests: interests,
                 username: user.username,
                 splitwise: user.splitwise,
             },
-            {status: 201}
+            { status: 201 }
         );
     else
         return NextResponse.json(
@@ -89,7 +92,7 @@ export async function createInterests(user: MongoUser) {
                 username: user.username,
                 splitwise: user.splitwise,
             },
-            {status: 200}
+            { status: 200 }
         );
 }
 
@@ -98,18 +101,18 @@ export async function GET() {
         // Get Usersession
         const session: Session | null = await getServerSession(options);
         if (!session?.user?.name) {
-            return NextResponse.json({message: "Unauthorized"}, {status: 401});
+            return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
         }
 
         // Get User from DB
         await connectToDb();
-        const user = await User.findOne({["username"]: session.user.name});
+        const user = await User.findOne({ ["username"]: session.user.name });
 
         return await createInterests(user);
     } catch (err: any) {
         return NextResponse.json(
-            {message: "Server Error", error: err},
-            {status: 500}
+            { message: "Server Error", error: err },
+            { status: 500 }
         );
     }
 }
