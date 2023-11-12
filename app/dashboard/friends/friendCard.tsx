@@ -1,5 +1,5 @@
 import {Balance, Friend} from '@/utils/splitwise/datatypes';
-import WebImage from '@/components/ui/images/WebImage';
+import WebImage from '@/components/images/WebImage';
 
 export default function FriendCard({friend, weeklyRate}: { friend: Friend, weeklyRate: number | null }) {
     return (

@@ -2,10 +2,10 @@
 
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import LoadingCircle from "@/components/ui/symbols/loadingCircle";
-import MessageText from "@/components/ui/text/messageText";
-import { InputText } from "@/components/ui/input";
-import CopyButton from "@/components/ui/buttons/copyButton";
+import LoadingCircle from "@/components/symbols/loadingCircle";
+import MessageText from "@/components/text/messageText";
+import { InputText } from "@/components/input";
+import CopyButton from "@/components/buttons/copyButton";
 
 export default function SplitwiseSettings() {
     const [consumerKey, setConsumerKey] = useState("");
