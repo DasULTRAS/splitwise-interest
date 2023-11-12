@@ -67,7 +67,7 @@ export default function PasswordChangeForm() {
             <h1 className="text-center text-3xl font-bold">Change Password</h1>
 
             <form className="rounded pt-6 pb-8" onSubmit={handleSubmit}>
-                <div className="mb-4 w-full md:flex md:justify-between">
+                <div className="mb-4 w-full md:flex md:mx-auto md:max-w-3xl">
                     <InputPassword
                         placeholder="Password"
                         className="mb-4 w-full md:mr-2 md:mb-0 md:w-1/2"
