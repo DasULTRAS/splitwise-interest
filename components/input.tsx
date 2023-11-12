@@ -4,15 +4,14 @@ import React, { useState } from "react";
 
 const inputStyles = "w-full px-3 py-2 mb-3 text-sm leading-tight border rounded shadow appearance-none focus:outline-none focus:shadow-outline";
 
-export function InputText({ id, placeholder, className, disabled, value, onChange, inputError }: { id: string, placeholder?: string, className?: string, disabled?: boolean, value: string, onChange: React.ChangeEventHandler<HTMLInputElement>, inputError?: string }) {
+export function Input({ id, label, placeholder = label, className, disabled, value, type = "text", onChange, inputError }: { id: string, label?: string, placeholder?: string, className?: string, disabled?: boolean, value: string, type?: string, onChange: React.ChangeEventHandler<HTMLInputElement>, inputError?: string }) {
 
     return (
-        <div className={`mb-4 ${className}`}>
-            <label className="mb-2 block text-sm font-bold">{placeholder}</label>
+        <div key={id} className={className}>
+            <label className="mb-1 block text-sm font-bold">{label}</label>
             <input
-                id={id}
                 className={inputStyles}
-                type="text"
+                type={type}
                 placeholder={placeholder}
                 disabled={disabled}
                 value={value}
@@ -24,13 +23,13 @@ export function InputText({ id, placeholder, className, disabled, value, onChang
     );
 }
 
-export function InputPassword({ id = "password", placeholder, className, value, onChange, inputError }: { id?: string, key?: string, placeholder?: string, className?: string, value: string, onChange: React.ChangeEventHandler<HTMLInputElement>, inputError?: string }) {
+export function InputPassword({ id = "password", label, placeholder = label, className, value, onChange, inputError }: { id?: string, key?: string, label?:string, placeholder?: string, className?: string, value: string, onChange: React.ChangeEventHandler<HTMLInputElement>, inputError?: string }) {
 
     const [showPassword, setShowPassword] = useState<boolean>(false);
 
     return (
         <div className={`mb-4 w-full ${className}`} key={id}>
-            <label className="mb-2 block text-sm font-bold">{placeholder}</label>
+            <label className="mb-1 block text-sm font-bold">{label}</label>
             <div
                 className={`flex items-center justify-between ${inputStyles}`}>
                 <input

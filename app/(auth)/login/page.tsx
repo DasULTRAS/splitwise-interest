@@ -6,7 +6,7 @@ import ForgetPasswordButton from "@/components/buttons/forgetPasswordButton";
 import RegisterButton from "@/components/buttons/registerButton";
 import LoadingCircle from "@/components/symbols/loadingCircle";
 import { checkPassword, checkUsername } from "@/utils/validation";
-import { InputPassword, InputText } from "@/components/input";
+import { InputPassword, Input } from "@/components/input";
 import MessageText from "@/components/text/messageText";
 import { useRouter, useParams } from "next/navigation";
 
@@ -59,15 +59,15 @@ export default function Login() {
             <div className="rounded-lg bg-white shadow-xl shadow-neutral-900">
                 <form className="rounded bg-white px-8 pt-6 pb-8" onSubmit={handleSubmit}>
 
-                    <InputText
+                    <Input
                         className="text-gray-700"
-                        placeholder="Benutzername oder E-Mail"
+                        label="Benutzername oder E-Mail"
                         id="username"
                         value={idString}
                         onChange={(event) => setIdString(event.target.value)} />
                     <InputPassword
                         className="text-gray-700"
-                        placeholder="Password"
+                        label="Password"
                         value={password}
                         onChange={(event) => setPassword(event.target.value)} />
 

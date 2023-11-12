@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import LoadingCircle from "@/components/symbols/loadingCircle";
 import MessageText from "@/components/text/messageText";
-import { InputText } from "@/components/input";
+import { Input } from "@/components/input";
 import CopyButton from "@/components/buttons/copyButton";
 
 export default function SplitwiseSettings() {
@@ -70,18 +70,18 @@ export default function SplitwiseSettings() {
 
             <form onSubmit={handleSubmit} className="w-full max-w-sm lg:max-w-3xl">
                 <div className="w-full lg:flex lg:justify-center">
-                    <InputText
+                    <Input
                         className="w-full"
                         id="consumer_key"
-                        placeholder="Consumer Key"
+                        label="Consumer Key"
                         disabled={loading}
                         value={consumerKey}
                         onChange={(event) => setConsumerKey(event.target.value)} />
 
-                    <InputText
+                    <Input
                         className="w-full lg:ml-2"
                         id="consumer_secret"
-                        placeholder="Consumer Secret"
+                        label="Consumer Secret"
                         disabled={loading}
                         value={consumerSecret}
                         onChange={(event) => setConsumerSecret(event.target.value)} />
