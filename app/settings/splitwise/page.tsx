@@ -68,9 +68,10 @@ export default function SplitwiseSettings() {
         <div className="m-3 sm:m-5 flex w-full flex-col items-center">
             <h1 className="text-center mb-5">Splitwise Credentials</h1>
 
-            <form onSubmit={handleSubmit} className="w-full max-w-sm">
+            <form onSubmit={handleSubmit} className="w-full max-w-sm lg:max-w-3xl">
                 <div className="w-full lg:flex lg:justify-center">
                     <InputText
+                        className="w-full"
                         id="consumer_key"
                         placeholder="Consumer Key"
                         disabled={loading}
@@ -78,6 +79,7 @@ export default function SplitwiseSettings() {
                         onChange={(event) => setConsumerKey(event.target.value)} />
 
                     <InputText
+                        className="w-full lg:ml-2"
                         id="consumer_secret"
                         placeholder="Consumer Secret"
                         disabled={loading}
