@@ -1,6 +1,6 @@
 "use client";
 
-import LoadingCircle from "@/components/ui/symbols/loadingCircle";
+import LoadingCircle from "@/components/symbols/loadingCircle";
 import {useState} from "react";
 
 export default function Trigger() {

@@ -1,4 +1,4 @@
-import LoadingCircle from "@/components/ui/symbols/loadingCircle";
+import LoadingCircle from "@/components/symbols/loadingCircle";
 
 export default function Loading() {
     return (

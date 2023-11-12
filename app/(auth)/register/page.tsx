@@ -2,11 +2,11 @@
 
 import React, { useEffect, useState } from "react";
 import { SignInResponse, signIn } from 'next-auth/react';
-import ForgetPasswordButton from "@/components/ui/buttons/forgetPasswordButton";
-import RegisterButton from "@/components/ui/buttons/registerButton";
-import LoadingCircle from "@/components/ui/symbols/loadingCircle";
-import { InputPassword, InputText } from "@/components/ui/input";
-import MessageText from "@/components/ui/text/messageText";
+import ForgetPasswordButton from "@/components/buttons/forgetPasswordButton";
+import RegisterButton from "@/components/buttons/registerButton";
+import LoadingCircle from "@/components/symbols/loadingCircle";
+import { InputPassword, InputText } from "@/components/input";
+import MessageText from "@/components/text/messageText";
 import { checkEmail, checkPassword, checkUsername } from "@/utils/validation";
 import { useRouter } from "next/navigation";
 

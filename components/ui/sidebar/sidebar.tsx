@@ -1,5 +1,5 @@
 import { DefaultUser, Session } from "next-auth";
-import LoginButton from '../buttons/loginButton';
+import LoginButton from '../../buttons/loginButton';
 import React from "react";
 import Link from "next/link";
 
