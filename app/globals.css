@@ -33,6 +33,14 @@ h3 {
     @apply font-mono p-1 rounded;
 }
 
+.inp_form_default {
+    @apply w-full px-3 py-2 mb-3 text-sm leading-tight border rounded shadow appearance-none;
+}
+
+.inp_form_default:focus {
+    @apply outline-none border-blue-600;
+}
+
 .lbl_default {
     @apply font-light text-sm;
 }

@@ -2,20 +2,26 @@
 
 import React, { useState } from "react";
 
-const inputStyles = "w-full px-3 py-2 mb-3 text-sm leading-tight border rounded shadow appearance-none focus:outline-none focus:shadow-outline";
-
-export function Input({ id, label, placeholder = label, className, disabled, value, type = "text", onChange, inputError }: { id: string, label?: string, placeholder?: string, className?: string, disabled?: boolean, value: string, type?: string, onChange: React.ChangeEventHandler<HTMLInputElement>, inputError?: string }) {
+export function Input({ id, label, placeholder = label, className, disabled, value, type = "text", onChange, inputError, min, max, step }:
+    {
+        id: string, label?: string, placeholder?: string, className?: string | undefined,
+        disabled?: boolean, value: string | number | readonly string[] | undefined,
+        type?: React.HTMLInputTypeAttribute | undefined,
+        onChange: React.ChangeEventHandler<HTMLInputElement>, inputError?: string,
+        min?: string | number | undefined, max?: string | number | undefined, step?: string | number | undefined
+    }) {
 
     return (
         <div key={id} className={className}>
             <label className="mb-1 block text-sm font-bold">{label}</label>
             <input
-                className={inputStyles}
+                className="inp_form_default"
                 type={type}
                 placeholder={placeholder}
                 disabled={disabled}
                 value={value}
                 onChange={onChange}
+                min={min} max={max} step={step}
             />
             {inputError &&
                 <p className="text-xs italic text-red-500">{inputError}</p>}
@@ -23,7 +29,7 @@ export function Input({ id, label, placeholder = label, className, disabled, val
     );
 }
 
-export function InputPassword({ id = "password", label, placeholder = label, className, value, onChange, inputError }: { id?: string, key?: string, label?:string, placeholder?: string, className?: string, value: string, onChange: React.ChangeEventHandler<HTMLInputElement>, inputError?: string }) {
+export function InputPassword({ id = "password", label, className, value, onChange, inputError }: { id?: string, key?: string, label?: string, className?: string, value: string, onChange: React.ChangeEventHandler<HTMLInputElement>, inputError?: string }) {
 
     const [showPassword, setShowPassword] = useState<boolean>(false);
 
@@ -31,7 +37,7 @@ export function InputPassword({ id = "password", label, placeholder = label, cla
         <div className={`mb-4 w-full ${className}`} key={id}>
             <label className="mb-1 block text-sm font-bold">{label}</label>
             <div
-                className={`flex items-center justify-between ${inputStyles}`}>
+                className={`inp_form_default flex items-center justify-between`}>
                 <input
                     className="flex-grow focus:outline-none"
                     id={id}
