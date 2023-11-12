@@ -8,7 +8,7 @@ import LoadingCircle from "@/components/ui/symbols/loadingCircle";
 import { checkPassword, checkUsername } from "@/utils/validation";
 import { InputPassword, InputText } from "@/components/ui/input";
 import MessageText from "@/components/ui/text/messageText";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 
 export default function Login() {
     const [idString, setIdString] = useState<string>("");
@@ -16,6 +16,7 @@ export default function Login() {
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState<string>("");
     const router = useRouter();
+    const params = useParams();
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -38,8 +39,7 @@ export default function Login() {
                 setMessage(`Login Error (${res.status}): ${res.status === 401 ? 'wrong Credentials' : res.error || 'Unknown error'}`);
             }
 
-            const url = new URL(window.location.href);
-            let callbackUrl: string = url.searchParams.get('callbackUrl') || "/dashboard";
+            let callbackUrl: string = params?.callbackUrl?.toString() || "/dashboard";
 
             setTimeout(() => {
                 router.refresh();

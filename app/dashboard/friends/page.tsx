@@ -15,16 +15,14 @@ export default async function FriendsDashboard() {
         // Get Usersession
         const session: Session | null = await getServerSession(options);
         if (!session)
-            return <UnauthorizedPage />
+            throw new Error("Not logged in");
 
         // Get User from DB
         await connectToDb();
         const user = await User.findOne({ ["username"]: session.user?.name })
 
         if (!user.splitwise.id)
-            return <UnauthorizedPage
-                href='/settings/splitwise'
-                anchorText="Please click here to set up your Splitwise connection first." />
+            throw new Error("Splitwise not connected");
 
         const sw = (await Splitwise.getInstance()).splitwise;
         const friends: Friend[] = await sw.getFriends();
@@ -55,6 +53,17 @@ export default async function FriendsDashboard() {
             </div>
         );
     } catch (e) {
-        return (<UnauthorizedPage />);
+        if (e instanceof Error) {
+            if (e.message === "Not logged in")
+                return (<UnauthorizedPage />);
+            else if (e.message === "Splitwise not connected")
+                return (<UnauthorizedPage
+                    href='/settings/splitwise'>Please click <b>here</b> to set up your Splitwise connection first.</UnauthorizedPage>);
+            else if (e.message === "getFriends - getFriends - authentication failed - client error") {
+                return (<UnauthorizedPage
+                    href='/settings/splitwise'>Please click <b>here</b> correct your Splitwise credentials first.</UnauthorizedPage>);
+            }
+        }
+        throw new Error("Unknown error: in Dashboard", { cause: e });
     }
 }
