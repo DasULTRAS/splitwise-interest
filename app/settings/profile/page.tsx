@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import LoadingCircle from "@/components/ui/symbols/loadingCircle";
-import MessageText from "@/components/ui/text/messageText";
+import LoadingCircle from "@/components/symbols/loadingCircle";
+import MessageText from "@/components/text/messageText";
 
 export default function ProfileSettings() {
     const [avatar, setAvatar] = useState("");

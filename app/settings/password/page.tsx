@@ -1,10 +1,10 @@
 "use client";
 
 import { checkPassword } from "@/utils/validation";
-import LoadingCircle from "@/components/ui/symbols/loadingCircle";
-import MessageText from "@/components/ui/text/messageText";
+import LoadingCircle from "@/components/symbols/loadingCircle";
+import MessageText from "@/components/text/messageText";
 import React, { useEffect, useState } from "react";
-import { InputPassword } from "@/components/ui/input";
+import { InputPassword } from "@/components/input";
 
 export default function PasswordChangeForm() {
     const [password, setPassword] = useState<string>("");

@@ -1,4 +1,4 @@
-import Favicon from "@/components/ui/images/favicon";
+import Favicon from "@/components/images/favicon";
 
 export default function Home() {
     return (

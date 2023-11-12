@@ -2,10 +2,10 @@ import { Session } from "next-auth";
 import UserAvatar from "@/components/ui/navbar/avatar";
 import { getServerSession } from "next-auth/next";
 import { options } from "@/app/api/auth/[...nextauth]/options";
-import Favicon from "@/components/ui/images/favicon";
+import Favicon from "@/components/images/favicon";
 import Link from "next/link";
 import SidebarTrigger from "../sidebar/sidebarTigger";
-import LoginButton from "../buttons/loginButton";
+import LoginButton from "../../buttons/loginButton";
 
 export default async function Navbar() {
     const session: Session | null = await getServerSession(options);

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import MessageText from "@/components/ui/text/messageText";
+import MessageText from "@/components/text/messageText";
 
 export default function WeeklyRateForm({ friend_id }: { friend_id: number }) {
     const [weeklyRate, setWeeklyRate] = useState<number | undefined>(-1);

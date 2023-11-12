@@ -1,8 +1,8 @@
 import { Friend, Group, User } from '@/utils/splitwise/datatypes';
 import Splitwise, { getInventedDebts } from '@/utils/splitwise/splitwise';
 
-import UnauthorizedPage from '@/components/ui/unauthorised/page';
-import WebImage from "@/components/ui/images/WebImage";
+import UnauthorizedPage from '@/components/ui/unauthorisedPage';
+import WebImage from "@/components/images/WebImage";
 import WeeklyRateForm from "@/app/dashboard/friends/[id]/weeklyRateForm";
 
 export default async function Friend({ params }: { params: { id: number } }) {
