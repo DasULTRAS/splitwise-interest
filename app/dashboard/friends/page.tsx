@@ -8,7 +8,7 @@ import Splitwise from '@/utils/splitwise/splitwise'
 import { Friend } from '@/utils/splitwise/datatypes';
 
 import UnauthorizedPage from '@/components/ui/unauthorisedPage';
-import FriendCard from "./friendCard";
+import FriendCard from "@/components/ui/friendCard";
 
 export default async function FriendsDashboard() {
     try {

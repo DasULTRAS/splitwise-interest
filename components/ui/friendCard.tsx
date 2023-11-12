@@ -1,14 +1,24 @@
-import {Balance, Friend} from '@/utils/splitwise/datatypes';
+import { Balance, Friend } from '@/utils/splitwise/datatypes';
 import WebImage from '@/components/images/WebImage';
 
-export default function FriendCard({friend, weeklyRate}: { friend: Friend, weeklyRate: number | null }) {
+function getFriendBalance(friend: Friend): number {
+    let balance = 0;
+    friend.balance.forEach(bal => {
+        balance += Number.parseFloat(bal.amount);
+    });
+    return balance;
+}
+
+export default function FriendCard({ friend, weeklyRate }: { friend: Friend, weeklyRate: number | null }) {
+    const balance: number = getFriendBalance(friend);
+
     return (
         <>
             <a href={`/dashboard/friends/${friend.id}`}
-               className={`w-64 h-36 dark:bg-black/80 bg-neutral-100/80 rounded-xl p-5 shadow-lg hover:shadow-xl transition-shadow ${friend.balance.length > 0 ? `shadow-red-700` : `shadow-green-500`}`}>
+                className={`w-64 h-36 dark:bg-black/80 bg-neutral-100/80 rounded-xl p-5 shadow-lg hover:shadow-xl transition-shadow ${balance == 0 ? `shadow-white dark:shadow-black` : balance > 0 ? `shadow-green-500` : `shadow-red-600`}`}>
                 <div className="flex items-center space-x-4" key={friend.id}>
                     {friend.picture.small &&
-                        <WebImage src={friend.picture.small} className="rounded-full" height={55} width={55}/>
+                        <WebImage src={friend.picture.small} className="rounded-full" height={55} width={55} />
                     }
                     <div>
                         <p className="text-xs text-gray-500">{friend.id}</p>
