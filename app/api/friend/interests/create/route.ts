@@ -10,7 +10,7 @@ import Splitwise, {
 } from "@/utils/splitwise/splitwise";
 import { Expense } from "@/utils/splitwise/datatypes";
 
-export async function createInterests(user: MongoUser) {
+export async function createInterests(user: User) {
     // Get Splitwise Connection
     const sw = (await Splitwise.getInstanceByUsername(user.username)).splitwise;
     const interests = [];
@@ -70,12 +70,15 @@ export async function createInterests(user: MongoUser) {
                         ],
                     });
                     interests.push(res);
+
+                    friend.settings.nextDate = new Date(Date.now() + friend.settings.cycles * 24 * 60 * 60 * 1000);
                 }
             }
         }
     }
 
-    if (interests.length > 0)
+    if (interests.length > 0) {
+        await user.save();
         return NextResponse.json(
             {
                 message: `${user.username} has charged new interest.`,
@@ -85,7 +88,7 @@ export async function createInterests(user: MongoUser) {
             },
             { status: 201 }
         );
-    else
+    } else
         return NextResponse.json(
             {
                 message: "No new interest charged.",
