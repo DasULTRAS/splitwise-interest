@@ -36,7 +36,7 @@ export async function GET(req: NextRequest) {
         // check interests
         for (const user of users) {
             const hasInterest = user.splitwise.interests.find(
-                (interest) => interest?.weeklyRate > 0
+                (interest) => interest?.settings.apy > 0
             );
 
             if (hasInterest) {

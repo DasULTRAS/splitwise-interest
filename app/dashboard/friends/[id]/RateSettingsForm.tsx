@@ -6,7 +6,7 @@ import { Input } from "@/components/input";
 import { ArrowHeadDown, ArrowHeadUp } from "@/components/symbols/arrow";
 import { checkApy, checkCycles, checkMinDebtAge, checkNextDate } from "@/utils/validation";
 
-export default function WeeklyRateForm({ friend_id }: { friend_id: number }) {
+export default function RateSettingsForm({ friend_id }: Readonly<{ friend_id: number }>) {
     const [initialised, setInitialised] = useState<boolean>(false);
 
     const [apy, setAPY] = useState<number>(0);
