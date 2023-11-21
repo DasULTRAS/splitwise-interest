@@ -13,12 +13,7 @@ export default function ProfileSettings() {
     useEffect(() => {
         const fetchAvatar = async () => {
             setLoading(true);
-            const response = await fetch("/api/user/avatar", {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            });
+            const response = await fetch("/api/user/avatar");
 
             if (response.ok) {
                 const data = await response.json();
@@ -83,9 +78,6 @@ export default function ProfileSettings() {
         try {
             const response = await fetch("/api/user/avatar", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
                 body: JSON.stringify({ avatar })
             });
 
@@ -126,9 +118,9 @@ export default function ProfileSettings() {
                 </div>
             </form>
 
-            {message && <>
+            {message &&
                 <MessageText message={message} />
-            </>}
+            }
         </div>
     );
 }

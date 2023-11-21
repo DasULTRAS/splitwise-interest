@@ -3,9 +3,9 @@ import Splitwise, { getInventedDebts } from '@/utils/splitwise/splitwise';
 
 import UnauthorizedPage from '@/components/ui/unauthorisedPage';
 import WebImage from "@/components/images/WebImage";
-import WeeklyRateForm from "@/app/dashboard/friends/[id]/RateSettingsForm";
+import RateSettingsForm from "@/app/dashboard/friends/[id]/RateSettingsForm";
 
-export default async function Friend({ params }: { params: { id: number } }) {
+export default async function Friend({ params }: Readonly<{ params: { id: number } }>) {
     try {
         const sw = (await Splitwise.getInstance()).splitwise;
 
@@ -42,7 +42,7 @@ export default async function Friend({ params }: { params: { id: number } }) {
                             <p>Currently included debts: {inventedDebts} {friend.balance[0].currency_code}</p>
 
                             <div className="my-5 flex flex-col items-center justify-between px-5">
-                                <WeeklyRateForm friend_id={friend.id} />
+                                <RateSettingsForm friend_id={friend.id} />
                             </div>
 
                             <ul>
