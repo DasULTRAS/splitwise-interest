@@ -73,13 +73,13 @@ export const options: NextAuthOptions = {
     },
     pages: {
         signIn: '/login',
-        signOut: '/login',
     },
+    debug: process.env.NODE_ENV === 'development',
     events: {
         async signIn(message) { console.log(`User ${message?.user?.name} logged in with ${message.account?.type}.`); },
         async signOut(message) {
             console.log(`User ${message?.token?.name} logged out.`);
-            
+
             if (message.token.name)
                 await Splitwise.resetInstanceByUsername(message.token.name);
         },
@@ -87,7 +87,7 @@ export const options: NextAuthOptions = {
     },
     callbacks: {
         async redirect({ url }) {
-            return Promise.resolve(url)
+            return Promise.resolve(url);
         }
     },
 };

@@ -1,7 +1,7 @@
-import {NextRequest, NextResponse} from "next/server";
-import {connectToDb} from "@/utils/mongodb";
-import User, {MongoUser} from "@/models/User";
-import {createInterests} from "../friend/interests/create/route";
+import { NextRequest, NextResponse } from "next/server";
+import { connectToDb } from "@/utils/mongodb";
+import User, { MongoUser } from "@/models/User";
+import { createInterests } from "../friend/interests/create/route";
 
 let lastCronRun: Date | null = null;
 
@@ -13,15 +13,15 @@ export async function GET(req: NextRequest) {
         if (!token || token !== process.env.CRON_SECRET) {
             console.log(`CRON: Unauthorized access attempt${!token && " (Token not offered)"}.`);
             console.log(`${process.env.CRON_SECRET} != ${token}`);
-            return NextResponse.json({status: 401});
+            return NextResponse.json({ status: 401 });
         }
 
         // Test if last run was to near
         if (lastCronRun != null && lastCronRun.valueOf() > Date.now() - 23 * 60 * 60000)
             return NextResponse.json(
                 {
-                    message: `Last run was at ${lastCronRun.toLocaleDateString()}.`,
-                }, {status: 400}
+                    message: `Last run was at ${lastCronRun.toLocaleTimeString()}.`,
+                }, { status: 400 }
             );
 
         // Update last run
@@ -36,7 +36,7 @@ export async function GET(req: NextRequest) {
         // check interests
         for (const user of users) {
             const hasInterest = user.splitwise.interests.find(
-                (interest) => interest?.weeklyRate > 0
+                (interest) => interest?.settings?.apy > 0 && interest?.settings?.nextDate.valueOf() < Date.now()
             );
 
             if (hasInterest) {
@@ -52,12 +52,12 @@ export async function GET(req: NextRequest) {
                 message: "CRON RUN.",
                 interests: interests,
             },
-            {status: 200}
+            { status: 200 }
         );
     } catch (err: any) {
         return NextResponse.json(
-            {message: "Server Error", error: err},
-            {status: 500}
+            { message: "Server Error", error: err },
+            { status: 500 }
         );
     }
 }

@@ -1,26 +1,22 @@
-'use client'
+"use client";
 
 import React, { useState } from "react";
-import { signIn } from 'next-auth/react';
-import ForgetPasswordButton from "@/components/ui/buttons/forgetPasswordButton";
-import RegisterButton from "@/components/ui/buttons/registerButton";
-import LoadingCircle from "@/components/ui/symbols/loadingCircle";
+import { SignInResponse, signIn } from 'next-auth/react';
+import ForgetPasswordButton from "@/components/buttons/forgetPasswordButton";
+import RegisterButton from "@/components/buttons/registerButton";
+import LoadingCircle from "@/components/symbols/loadingCircle";
 import { checkPassword, checkUsername } from "@/utils/validation";
-import { InputPassword, InputText } from "@/components/ui/input";
-import MessageText from "@/components/ui/text/messageText";
+import { InputPassword, Input } from "@/components/input";
+import MessageText from "@/components/text/messageText";
+import { useRouter, useParams } from "next/navigation";
 
 export default function Login() {
-    interface LoginResponse {
-        error: string,
-        ok: boolean,
-        status: number,
-        url: string | null,
-    }
-
     const [idString, setIdString] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState<string>("");
+    const router = useRouter();
+    const params = useParams();
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -28,17 +24,28 @@ export default function Login() {
         setLoading(true);
 
         try {
-            const user = await signIn('credentials', {
+            const res = await signIn('credentials', {
                 username: idString,
                 password: password,
-                callbackUrl: '/dashboard',
-            }) as LoginResponse;
+                redirect: false
+            }) as SignInResponse;
 
-            if (user.ok) {
+            // Redirect
+            if (!res) {
+                setMessage("Wait for redirect...");
+            } else if (res.ok) {
                 setMessage("Login successful!");
             } else {
-                setMessage("Login failed!");
+                setMessage(`Login Error (${res.status}): ${res.status === 401 ? 'wrong Credentials' : res.error || 'Unknown error'}`);
             }
+
+            let callbackUrl: string = params?.callbackUrl?.toString() || "/dashboard";
+
+            setTimeout(() => {
+                router.refresh();
+                router.replace(callbackUrl);
+            }, 1000);
+
         } catch (error: any) {
             setMessage(`Error: ${error.message || 'Unknown error'}`);
         } finally {
@@ -52,22 +59,21 @@ export default function Login() {
             <div className="rounded-lg bg-white shadow-xl shadow-neutral-900">
                 <form className="rounded bg-white px-8 pt-6 pb-8" onSubmit={handleSubmit}>
 
-                    <InputText
+                    <Input
                         className="text-gray-700"
-                        placeholder="Benutzername oder E-Mail"
+                        label="Benutzername oder E-Mail"
                         id="username"
                         value={idString}
                         onChange={(event) => setIdString(event.target.value)} />
                     <InputPassword
                         className="text-gray-700"
-                        placeholder="Password"
+                        label="Password"
                         value={password}
                         onChange={(event) => setPassword(event.target.value)} />
 
-                    <div className="mb-6 w-full flex justify-center">
+                    <div className="mb-6 flex w-full justify-center">
                         <button
-                            id="btn_save"
-                            className="flex"
+                            className="btn_save flex"
                             type="submit"
                             disabled={loading || !!checkUsername(idString) || !!checkPassword(password)}>
                             {loading && <LoadingCircle />}

@@ -1,27 +1,17 @@
 'use client'
 
 import React, { useEffect, useState } from "react";
-import { signIn } from 'next-auth/react';
-import ForgetPasswordButton from "@/components/ui/buttons/forgetPasswordButton";
-import RegisterButton from "@/components/ui/buttons/registerButton";
-import LoadingCircle from "@/components/ui/symbols/loadingCircle";
-import { InputPassword, InputText } from "@/components/ui/input";
-import MessageText from "@/components/ui/text/messageText";
+import { SignInResponse, signIn } from 'next-auth/react';
+import ForgetPasswordButton from "@/components/buttons/forgetPasswordButton";
+import RegisterButton from "@/components/buttons/registerButton";
+import LoadingCircle from "@/components/symbols/loadingCircle";
+import { InputPassword, Input } from "@/components/input";
+import MessageText from "@/components/text/messageText";
 import { checkEmail, checkPassword, checkUsername } from "@/utils/validation";
+import { useRouter } from "next/navigation";
 
 export default function Register() {
-
-    interface RegisterResponse {
-        message: string;
-    }
-
-    interface LoginResponse {
-        error: string,
-        ok: boolean,
-        status: number,
-        url: string | null,
-    }
-
+    const router = useRouter();
     const [email, setEmail] = useState<string>("");
     const [username, setUsername] = useState<string>("");
     const [password, setPassword] = useState<string>("");
@@ -49,24 +39,32 @@ export default function Register() {
                 body: JSON.stringify({ username, email, password })
             });
 
-            const responseData: RegisterResponse = await response.json();
+            const responseData: { message: string; } = await response.json();
             if (!response.ok) {
-                setMessage(responseData.message || `Error: ${response.statusText}`);
+                setMessage(`Register Error: ${response.statusText || responseData.message || 'Unknown error'}`);
                 return;
             }
-            setMessage(responseData.message || "Account created successfully!");
 
-            const user = await signIn('credentials', {
+            const res = await signIn('credentials', {
                 username: username,
                 password: password,
-                callbackUrl: '/dashboard',
-            }) as LoginResponse;
+                redirect: false,
+            }) as SignInResponse;
 
-            if (user.ok) {
+            // Redirect
+            if (!res) {
+                setMessage("Wait for redirect...");
+            } else if (res.ok) {
                 setMessage("Account created successfully!, Login successful!");
             } else {
                 setMessage("Account was created, but Login failed?");
             }
+
+            setTimeout(() => {
+                router.refresh();
+                router.replace("/");
+            }, 1000);
+
         } catch (error: any) {
             setMessage(`Error: ${error.message || 'Unknown error'}`);
         } finally {
@@ -96,18 +94,18 @@ export default function Register() {
             <div className="rounded-lg bg-white shadow-xl shadow-neutral-900">
                 <form className="rounded bg-white px-8 pt-6 pb-8" onSubmit={handleSubmit}>
 
-                    <InputText
+                    <Input
                         id={"username"}
-                        placeholder={"Username"}
+                        label={"Username"}
                         className={"text-gray-700"}
                         disabled={loading}
                         value={username}
                         onChange={(event) => setUsername(event.target.value)}
                         inputError={username && checkUsername(username)} />
 
-                    <InputText
+                    <Input
                         id="email"
-                        placeholder="Email"
+                        label="Email"
                         className="text-gray-700"
                         disabled={loading}
                         value={email}
@@ -118,7 +116,7 @@ export default function Register() {
                     <div className="mb-4 w-full md:flex md:justify-between">
                         <InputPassword
                             id="password"
-                            placeholder="Password"
+                            label="Password"
                             className="text-gray-700"
                             value={password}
                             onChange={(event) => setPassword(event.target.value)}
@@ -126,17 +124,16 @@ export default function Register() {
 
                         <InputPassword
                             id="password_confirm"
-                            placeholder="Confirm password"
+                            label="Confirm password"
                             className="text-gray-700 md:ml-5"
                             value={passwordConfirm}
                             onChange={(event) => setPasswordConfirm(event.target.value)}
                             inputError={passwordConfirm && checkPassword(passwordConfirm)} />
                     </div>
 
-                    <div className="mb-6 w-full flex justify-center">
+                    <div className="mb-6 flex w-full justify-center">
                         <button
-                            id="btn_save"
-                            className="flex"
+                            className="flex btn_save"
                             type="submit"
                             disabled={loading || !!checkUsername(username) || !!checkEmail(email) || !!checkPassword(password) || password !== passwordConfirm}>
                             {loading && <LoadingCircle />}
