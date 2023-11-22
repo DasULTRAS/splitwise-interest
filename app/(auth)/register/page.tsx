@@ -5,7 +5,7 @@ import { SignInResponse, signIn } from 'next-auth/react';
 import ForgetPasswordButton from "@/components/buttons/forgetPasswordButton";
 import RegisterButton from "@/components/buttons/registerButton";
 import LoadingCircle from "@/components/symbols/loadingCircle";
-import { InputPassword, InputText } from "@/components/input";
+import { InputPassword, Input } from "@/components/input";
 import MessageText from "@/components/text/messageText";
 import { checkEmail, checkPassword, checkUsername } from "@/utils/validation";
 import { useRouter } from "next/navigation";
@@ -94,18 +94,18 @@ export default function Register() {
             <div className="rounded-lg bg-white shadow-xl shadow-neutral-900">
                 <form className="rounded bg-white px-8 pt-6 pb-8" onSubmit={handleSubmit}>
 
-                    <InputText
+                    <Input
                         id={"username"}
-                        placeholder={"Username"}
+                        label={"Username"}
                         className={"text-gray-700"}
                         disabled={loading}
                         value={username}
                         onChange={(event) => setUsername(event.target.value)}
                         inputError={username && checkUsername(username)} />
 
-                    <InputText
+                    <Input
                         id="email"
-                        placeholder="Email"
+                        label="Email"
                         className="text-gray-700"
                         disabled={loading}
                         value={email}
@@ -116,7 +116,7 @@ export default function Register() {
                     <div className="mb-4 w-full md:flex md:justify-between">
                         <InputPassword
                             id="password"
-                            placeholder="Password"
+                            label="Password"
                             className="text-gray-700"
                             value={password}
                             onChange={(event) => setPassword(event.target.value)}
@@ -124,7 +124,7 @@ export default function Register() {
 
                         <InputPassword
                             id="password_confirm"
-                            placeholder="Confirm password"
+                            label="Confirm password"
                             className="text-gray-700 md:ml-5"
                             value={passwordConfirm}
                             onChange={(event) => setPasswordConfirm(event.target.value)}

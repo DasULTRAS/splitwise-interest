@@ -1,7 +1,32 @@
-import mongoose from 'mongoose';
-import {checkEmail, checkPassword} from "@/utils/validation"
+import { Schema, model, models } from 'mongoose';
+import { checkEmail, checkPassword } from "@/utils/validation"
 
-const UserSchema = new mongoose.Schema({
+export interface MongoUser {
+    username: string,
+    email: string,
+    password: string,
+    avatar?: string,
+    splitwise: {
+        id: number,
+        consumerKey: string,
+        consumerSecret: string,
+        interests: {
+            friend_id: number,
+            settings: {
+                apy: number,
+                cycles: number,
+                minDebtAge: number,
+                nextDate: Date,
+            },
+        }[],
+    },
+    createdAt: Date,
+    updatedAt: Date,
+    lastPasswordUpdatedAt: Date,
+    lastLogin: Date,
+}
+
+const userSchema = new Schema({
     username: {
         type: String as any,
         required: true,
@@ -51,9 +76,34 @@ const UserSchema = new mongoose.Schema({
                 type: Number as any,
                 required: true
             },
-            weeklyRate: {
-                type: Number as any,
-                required: true
+            settings: {
+                // Annual interest per Year
+                apy: {
+                    type: Number as any,
+                    required: true,
+                },
+                // Number of days between two interests
+                cycles: {
+                    type: Number as any,
+                    required: true,
+                    default: 14,
+                    min: 1,
+                    max: 365
+                },
+                // Minimum age of the debt to be considered for interest
+                minDebtAge: {
+                    type: Number as any,
+                    required: true,
+                    default: 1,
+                    min: 1,
+                    max: 365
+                },
+                // next date where the interest is calculated
+                nextDate: {
+                    type: Date as any,
+                    required: true,
+                    default: Date.now
+                },
             },
         }],
     },
@@ -75,24 +125,4 @@ const UserSchema = new mongoose.Schema({
     }
 });
 
-export default mongoose.models.User || mongoose.model('User', UserSchema);
-
-export interface MongoUser {
-    username: string,
-    email: string,
-    password: string,
-    avatar: string,
-    splitwise: {
-        id: number,
-        consumerKey: string,
-        consumerSecret: string,
-        interests: {
-            friend_id: number,
-            weeklyRate: number,
-        }[],
-    },
-    createdAt: Date,
-    updatedAt: Date,
-    lastPasswordUpdatedAt: Date,
-    lastLogin: Date,
-}
+export default models.User || model('User', userSchema);
