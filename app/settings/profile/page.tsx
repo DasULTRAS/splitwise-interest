@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import LoadingCircle from "@/components/symbols/loadingCircle";
-import MessageText from "@/components/text/messageText";
+import LoadingCircle from "@/components/ui/symbols/loadingCircle";
+import MessageText from "@/components/ui/text/messageText";
 
 export default function ProfileSettings() {
     const [avatar, setAvatar] = useState("");
@@ -13,7 +13,12 @@ export default function ProfileSettings() {
     useEffect(() => {
         const fetchAvatar = async () => {
             setLoading(true);
-            const response = await fetch("/api/user/avatar");
+            const response = await fetch("/api/user/avatar", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
 
             if (response.ok) {
                 const data = await response.json();
@@ -78,6 +83,9 @@ export default function ProfileSettings() {
         try {
             const response = await fetch("/api/user/avatar", {
                 method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
                 body: JSON.stringify({ avatar })
             });
 
@@ -103,13 +111,14 @@ export default function ProfileSettings() {
 
                 {avatar && <Image src={avatar} alt="User Avatar" height={180} width={180} />}
                 <input
-                    className="max-w-sm inp_default my-5 block w-full cursor-pointer rounded-lg border border-gray-300 text-sm focus:outline-none dark:placeholder-gray-400 dark:border-gray-600 dark:bg-gray-700"
+                    className="my-5 block w-full cursor-pointer rounded-lg border border-gray-300 text-sm focus:outline-none dark:placeholder-gray-400 dark:border-gray-600 dark:bg-gray-700"
                     title="avatar_upload" type="file" accept="image/*" onChange={handleAvatarUpload}
                     disabled={loading} />
 
                 <div className="mb-6 flex justify-center">
                     <button
-                        className="flex btn_save"
+                        id="btn_save"
+                        className="flex"
                         type="submit"
                         disabled={loading || !avatar}>
                         {loading && <LoadingCircle />}
@@ -118,9 +127,9 @@ export default function ProfileSettings() {
                 </div>
             </form>
 
-            {message &&
+            {message && <>
                 <MessageText message={message} />
-            }
+            </>}
         </div>
     );
 }

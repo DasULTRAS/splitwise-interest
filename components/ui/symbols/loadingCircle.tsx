@@ -1,6 +1,11 @@
-export default function LoadingCircle({ className, height = "5", width = "5" }: { className?: string, height?: string, width?: string }) {
+export default function LoadingCircle({ className, height, width }: { className?: string, height?: string, width?: string }) {
+    if (!height)
+        height = "5";
+    if (!width)
+        width = "5";
+
     return (
-        <div className={className}>
+        <div className={className + "w-full h-full"}>
             <svg className={`animate-spin mr-3 h-${height} w-${width}`} viewBox="0 0 24 24">
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
                     strokeWidth="4"></circle>

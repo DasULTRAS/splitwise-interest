@@ -1,10 +1,10 @@
 "use client";
 
 import { checkPassword } from "@/utils/validation";
-import LoadingCircle from "@/components/symbols/loadingCircle";
-import MessageText from "@/components/text/messageText";
+import LoadingCircle from "@/components/ui/symbols/loadingCircle";
+import MessageText from "@/components/ui/text/messageText";
 import React, { useEffect, useState } from "react";
-import { InputPassword } from "@/components/input";
+import { InputPassword } from "@/components/ui/input";
 
 export default function PasswordChangeForm() {
     const [password, setPassword] = useState<string>("");
@@ -67,25 +67,26 @@ export default function PasswordChangeForm() {
             <h1 className="text-center text-3xl font-bold">Change Password</h1>
 
             <form className="rounded pt-6 pb-8" onSubmit={handleSubmit}>
-                <div className="mb-4 w-full md:flex md:mx-auto md:max-w-3xl">
+                <div className="mb-4 w-full md:flex md:justify-between">
                     <InputPassword
-                        label="Password"
-                        className="mb-4 w-full md:mr-2 md:mb-0 md:w-1/2"
+                        placeholder="Password"
+                        className="w-full md:w-1/2 mb-4 md:mb-0 md:mr-2"
                         value={password}
                         onChange={(event) => setPassword(event.target.value)}
                         inputError={password && checkPassword(password)} />
 
                     <InputPassword
-                        label="Password Confirm"
-                        className="w-full md:ml-2 md:w-1/2"
+                        placeholder="Password Confirm"
+                        className="w-full md:w-1/2 md:ml-2"
                         value={passwordConfirm}
                         onChange={(event) => setPasswordConfirm(event.target.value)}
                         inputError={passwordConfirm && checkPassword(passwordConfirm)} />
                 </div>
 
-                <div className="mb-6 flex w-full justify-center">
+                <div className="mb-6 w-full flex justify-center">
                     <button
-                        className="btn_save flex"
+                        id="btn_save"
+                        className="flex"
                         type="submit"
                         disabled={loading || !!checkPassword(password) || password !== passwordConfirm}>
                         {loading && <LoadingCircle />}

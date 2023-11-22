@@ -1,6 +1,6 @@
 "use client";
 
-import LoadingCircle from "@/components/symbols/loadingCircle";
+import LoadingCircle from "@/components/ui/symbols/loadingCircle";
 import {useState} from "react";
 
 export default function Trigger() {
@@ -29,7 +29,7 @@ export default function Trigger() {
     return (
         <div className="mt-10 mb-5 flex w-full flex-col items-center justify-center">
             <button
-                className="flex h-12 w-60 items-center justify-center rounded-xl dark:bg-black text-4xl text-black shadow-lg shadow-red-600 hover:shadow-xl disabled:bg-black/20 dark:text-white"
+                className="flex h-12 w-60 items-center justify-center rounded-xl bg-black text-4xl text-black shadow-lg shadow-red-600 hover:shadow-xl disabled:bg-black/75 dark:text-white"
                 onClick={trigger} disabled={loading}>{loading ?
                 <LoadingCircle width="10" height="10"/> : "TRIGGER IT"}</button>
             <p className="my-5">{message}</p>
