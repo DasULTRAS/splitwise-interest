@@ -5,7 +5,7 @@
 @tailwind utilities;
 
 body {
-    @apply text-black text-opacity-90 dark:text-white dark:text-opacity-90 bg-white dark:bg-gray-800;
+    @apply text-black dark:text-white text-opacity-90 bg-white dark:bg-gray-800;
     font-family: 'Raleway', Verdana, monospace;
 }
 
@@ -31,6 +31,14 @@ h3 {
 
 .inp_default {
     @apply font-mono p-1 rounded;
+}
+
+.inp_form_default {
+    @apply w-full px-3 py-2 mb-3 text-sm leading-tight border rounded shadow appearance-none;
+}
+
+.inp_form_default:focus {
+    @apply outline-none border-blue-600;
 }
 
 .lbl_default {

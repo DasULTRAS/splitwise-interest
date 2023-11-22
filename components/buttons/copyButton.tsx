@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from 'react';
+import { HoverLabel } from '../label';
 
 export default function CopyButton({ text }: { text: string }) {
     const [isCopied, setIsCopied] = useState(false);
@@ -22,11 +23,7 @@ export default function CopyButton({ text }: { text: string }) {
             </button>
 
             {isCopied && (
-                <div
-                    className="absolute top-8 left-1/2 z-10 -translate-x-1/2 transform rounded bg-black p-2 text-xs text-white">
-                    Text copied!
-                    <div className="absolute -top-1 left-1/2 h-2 w-2 -translate-x-1/2 rotate-45 transform bg-black"></div>
-                </div>
+                <HoverLabel className="text-xs text-white">Text copied!</HoverLabel>
             )}
         </div>
     );

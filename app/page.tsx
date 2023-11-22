@@ -2,7 +2,7 @@ import Favicon from "@/components/images/favicon";
 
 export default function Home() {
     return (
-        <div className="flex h-full flex-col items-center justify-center p-10">
+        <div className="flex h-full flex-col items-center justify-center py-5 w-3/4 mx-auto">
             <Favicon width={150} height={150} className="mb-10"/>
 
             <h1 className="text-center">Welcome to the Splitwise interest Calculator</h1>

@@ -11,18 +11,21 @@ import UnauthorizedPage from '@/components/ui/unauthorisedPage';
 import FriendCard from "@/components/ui/friendCard";
 
 export default async function FriendsDashboard() {
-    try {
-        // Get Usersession
-        const session: Session | null = await getServerSession(options);
-        if (!session)
-            throw new Error("Not logged in");
+    // Get Usersession
+    // TODO: Darf nicht im try catch sein?
+    const session: Session | null = await getServerSession(options);
+    if (!session)
+        return (<UnauthorizedPage />);
 
+    try {
         // Get User from DB
         await connectToDb();
         const user = await User.findOne({ ["username"]: session.user?.name })
 
         if (!user.splitwise.id)
-            throw new Error("Splitwise not connected");
+            return (<UnauthorizedPage href='/settings/splitwise'>
+                Please click <b>here</b> to set up your Splitwise connection first.
+            </UnauthorizedPage>);
 
         const sw = (await Splitwise.getInstance()).splitwise;
         const friends: Friend[] = await sw.getFriends();
@@ -30,13 +33,13 @@ export default async function FriendsDashboard() {
         // Sort friends by name
         friends.sort((a, b) => a.first_name.localeCompare(b.first_name));
 
-        const getWeeklyRate = function (id: number) {
+        const getAPY = function (id: number) {
             const interest = user.splitwise.interests.find((interest: {
                 friend_id: number,
-                weeklyRate: number
+                apy: number
             }) => interest.friend_id === id)
-            if (interest?.weeklyRate)
-                return interest.weeklyRate;
+            if (interest?.settings?.apy)
+                return interest.settings.apy;
             else return null;
         }
 
@@ -46,22 +49,19 @@ export default async function FriendsDashboard() {
                 <div className="flex flex-wrap justify-center gap-4">
                     {
                         friends.map((friend: Friend) => (
-                            <FriendCard key={friend.id} friend={friend} weeklyRate={getWeeklyRate(friend.id)} />
+                            <FriendCard key={friend.id} friend={friend} apy={getAPY(friend.id)} />
                         ))
                     }
                 </div>
             </div>
         );
+
     } catch (e) {
         if (e instanceof Error) {
-            if (e.message === "Not logged in")
-                return (<UnauthorizedPage />);
-            else if (e.message === "Splitwise not connected")
+            if (e.message === "getFriends - getFriends - authentication failed - client error") {
                 return (<UnauthorizedPage
-                    href='/settings/splitwise'>Please click <b>here</b> to set up your Splitwise connection first.</UnauthorizedPage>);
-            else if (e.message === "getFriends - getFriends - authentication failed - client error") {
-                return (<UnauthorizedPage
-                    href='/settings/splitwise'>Please click <b>here</b> correct your Splitwise credentials first.</UnauthorizedPage>);
+                    href='/settings/splitwise'>Please click <b>here</b> correct your Splitwise credentials
+                    first.</UnauthorizedPage>);
             }
         }
         throw new Error("Unknown error: in Dashboard", { cause: e });

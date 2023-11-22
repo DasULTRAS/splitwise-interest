@@ -69,14 +69,14 @@ export default function PasswordChangeForm() {
             <form className="rounded pt-6 pb-8" onSubmit={handleSubmit}>
                 <div className="mb-4 w-full md:flex md:mx-auto md:max-w-3xl">
                     <InputPassword
-                        placeholder="Password"
+                        label="Password"
                         className="mb-4 w-full md:mr-2 md:mb-0 md:w-1/2"
                         value={password}
                         onChange={(event) => setPassword(event.target.value)}
                         inputError={password && checkPassword(password)} />
 
                     <InputPassword
-                        placeholder="Password Confirm"
+                        label="Password Confirm"
                         className="w-full md:ml-2 md:w-1/2"
                         value={passwordConfirm}
                         onChange={(event) => setPasswordConfirm(event.target.value)}
