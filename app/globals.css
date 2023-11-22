@@ -5,75 +5,44 @@
 @tailwind utilities;
 
 body {
-    @apply text-black dark:text-white text-opacity-90 bg-white dark:bg-gray-800;
+    @apply text-black text-opacity-90 dark:text-white dark:text-opacity-90 bg-white dark:bg-gray-800;
     font-family: 'Raleway', Verdana, monospace;
 }
 
-input {
-    @apply bg-transparent;
+button {
+    @apply font-mono text-blue-800 dark:shadow-blue-200 py-1 px-2 rounded;
 }
 
-h1 {
-    @apply text-4xl font-bold;
-}
-
-h2 {
-    @apply text-3xl font-bold;
-}
-
-h3 {
-    @apply text-2xl font-bold;
-}
-
-.a_link {
-    @apply italic hover:underline;
-}
-
-.inp_default {
-    @apply font-mono p-1 rounded;
-}
-
-.inp_form_default {
-    @apply w-full px-3 py-2 mb-3 text-sm leading-tight border rounded shadow appearance-none;
-}
-
-.inp_form_default:focus {
-    @apply outline-none border-blue-600;
-}
-
-.lbl_default {
-    @apply font-light text-sm;
-}
-
-.btn_default {
-    @apply font-mono text-blue-800 dark:text-blue-200 shadow-blue-600 py-1 px-2 rounded;
-}
-
-.btn_default:hover {
+button:hover {
     @apply bg-neutral-800/10 shadow shadow-blue-300 dark:shadow-blue-400;
 }
 
-.btn_clickable:hover {
-    @apply shadow-md shadow-blue-600;
+input {
+    @apply font-mono p-1 rounded bg-transparent;
 }
 
-.btn_save {
-    @apply w-fit px-4 py-2 text-white bg-blue-500 rounded-full;
+label {
+    @apply font-light text-sm;
 }
 
-.btn_save:disabled {
+/* Custom ID classes */
+
+#btn_save {
+    @apply w-fit px-4 py-2 font-bold text-white bg-blue-500 rounded-full;
+}
+
+#btn_save:disabled {
     @apply bg-blue-500/50;
 }
 
-.btn_save:hover {
+#btn_save:hover {
     @apply bg-blue-700;
 }
 
-.btn_save:focus {
+#btn_save:focus {
     @apply outline-none shadow-md;
 }
 
-/* Things that not in Tailwind */
-.border-1 {
-    border-width: 1px;
+#dsn_clickable:hover {
+    @apply shadow-md shadow-blue-600;
 }

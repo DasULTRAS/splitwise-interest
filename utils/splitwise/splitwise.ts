@@ -1,10 +1,10 @@
-import { getServerSession } from "next-auth/next";
-import { Session } from 'next-auth';
+import {getServerSession} from "next-auth/next";
+import {Session} from 'next-auth';
 
 import User from '@/models/User';
-import { connectToDb } from '@/utils/mongodb';
-import { options } from "@/app/api/auth/[...nextauth]/options";
-import { Expense, Friend } from "./datatypes";
+import {connectToDb} from '@/utils/mongodb';
+import {options} from "@/app/api/auth/[...nextauth]/options";
+import {Expense, Friend} from "./datatypes";
 
 const Sw = require('splitwise');
 
@@ -53,7 +53,7 @@ export default class Splitwise {
     private static instances: { [key: string]: Splitwise } = {};
     public splitwise: any;
 
-    private constructor() { }
+    private constructor() {}
 
     public static async resetInstance() {
         const username: string = await getUsername();
@@ -70,7 +70,7 @@ export default class Splitwise {
     public async initialize(username: string): Promise<void> {
         // Get User from DB
         await connectToDb();
-        const user = await User.findOne({ ["username"]: username });
+        const user = await User.findOne({["username"]: username});
 
         // Stelle sicher, dass ein User gefunden wurde
         if (!user || !user.splitwise) {
@@ -104,15 +104,14 @@ export default class Splitwise {
 export async function getInventedDebts(
     user_id: number,
     friend_id: number,
-    minDebtAge: number,
-    splitwise?: any,
+    splitwise?: any
 ) {
     if (!splitwise) splitwise = (await Splitwise.getInstance()).splitwise;
 
-    const friend: Friend = await splitwise.getFriend({ id: friend_id });
+    const friend: Friend = await splitwise.getFriend({id: friend_id});
     const expenses: Expense[] = await splitwise.getExpenses({
         friend_id: friend.id,
-        dated_after: new Date(Date.now() - minDebtAge * 24 * 60 * 60 * 1000).toISOString(),
+        dated_after: getLastMonday().toISOString(),
         limit: 0,
     });
 
