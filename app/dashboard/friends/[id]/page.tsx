@@ -77,7 +77,6 @@ export default async function Friend({ params }: Readonly<{ params: { id: number
                     href='/settings/splitwise'>Please click <b>here</b> correct your Splitwise credentials first.</UnauthorizedPage>);
             }
         }
-        console.log(e);
         throw new Error("Unknown error: in Dashboard", { cause: e });
     }
 }

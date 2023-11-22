@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import User, { MongoUser } from "@/models/User";
+import User from "@/models/User";
 import { connectToDb } from "@/utils/mongodb";
 import { getServerSession } from "next-auth/next";
 import { options } from "@/app/api/auth/[...nextauth]/options";
@@ -10,7 +10,7 @@ import Splitwise, {
 } from "@/utils/splitwise/splitwise";
 import { Expense } from "@/utils/splitwise/datatypes";
 
-export async function createInterests(user: User) {
+export async function createInterests(user: any) {
     // Get Splitwise Connection
     const sw = (await Splitwise.getInstanceByUsername(user.username)).splitwise;
     const interests = [];
