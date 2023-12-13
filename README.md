@@ -70,19 +70,52 @@ Run `docker stack deploy -c docker-compose.yml splitwise-interest` (or `docker-c
 2. Add the values for the environment variables.
 3. And duplicate the `.env` file in the _**db**_ directory.
 
-### DB
+### MONGO EXPRESS
+Credentials:
+> admin
+> pass
+
+### DEV CONTAINERS
+
+Development container that can be used with VSCode.
+
+It works on Linux, Windows and OSX.
+
+#### Requirements
+
+- [VS code](https://code.visualstudio.com/download) installed
+- [VS code remote containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) installed
+- [Docker](https://www.docker.com/products/docker-desktop) installed and running
+- [Docker Compose](https://docs.docker.com/compose/install/) installed
+
+#### Setup
+
+1. Create the following files on your host if you don't have them:
+
+    ```sh
+    touch ~/.gitconfig ~/.zsh_history
+    ```
+
+    Note that the development container will create the empty directories `~/.docker` and `~/.ssh` if you don't have them.
+
+1. **For Docker on OSX or Windows without WSL**: ensure your home directory `~` is accessible by Docker.
+1. **For Docker on Windows without WSL:** if you want to use SSH keys, bind mount your host `~/.ssh` to `/tmp/.ssh` instead of `~/.ssh` by changing the `volumes` section in the [docker-compose.yml](docker-compose.yml).
+1. Open the command palette in Visual Studio Code (CTRL+SHIFT+P).
+1. Select `Remote-Containers: Open Folder in Container...` and choose the project directory.
+
+### LOCAL DEV ENVIRONMENT
+
+#### DB
 
 start the Mongo DB server with docker-compose in the _**db**_ directory
+
+> in db directory
 
 ```bash
 docker-compose up -d
 ```
 
-**MONGO EXPRESS**
-> admin
-> pass
-
-### Site
+#### Site
 
 First, run the development server:
 
