@@ -41,37 +41,39 @@ export async function createInterests(user: any) {
                     friend.settings.minDebtAge,
                     sw
                 );
-                const interest = roundUpToTwoDecimals(
-                    inventedDebt * friend.settings.apy / 100 * friend.settings.cycles / 365
-                );
+                if (inventedDebt > friend.settings.minAmount) {
+                    const interest = roundUpToTwoDecimals(
+                        inventedDebt * friend.settings.apy / 100 * friend.settings.cycles / 365
+                    );
 
-                if (interest > 0) {
-                    const res = await sw.createExpense({
-                        cost: interest,
-                        description: `Zins ${friend.settings.apy}%`,
-                        group_id: 0,
-                        split_equally: false,
-                        category_id: 4,
-                        details: `Automatically Generated: ${inventedDebt} * ${friend.settings.apy} / 100 * ${friend.settings.cycles} / 365 = ${interest} 
+                    if (interest > 0) {
+                        const res = await sw.createExpense({
+                            cost: interest,
+                            description: `Zins ${friend.settings.apy}%`,
+                            group_id: 0,
+                            split_equally: false,
+                            category_id: 4,
+                            details: `Automatically Generated: ${inventedDebt} * ${friend.settings.apy} / 100 * ${friend.settings.cycles} / 365 = ${interest} 
                         \n ${friend.settings.cycles} days between interests 
                         \n ${lastExceptedDay.toLocaleDateString()} last excepted day`,
-                        repeat_interval: "never",
-                        users: [
-                            {
-                                user_id: user.splitwise.id,
-                                paid_share: `${interest}`,
-                                owed_share: '0.00',
-                            },
-                            {
-                                user_id: friend.friend_id,
-                                paid_share: '0.00',
-                                owed_share: `${interest}`,
-                            },
-                        ],
-                    });
-                    interests.push(res);
+                            repeat_interval: "never",
+                            users: [
+                                {
+                                    user_id: user.splitwise.id,
+                                    paid_share: `${interest}`,
+                                    owed_share: '0.00',
+                                },
+                                {
+                                    user_id: friend.friend_id,
+                                    paid_share: '0.00',
+                                    owed_share: `${interest}`,
+                                },
+                            ],
+                        });
+                        interests.push(res);
 
-                    friend.settings.nextDate = new Date(Date.now() + friend.settings.cycles * 24 * 60 * 60 * 1000);
+                        friend.settings.nextDate = new Date(Date.now() + friend.settings.cycles * 24 * 60 * 60 * 1000);
+                    }
                 }
             }
         }

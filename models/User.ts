@@ -15,6 +15,7 @@ export interface MongoUser {
             settings: {
                 apy: number,
                 cycles: number,
+                minAmount: number,
                 minDebtAge: number,
                 nextDate: Date,
             },
@@ -97,6 +98,13 @@ const userSchema = new Schema({
                     default: 1,
                     min: 1,
                     max: 365
+                },
+                // Min amount from which interest is charged
+                minAmount:{
+                    type: Number as any,
+                    required: true,
+                    default: 0,
+                    min: 0,
                 },
                 // next date where the interest is calculated
                 nextDate: {
