@@ -10,6 +10,7 @@ export interface Settings {
     apy: number,
     cycles: number,
     minDebtAge: number,
+    minAmount: number,
     nextDate: Date
 };
 
@@ -116,7 +117,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
             if (!interest) {
                 user.splitwise.interests.push({
                     friend_id: Number.parseInt(params.id), settings: {
-                        apy: 0, cycles: 0, minDebtAge: 0, nextDate: new Date()
+                        apy: 0, cycles: 0, minDebtAge: 0, minAmount:0, nextDate: new Date()
                     }
                 });
                 interest = user.splitwise.interests.find((i:{friend_id:number, settings:Settings}) => i.friend_id === id);
@@ -125,6 +126,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
             if (interest) {
                 interest.settings.apy = settings.apy;
                 interest.settings.cycles = settings.cycles;
+                interest.settings.minAmount = settings.minAmount;
                 interest.settings.minDebtAge = settings.minDebtAge;
 
                 if (!interest?.settings?.nextDate || !(interest.settings.nextDate?.toDateString() === settings.nextDate.toDateString()))
