@@ -12,6 +12,7 @@ export default function RateSettingsForm({ friend_id }: Readonly<{ friend_id: nu
     const [apy, setAPY] = useState<number>(0);
     const [cycles, setCycles] = useState<number>(7);
     const [minDebtAge, setMinDebtAge] = useState<number>(14);
+    const [minAmount, setMinAmount] = useState<number>(0);
     const [nextDate, setNextDate] = useState<Date>(new Date());
     const [showAllSettings, setShowAllSettings] = useState<boolean>(false);
 
@@ -28,6 +29,7 @@ export default function RateSettingsForm({ friend_id }: Readonly<{ friend_id: nu
                     setAPY(data?.settings?.apy);
                     setCycles(data?.settings?.cycles);
                     setMinDebtAge(data?.settings?.minDebtAge);
+                    setMinAmount(data?.settings?.minAmount);
                     setNextDate(new Date(data.settings.nextDate));
                 } else {
                     setMessage(data.message);
@@ -62,7 +64,7 @@ export default function RateSettingsForm({ friend_id }: Readonly<{ friend_id: nu
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({ settings: { apy, cycles, minDebtAge, nextDate: nextDateISO } })
+                body: JSON.stringify({ settings: { apy, cycles, minDebtAge, minAmount, nextDate: nextDateISO } })
             });
 
             const data = await res.json();
@@ -71,6 +73,7 @@ export default function RateSettingsForm({ friend_id }: Readonly<{ friend_id: nu
                 setAPY(data?.settings?.apy || 0);
                 setCycles(data?.settings?.cycles || 7);
                 setMinDebtAge(data?.settings?.minDebtAge || 14);
+                setMinAmount(data?.settings?.minAmount || 0);
                 setNextDate(new Date(data.settings.nextDate));
 
                 setMessage(data.message);
@@ -119,7 +122,8 @@ export default function RateSettingsForm({ friend_id }: Readonly<{ friend_id: nu
             </div>
 
             {/* See more */}
-            <button className="flex mx-auto font-mono shadow-sm my-3" type="button" onClick={() => { setShowAllSettings(!showAllSettings) }}>
+            <button className="flex mx-auto font-mono shadow-sm my-3" type="button" onClick={() => setShowAllSettings(!showAllSettings)
+            }>
                 {showAllSettings ?
                     <>
                         <p className="mr-2">Hide all settings</p>
@@ -146,7 +150,7 @@ export default function RateSettingsForm({ friend_id }: Readonly<{ friend_id: nu
 
                         {/* Number input for min age of days */}
                         <Input type="number"
-                            id="min-age-input" label="Min Debt Age in Days"
+                            id="min-age-input" label="min. Debt Age in Days"
                             className="mb-4 md:ml-2"
                             min={1} max={365}
                             value={minDebtAge}
@@ -156,19 +160,34 @@ export default function RateSettingsForm({ friend_id }: Readonly<{ friend_id: nu
                         />
                     </div>
 
-                    {/* Date input */}
-                    <Input id="start-date" type="date" label="Next Date"
-                        className="mb-4 w-full md:w-1/2"
-                        value={nextDate.toISOString().split('T')[0]} // Format the date in YYYY-MM-DD format
-                        disabled={loading}
-                        onChange={(e) => { if (e.target.value) setNextDate(new Date(e.target.value + 'T00:00:00Z')) }}
-                        inputError={checkNextDate(nextDate)}
-                    />
+                    <div className="md:flex">
+                        {/* min amount */}
+                        <Input type="number"
+                            id="min-amount" label="min. Amount"
+                            className="mb-4 md:mr-2"
+                            min={0} step={0.01}
+                            value={minAmount}
+                            disabled={loading}
+                            onChange={(e) => setMinAmount(e.target.valueAsNumber)}
+                        />
+
+                        {/* Date input */}
+                        <Input type="date"
+                            id="start-date" label="Next Date"
+                            className="mb-4 md:ml-2"
+                            value={nextDate.toISOString().split('T')[0]} // Format the date in YYYY-MM-DD format
+                            disabled={loading}
+                            onChange={(e) => {
+                                if (e.target.value) setNextDate(new Date(e.target.value + 'T00:00:00Z'))
+                            }}
+                            inputError={checkNextDate(nextDate)}
+                        />
+                    </div>
                 </>
             }
 
             <button className="btn_save mx-auto" disabled={loading} type="submit">save</button>
             <MessageText message={message} />
-        </form >
+        </form>
     );
 }
