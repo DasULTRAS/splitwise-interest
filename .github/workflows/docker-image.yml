@@ -37,6 +37,6 @@ jobs:
         with:
           context: ${{ matrix.context }}
           push: true
-          tags: ${{ matrix.tags }}:latest,${{ matrix.tags }}:0.1.3
+          tags: ${{ matrix.tags }}:latest,${{ matrix.tags }}:0.2.1
           no-cache: true
           platforms: linux/amd64,linux/arm64
