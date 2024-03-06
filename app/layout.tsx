@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport} from 'next';
 import { AuthProvider } from "@/app/api/auth/[...nextauth]/provider";
 import Navbar from '@/components/ui/navbar/navbar';
 import manifest from '@/app/manifest';
@@ -9,8 +9,14 @@ import './globals.css'
 export const metadata: Metadata = {
     title: manifest().name,
     description: manifest().description,
-    themeColor: manifest().theme_color,
 }
+
+export const viewport: Viewport = {
+    themeColor: [
+      { media: '(prefers-color-scheme: light)', color: 'white' },
+      { media: '(prefers-color-scheme: dark)', color: 'black' },
+    ],
+  }
 
 export default function RootLayout({ children, }: { children: React.ReactNode }) {
     return (
