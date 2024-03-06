@@ -4,13 +4,7 @@ import { connectToDb } from '@/utils/mongodb';
 import { getServerSession } from "next-auth/next";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import { Session } from 'next-auth';
-
-export async function getAvatar(username: string): Promise<string> {
-    // Get User from DB
-    await connectToDb();
-    const user = await User.findOne({ ["username"]: username })
-    return user?.avatar;
-}
+import { getAvatar } from '@/utils/splitwise/splitwise';
 
 export async function GET() {
     try {

@@ -20,6 +20,13 @@ async function getUsername() {
     return session.user.name;
 }
 
+export async function getAvatar(username: string): Promise<string> {
+    // Get User from DB
+    await connectToDb();
+    const user = await User.findOne({ ["username"]: username })
+    return user?.avatar;
+}
+
 export function getLastMonday(daysAgo: number = 14) {
     const now = new Date();
 

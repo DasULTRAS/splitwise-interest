@@ -1,6 +1,6 @@
 {
   "name": "splitwise-interest",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -10,7 +10,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "next": "13.5.4",
+    "next": "14.1.2",
     "next-auth": "^4",
     "react": "^18",
     "react-dom": "^18",
@@ -24,8 +24,8 @@
     "autoprefixer": "^10",
     "bcrypt": "^5",
     "eslint": "^8",
-    "eslint-config-next": "13",
-    "mongoose": "^7",
+    "eslint-config-next": "^13",
+    "mongoose": "^8",
     "postcss": "^8",
     "splitwise": "^1",
     "tailwindcss": "^3",

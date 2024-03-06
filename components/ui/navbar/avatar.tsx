@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { Session } from "next-auth";
-import { getAvatar } from "@/app/api/user/avatar/route";
+import { getAvatar } from "@/utils/splitwise/splitwise";
 
 export default async function UserAvatar({ session, height, width, className = "h-12 w-12" }: { session: Session | null | undefined, height: number, width: number, className: string }) {
     if (!session?.user?.name)
