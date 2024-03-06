@@ -27,6 +27,49 @@ export interface MongoUser {
     lastLogin: Date,
 }
 
+const InterestSchema = new Schema({
+    friend_id: {
+        type: Number as any,
+        required: true
+    },
+    settings: {
+        // Annual interest per Year
+        apy: {
+            type: Number as any,
+            required: true,
+        },
+        // Number of days between two interests
+        cycles: {
+            type: Number as any,
+            required: true,
+            default: 14,
+            min: 1,
+            max: 365
+        },
+        // Minimum age of the debt to be considered for interest
+        minDebtAge: {
+            type: Number as any,
+            required: true,
+            default: 1,
+            min: 1,
+            max: 365
+        },
+        // Min amount from which interest is charged
+        minAmount:{
+            type: Number as any,
+            required: true,
+            default: 0,
+            min: 0,
+        },
+        // next date where the interest is calculated
+        nextDate: {
+            type: Date as any,
+            required: true,
+            default: Date.now
+        },
+    },
+});
+
 const userSchema = new Schema({
     username: {
         type: String as any,
@@ -72,48 +115,7 @@ const userSchema = new Schema({
             type: String as any,
             required: false
         },
-        interests: [{
-            friend_id: {
-                type: Number as any,
-                required: true
-            },
-            settings: {
-                // Annual interest per Year
-                apy: {
-                    type: Number as any,
-                    required: true,
-                },
-                // Number of days between two interests
-                cycles: {
-                    type: Number as any,
-                    required: true,
-                    default: 14,
-                    min: 1,
-                    max: 365
-                },
-                // Minimum age of the debt to be considered for interest
-                minDebtAge: {
-                    type: Number as any,
-                    required: true,
-                    default: 1,
-                    min: 1,
-                    max: 365
-                },
-                // Min amount from which interest is charged
-                minAmount:{
-                    type: Number as any,
-                    required: true,
-                    default: 0,
-                    min: 0,
-                },
-                // next date where the interest is calculated
-                nextDate: {
-                    type: Date as any,
-                    required: true,
-                    default: Date.now
-                },
-            },
-        }],
+        interests: [InterestSchema as any],
     },
     createdAt: {
         type: Date as any,
