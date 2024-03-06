@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 import User from '@/models/User';
 import { checkPassword} from '@/utils/validation';
 import {connectToDb} from '@/utils/mongodb';
-import {saltRounds} from "@/app/api/auth/register/route";
+import {saltRounds} from "@/utils/constants";
 import {Session} from "next-auth";
 import {getServerSession} from "next-auth/next";
 import {options} from "@/app/api/auth/[...nextauth]/options";

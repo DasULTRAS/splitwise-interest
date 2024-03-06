@@ -164,7 +164,7 @@ export default function RateSettingsForm({ friend_id }: Readonly<{ friend_id: nu
                         {/* min amount */}
                         <Input type="number"
                             id="min-amount" label="min. Amount"
-                            className="w-full mb-4 md:mr-2"
+                            className="mb-4 md:mr-2"
                             min={0} step={0.01}
                             value={minAmount}
                             disabled={loading}
@@ -174,7 +174,7 @@ export default function RateSettingsForm({ friend_id }: Readonly<{ friend_id: nu
                         {/* Date input */}
                         <Input type="date"
                             id="start-date" label="Next Date"
-                            className="w-full mb-4 md:ml-2"
+                            className="mb-4 md:ml-2"
                             value={nextDate.toISOString().split('T')[0]} // Format the date in YYYY-MM-DD format
                             disabled={loading}
                             onChange={(e) => {

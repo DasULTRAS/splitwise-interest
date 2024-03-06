@@ -3,13 +3,12 @@ import bcrypt from 'bcrypt';
 import User from '@/models/User';
 import { checkEmail, checkPassword, checkUsername } from '@/utils/validation';
 import { connectToDb } from '@/utils/mongodb';
-
-export const saltRounds = 10;
+import { saltRounds } from '@/utils/constants';
 
 interface Errors {
-    email?: string;
-    username?: string;
-    password?: string;
+    email?: string,
+    username?: string,
+    password?: string,
 }
 
 interface Data {
