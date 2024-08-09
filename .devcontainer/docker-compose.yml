@@ -1,11 +1,10 @@
-version: '3'
 services:
   # Update this to the name of the service you want to work with in your docker-compose.yml file
-  app:
-    image: mcr.microsoft.com/devcontainers/typescript-node:20 
-
+  dev:
+    image: mcr.microsoft.com/devcontainers/typescript-node:20-bookworm
+    ports:
+      - "3000:3000"
     volumes:
-      - ../:/workspaces
       # Docker socket to access Docker server
       - /var/run/docker.sock:/var/run/docker.sock
       # SSH directory
@@ -14,19 +13,26 @@ services:
       # from /tmp/.ssh to ~/.ssh to fix permissions
       # - ~/.ssh:/tmp/.ssh:ro
       # Shell history persistence
-      - ~/.zsh_history:/root/.zsh_history:z
+      # - ~/.zsh_history:/root/.zsh_history:z
       # Git config
       - ~/.gitconfig:/root/.gitconfig
-
+      # Workspaces directory
+      - ..:/workspaces/
+      - next:/workspaces/.next
+      - node_modules:/workspaces/node_modules:cached
     environment:
       - TZ=Europe/Berlin
-      - DB_HOST=mongo
-      - DB_NAME=app
+      # FIX for WSL2 (https://github.com/vercel/next.js/issues/36774)
+      - NEXT_WEBPACK_USEPOLLING=true
+    command: >
+      sh -c "
+      chown -R node:node /workspaces/node_modules && 
+      chown -R node:node /workspaces/.next && 
+      sleep infinity"
     env_file:
       - .env
-
-    # Overrides default command so things don't shut down after the process ends.
-    command: /bin/sh -c "while sleep 1000; do :; done"
+    profiles:
+      - dev
 
   cron:
     build:
@@ -34,23 +40,30 @@ services:
     image: dasultras/curl-cron:latest
     restart: unless-stopped
     environment:
-      - CURL_HOST=app
-      - CURL_PORT=80
+      - CURL_HOST=dev
+      - CURL_PORT=3000
     env_file:
       - .env
-    depends_on: [ app ]
-    
+    depends_on: [dev]
+    profiles:
+      - dev
+      - test
+
   mongo:
     image: mongo
     restart: always
     ports:
       - "27017:27017"
     volumes:
-      - db:/data
-      - ../db/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+      - db:/data/db
+      - configdb:/data/configdb
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${DB_USER}
       MONGO_INITDB_ROOT_PASSWORD: ${DB_PASS}
+    profiles:
+      - dev
+      - test
 
   mongo-express:
     image: mongo-express
@@ -61,7 +74,12 @@ services:
       ME_CONFIG_MONGODB_ADMINUSERNAME: ${DB_USER}
       ME_CONFIG_MONGODB_ADMINPASSWORD: ${DB_PASS}
       ME_CONFIG_MONGODB_URL: mongodb://${DB_USER}:${DB_PASS}@mongo:27017/
-    depends_on: [ mongo ]
+    depends_on: [mongo]
+    profiles:
+      - test
 
 volumes:
+  next:
+  node_modules:
   db:
+  configdb:
