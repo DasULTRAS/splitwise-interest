@@ -1,4 +1,4 @@
-import { options } from "@/app/api/auth/[...nextauth]/options";
+import { options } from "@/app/api/auth/[...nextauth]/auth.config";
 import User from "@/models/User";
 import { connectToDb } from "@/utils/mongodb";
 import { User as SplitwiseUser } from "@/utils/splitwise/datatypes";

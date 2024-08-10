@@ -1,9 +1,8 @@
-import { Session } from "next-auth";
-import { getServerSession } from "next-auth/next";
-
-import { options } from "@/app/api/auth/[...nextauth]/options";
+import { options } from "@/app/api/auth/[...nextauth]/auth.config";
 import User from "@/models/User";
 import { connectToDb } from "@/utils/mongodb";
+import { Session } from "next-auth";
+import { getServerSession } from "next-auth/next";
 import { Expense, Friend } from "./datatypes";
 
 const Sw = require("splitwise");

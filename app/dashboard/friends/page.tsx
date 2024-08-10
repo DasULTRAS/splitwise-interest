@@ -1,4 +1,4 @@
-import { options } from "@/app/api/auth/[...nextauth]/options";
+import { options } from "@/app/api/auth/[...nextauth]/auth.config";
 import FriendCard from "@/components/ui/friendCard";
 import UnauthorizedPage from "@/components/ui/unauthorisedPage";
 import User from "@/models/User";

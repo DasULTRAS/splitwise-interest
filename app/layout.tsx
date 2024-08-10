@@ -1,6 +1,6 @@
-import { AuthProvider } from "@/app/api/auth/[...nextauth]/provider";
 import manifest from "@/app/manifest";
 import Navbar from "@/components/ui/navbar/navbar";
+import { AuthProvider } from "@/context/AuthProvider";
 import type { Metadata, Viewport } from "next";
 
 // These styles apply to every route in the application

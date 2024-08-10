@@ -1,4 +1,4 @@
-import { options } from "@/app/api/auth/[...nextauth]/options";
+import { options } from "@/app/api/auth/[...nextauth]/auth.config";
 import Favicon from "@/components/images/favicon";
 import UserAvatar from "@/components/ui/navbar/avatar";
 import { Session } from "next-auth";

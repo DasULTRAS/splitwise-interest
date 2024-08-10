@@ -1,4 +1,4 @@
-import { options } from "@/app/api/auth/[...nextauth]/options";
+import { options } from "@/app/api/auth/[...nextauth]/auth.config";
 import { Session } from "next-auth";
 import { getServerSession } from "next-auth/next";
 import Image from "next/image";
