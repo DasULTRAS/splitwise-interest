@@ -21,9 +21,9 @@ jobs:
       matrix:
         include:
           - context: "."
-            tags: "dasultras/splitwise-interest"
+            tags: ${{ github.repository }}
           - context: "cron"
-            tags: "dasultras/curl-cron"
+            tags: ${{ github.repository }}/cron
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -43,8 +43,9 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
-          context: ${{ matrix.context }}
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
           no-cache: true
           platforms: linux/amd64,linux/arm64
+          context: ${{ matrix.context }}
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
