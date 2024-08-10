@@ -44,7 +44,6 @@ services:
       - CURL_PORT=3000
     env_file:
       - .env
-    depends_on: [dev]
     profiles:
       - dev
       - test
@@ -64,17 +63,17 @@ services:
     profiles:
       - dev
       - test
-
-  mongo-express:
-    image: mongo-express
-    restart: always
+  
+  test:
+    image: dasultras/splitwise-interest:latest
+    build: ..
     ports:
-      - "8081:8081"
+      - "3000:3000"
     environment:
-      ME_CONFIG_MONGODB_ADMINUSERNAME: ${DB_USER}
-      ME_CONFIG_MONGODB_ADMINPASSWORD: ${DB_PASS}
-      ME_CONFIG_MONGODB_URL: mongodb://${DB_USER}:${DB_PASS}@mongo:27017/
-    depends_on: [mongo]
+      - TZ=Europe/Berlin
+      - PORT=3000
+    env_file:
+      - .env
     profiles:
       - test
 
