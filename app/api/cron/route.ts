@@ -1,7 +1,7 @@
 import User, { MongoUser } from "@/models/User";
+import { createInterests } from "@/services/splitwise";
 import { connectToDb } from "@/utils/mongodb";
 import { NextRequest, NextResponse } from "next/server";
-import { createInterests } from "../friend/interests/create/route";
 
 let lastCronRun: Date | null = null;
 

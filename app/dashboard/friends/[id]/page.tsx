@@ -2,14 +2,18 @@ import type { Friend, Group, User } from "@/utils/splitwise/datatypes";
 import Splitwise, { getInventedDebts } from "@/utils/splitwise/splitwise";
 
 import RateSettingsForm from "@/app/dashboard/friends/[id]/RateSettingsForm";
+import PageNotFound from "@/app/not-found";
 import WebImage from "@/components/images/WebImage";
 import UnauthorizedPage from "@/components/ui/unauthorisedPage";
 
 export default async function Friend({ params }: Readonly<{ params: { id: number } }>) {
+  const friend_id = Number(params?.id);
   try {
     const sw = (await Splitwise.getInstance()).splitwise;
 
-    const friend: Friend = await sw.getFriend({ id: params.id });
+    const friend: Friend = await sw.getFriend({ id: friend_id });
+    if (!friend) return <PageNotFound message="Friend not found" />;
+
     const me: User = await sw.getCurrentUser();
     const groups: Group[] = [];
 
