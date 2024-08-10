@@ -1,156 +1,162 @@
-'use client'
+"use client";
 
-import React, { useEffect, useState } from "react";
-import { SignInResponse, signIn } from 'next-auth/react';
 import ForgetPasswordButton from "@/components/buttons/forgetPasswordButton";
 import RegisterButton from "@/components/buttons/registerButton";
+import { Input, InputPassword } from "@/components/input";
 import LoadingCircle from "@/components/symbols/loadingCircle";
-import { InputPassword, Input } from "@/components/input";
 import MessageText from "@/components/text/messageText";
 import { checkEmail, checkPassword, checkUsername } from "@/utils/validation";
+import { SignInResponse, signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
 
 export default function Register() {
-    const router = useRouter();
-    const [email, setEmail] = useState<string>("");
-    const [username, setUsername] = useState<string>("");
-    const [password, setPassword] = useState<string>("");
-    const [passwordConfirm, setPasswordConfirm] = useState<string>("");
-    const [loading, setLoading] = useState(false);
-    const [message, setMessage] = useState<string>("");
+  const router = useRouter();
+  const [email, setEmail] = useState<string>("");
+  const [username, setUsername] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [passwordConfirm, setPasswordConfirm] = useState<string>("");
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState<string>("");
 
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault(); // prevent the default form submit event (page reload)
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault(); // prevent the default form submit event (page reload)
 
-        setLoading(true);
+    setLoading(true);
 
-        if (password !== passwordConfirm) {
-            setMessage("Passwords do not match!");
-            setLoading(false)
-            return;
-        }
+    if (password !== passwordConfirm) {
+      setMessage("Passwords do not match!");
+      setLoading(false);
+      return;
+    }
 
-        try {
-            const response = await fetch("/api/auth/register", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ username, email, password })
-            });
+    try {
+      const response = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, email, password }),
+      });
 
-            const responseData: { message: string; } = await response.json();
-            if (!response.ok) {
-                setMessage(`Register Error: ${response.statusText || responseData.message || 'Unknown error'}`);
-                return;
-            }
+      const responseData: { message: string } = await response.json();
+      if (!response.ok) {
+        setMessage(`Register Error: ${response.statusText || responseData.message || "Unknown error"}`);
+        return;
+      }
 
-            const res = await signIn('credentials', {
-                username: username,
-                password: password,
-                redirect: false,
-            }) as SignInResponse;
+      const res = (await signIn("credentials", {
+        username: username,
+        password: password,
+        redirect: false,
+      })) as SignInResponse;
 
-            // Redirect
-            if (!res) {
-                setMessage("Wait for redirect...");
-            } else if (res.ok) {
-                setMessage("Account created successfully!, Login successful!");
-            } else {
-                setMessage("Account was created, but Login failed?");
-            }
+      // Redirect
+      if (!res) {
+        setMessage("Wait for redirect...");
+      } else if (res.ok) {
+        setMessage("Account created successfully!, Login successful!");
+      } else {
+        setMessage("Account was created, but Login failed?");
+      }
 
-            setTimeout(() => {
-                router.refresh();
-                router.replace("/");
-            }, 1000);
+      setTimeout(() => {
+        router.refresh();
+        router.replace("/");
+      }, 1000);
+    } catch (error: any) {
+      setMessage(`Error: ${error.message || "Unknown error"}`);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-        } catch (error: any) {
-            setMessage(`Error: ${error.message || 'Unknown error'}`);
-        } finally {
-            setLoading(false);
-        }
+  // clear message after 5 seconds
+  useEffect(() => {
+    let timer: ReturnType<typeof setTimeout>;
+    // Wenn 'message' einen Wert hat, setzen Sie einen Timer, um es zu löschen
+    if (message) {
+      timer = setTimeout(() => {
+        setMessage(""); // Setzen Sie die Nachricht nach 5 Sekunden zurück
+      }, 10000);
+    }
+
+    // Cleanup Funktion, um sicherzustellen, dass der Timer gelöscht wird, wenn die Komponente unmontiert wird
+    return () => {
+      clearTimeout(timer);
     };
+  }, [message]);
 
-    // clear message after 5 seconds
-    useEffect(() => {
-        let timer: ReturnType<typeof setTimeout>;
-        // Wenn 'message' einen Wert hat, setzen Sie einen Timer, um es zu löschen
-        if (message) {
-            timer = setTimeout(() => {
-                setMessage(''); // Setzen Sie die Nachricht nach 5 Sekunden zurück
-            }, 10000);
-        }
+  return (
+    <div className="container mx-auto w-full max-w-2xl p-5">
+      <h3 className="mb-2 text-center text-2xl">Create an Account</h3>
+      <div className="rounded-lg bg-white shadow-xl shadow-neutral-900">
+        <form className="rounded bg-white px-8 pb-8 pt-6" onSubmit={handleSubmit}>
+          <Input
+            id={"username"}
+            label={"Username"}
+            className={"text-gray-700"}
+            disabled={loading}
+            value={username}
+            onChange={(event) => setUsername(event.target.value)}
+            inputError={username && checkUsername(username)}
+          />
 
-        // Cleanup Funktion, um sicherzustellen, dass der Timer gelöscht wird, wenn die Komponente unmontiert wird
-        return () => {
-            clearTimeout(timer);
-        };
-    }, [message]);
+          <Input
+            id="email"
+            label="Email"
+            className="text-gray-700"
+            disabled={loading}
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+            inputError={email && checkEmail(email)}
+          />
 
-    return (
-        <div className="container mx-auto w-full max-w-2xl p-5">
-            <h3 className="mb-2 text-center text-2xl">Create an Account</h3>
-            <div className="rounded-lg bg-white shadow-xl shadow-neutral-900">
-                <form className="rounded bg-white px-8 pt-6 pb-8" onSubmit={handleSubmit}>
+          <div className="mb-4 w-full md:flex md:justify-between">
+            <InputPassword
+              id="password"
+              label="Password"
+              className="text-gray-700"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              inputError={password && checkPassword(password)}
+            />
 
-                    <Input
-                        id={"username"}
-                        label={"Username"}
-                        className={"text-gray-700"}
-                        disabled={loading}
-                        value={username}
-                        onChange={(event) => setUsername(event.target.value)}
-                        inputError={username && checkUsername(username)} />
+            <InputPassword
+              id="password_confirm"
+              label="Confirm password"
+              className="text-gray-700 md:ml-5"
+              value={passwordConfirm}
+              onChange={(event) => setPasswordConfirm(event.target.value)}
+              inputError={passwordConfirm && checkPassword(passwordConfirm)}
+            />
+          </div>
 
-                    <Input
-                        id="email"
-                        label="Email"
-                        className="text-gray-700"
-                        disabled={loading}
-                        value={email}
-                        onChange={(event) => setEmail(event.target.value)}
-                        inputError={email && checkEmail(email)} />
+          <div className="mb-6 flex w-full justify-center">
+            <button
+              className="btn_save flex"
+              type="submit"
+              disabled={
+                loading ||
+                !!checkUsername(username) ||
+                !!checkEmail(email) ||
+                !!checkPassword(password) ||
+                password !== passwordConfirm
+              }
+            >
+              {loading && <LoadingCircle />}
+              <span>Register Account</span>
+            </button>
+          </div>
 
+          {message && <MessageText message={message} className="text-black" />}
 
-                    <div className="mb-4 w-full md:flex md:justify-between">
-                        <InputPassword
-                            id="password"
-                            label="Password"
-                            className="text-gray-700"
-                            value={password}
-                            onChange={(event) => setPassword(event.target.value)}
-                            inputError={password && checkPassword(password)} />
+          <hr className="mb-6 border-t" />
 
-                        <InputPassword
-                            id="password_confirm"
-                            label="Confirm password"
-                            className="text-gray-700 md:ml-5"
-                            value={passwordConfirm}
-                            onChange={(event) => setPasswordConfirm(event.target.value)}
-                            inputError={passwordConfirm && checkPassword(passwordConfirm)} />
-                    </div>
-
-                    <div className="mb-6 flex w-full justify-center">
-                        <button
-                            className="flex btn_save"
-                            type="submit"
-                            disabled={loading || !!checkUsername(username) || !!checkEmail(email) || !!checkPassword(password) || password !== passwordConfirm}>
-                            {loading && <LoadingCircle />}
-                            <span>Register Account</span>
-                        </button>
-                    </div>
-
-                    {message &&
-                        <MessageText message={message} className="text-black" />
-                    }
-
-                    <hr className="mb-6 border-t" />
-
-                    <ForgetPasswordButton />
-                    <RegisterButton />
-                </form>
-            </div>
-        </div>
-    );
+          <ForgetPasswordButton />
+          <RegisterButton />
+        </form>
+      </div>
+    </div>
+  );
 }
