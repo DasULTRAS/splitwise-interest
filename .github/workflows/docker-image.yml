@@ -23,7 +23,7 @@ jobs:
           - context: "."
             tags: ${{ github.repository }}
           - context: "cron"
-            tags: ${{ github.repository }}/cron
+            tags: ${{ github.repository }}-cron
 
     steps:
       - name: Checkout
