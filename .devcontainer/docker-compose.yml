@@ -5,25 +5,12 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      # Docker socket to access Docker server
-      - /var/run/docker.sock:/var/run/docker.sock
-      # SSH directory
-      - ~/.ssh:/root/.ssh
-      # For Windows without WSL, a copy will be made
-      # from /tmp/.ssh to ~/.ssh to fix permissions
-      # - ~/.ssh:/tmp/.ssh:ro
-      # Shell history persistence
-      # - ~/.zsh_history:/root/.zsh_history:z
-      # Git config
-      - ~/.gitconfig:/root/.gitconfig
-      # Workspaces directory
-      - ..:/workspaces/
-      - next:/workspaces/.next
-      - node_modules:/workspaces/node_modules:cached
+      - next:/workspaces/splitwise-interest/.next
+      - node_modules:/workspaces/splitwise-interest/node_modules:cached
     environment:
       - TZ=Europe/Berlin
       # FIX for WSL2 (https://github.com/vercel/next.js/issues/36774)
-      - NEXT_WEBPACK_USEPOLLING=true
+      #- NEXT_WEBPACK_USEPOLLING=true
     command: >
       sh -c "
       chown -R node:node /workspaces/node_modules && 
