@@ -12,7 +12,7 @@ export interface Settings {
   nextDate: Date;
 }
 
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   // DONT DELETE THE REQ STATEMENT params are only in second arguement
   try {
     // Get Usersession
@@ -27,7 +27,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
       (await Interests.findOne({ ["id"]: session.user?.id })) ?? new Interests({ id: Number(session.user?.id) });
 
     // Get Data from User
-    const friendId = parseInt(params?.id);
+    const friendId = parseInt((await params).id);
     if (interests?.interests && friendId) {
       const interest = interests.interests.find((interest) => interest.friendId === friendId);
 
@@ -52,7 +52,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
   }
 }
 
-export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
+export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { settings }: { settings: Settings } = await req.json();
 
@@ -88,7 +88,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
     const interests: IInterests =
       (await Interests.findOne({ ["id"]: session.user?.id })) ?? new Interests({ id: Number(session.user?.id) });
 
-    const friendId = parseInt(params?.id);
+    const friendId = parseInt((await params)?.id);
 
     // Get Data
     let interest = interests.interests.find((i) => i.friendId === friendId);

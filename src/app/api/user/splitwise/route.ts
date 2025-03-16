@@ -61,11 +61,7 @@ export async function POST(req: NextRequest) {
       setting.oauth.consumerKey = data.consumerKey;
       setting.oauth.consumerSecret = data.consumerSecret;
 
-      Splitwise.resetInstanceWithCredentials(
-        String(setting.id),
-        setting.oauth.consumerKey,
-        setting.oauth.consumerSecret,
-      );
+      Splitwise.resetInstanceWithToken(String(setting.id), setting.oauth.consumerKey, setting.oauth.consumerSecret);
       const sw = await Splitwise.getInstanceById(String(setting.id));
       await sw.splitwise.getCurrentUser();
 

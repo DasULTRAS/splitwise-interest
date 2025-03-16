@@ -1,8 +1,9 @@
 import { Expense } from "@/utils/splitwise/datatypes";
-import Splitwise, { getInventedDebts, roundUpToTwoDecimals } from "@/utils/splitwise/splitwise";
+import { getInventedDebts, roundUpToTwoDecimals } from "@/utils/splitwise/splitwise";
 import { NextResponse } from "next/server";
+import { components } from "splitwise-sdk/dist/types/openapi-types";
 
-export async function createInterests(user: any): Promise<NextResponse> {
+export async function createInterests(user: components["schemas"]["current_user"]): Promise<NextResponse> {
   // Get Splitwise Connection
   const sw = (await Splitwise.getInstanceById(user.username)).splitwise;
   const interests: Expense[] = [];
