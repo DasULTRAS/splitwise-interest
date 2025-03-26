@@ -1,3 +1,4 @@
+import { SignIn } from "@/components/buttons/AuthComponents";
 import UnauthorizedPage from "@/components/ui/unauthorisedPage";
 import { auth } from "@/lib/auth";
 
@@ -7,9 +8,13 @@ export default async function SecuredContext({ children }: { children: React.Rea
   if (!session?.user)
     return (
       <UnauthorizedPage href="/settings/splitwise">
-        Please click <b>here</b> to set up your Splitwise connection first.
+        <p>Please click </p>
+        <SignIn provider="splitwise" className="underline hover:cursor-pointer">
+          <b>here</b>
+        </SignIn>
+        <p> to set up your Splitwise connection first.</p>
       </UnauthorizedPage>
     );
 
-  return { children };
+  return <>{children}</>;
 }

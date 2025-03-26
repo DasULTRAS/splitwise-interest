@@ -4,20 +4,24 @@ import { signIn, signOut } from "next-auth/react";
 import { ButtonHTMLAttributes, DetailedHTMLProps } from "react";
 
 export function SignIn({
-  provider,
+  provider = "splitwise",
+  children,
   ...props
 }: { provider?: string } & DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>) {
   return (
     <button onClick={() => signIn(provider)} {...props}>
-      Sign In (Client)
+      {children ?? "Sign In"}
     </button>
   );
 }
 
-export function SignOut(props: DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>) {
+export function SignOut({
+  children,
+  ...props
+}: DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>) {
   return (
-    <button onClick={() => signOut()} {...props}>
-      Sign Out (Client)
+    <button onClick={() => signOut({ redirectTo: "/" })} {...props}>
+      {children ?? "Sign Out"}
     </button>
   );
 }
