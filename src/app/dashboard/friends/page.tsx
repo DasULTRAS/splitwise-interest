@@ -2,7 +2,7 @@ import FriendCard from "@/components/ui/friendCard";
 import UnauthorizedPage from "@/components/ui/unauthorisedPage";
 import { auth } from "@/lib/auth";
 import { CustomSession } from "@/lib/auth/config";
-import { getInterests } from "@/services/interests";
+import { IInterests, findInterestsBySplitwiseId } from "@/models/Interests";
 import { SplitwiseClient } from "splitwise-sdk";
 
 export default async function FriendsDashboard() {
@@ -16,32 +16,17 @@ export default async function FriendsDashboard() {
     accessToken: session.accessToken,
   });
 
-  async function fetchFriends() {
-    if (!splitwise) return [];
-    try {
-      const res = await splitwise.getFriends();
-
-      const friends = res?.friends;
-
-      if (!friends) return [];
-
-      friends.sort((a, b) => (a.first_name || "").localeCompare(b.first_name || ""));
-      return friends;
-    } catch (e) {
-      console.error("Error fetching friends", e);
-    }
-  }
-
-  function getAPY(friendId: number) {
+  function getAPY(friendId: number, interests: IInterests) {
     const interest = interests?.interests.find((interest) => interest.friendId === friendId);
+
     if (interest?.settings?.apy) return interest.settings.apy;
-    else return null;
+    else return 0;
   }
 
-  const interestsPromise = getInterests();
-  const friendsPromise = fetchFriends();
-
-  const [interests, friends] = await Promise.all([interestsPromise, friendsPromise]);
+  const interests = await findInterestsBySplitwiseId(Number.parseInt(session.user.id));
+  const friends = (await splitwise.getFriends()).friends?.sort((a, b) =>
+    (a.first_name || "").localeCompare(b.first_name || ""),
+  );
 
   return (
     <div className="px-10 pb-5">
@@ -49,7 +34,7 @@ export default async function FriendsDashboard() {
       <div className="flex flex-wrap justify-center gap-4">
         {friends?.map((friend) => {
           if (friend.id === 0 || !friend.id) return null;
-          return <FriendCard key={friend.id} friend={friend} apy={getAPY(friend.id)} />;
+          return <FriendCard key={friend.id} friend={friend} apy={getAPY(friend.id, interests)} />;
         })}
       </div>
     </div>

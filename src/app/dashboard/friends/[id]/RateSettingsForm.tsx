@@ -33,12 +33,12 @@ export default function RateSettingsForm({ friend_id }: Readonly<{ friend_id: nu
           setNextDate(new Date(data.settings.nextDate));
         } else {
           setMessage(data.message);
-          setTimeout(() => setMessage(""), 5000);
+          setTimeout(() => setMessage(""), 10_000);
         }
       } catch (error) {
         if (error instanceof TypeError) {
           setMessage("Error: " + error.message);
-          setTimeout(() => setMessage(""), 10000);
+          setTimeout(() => setMessage(""), 20_000);
         } else {
           throw error;
         }
@@ -79,13 +79,16 @@ export default function RateSettingsForm({ friend_id }: Readonly<{ friend_id: nu
         setMessage(data.message);
         setTimeout(() => setMessage(""), 5000);
       } else {
+        /*
         const formattedErrors = Object.entries(data.errors)
-          .map(([key, error]: [string, any]) => {
-            return `${key}: ${error.message}`;
+          .map(([key, error]: [string, unknown]) => {
+            if (error instanceof Error) return `${key}: ${error.message}`;
+            return `${key}: ${error}`;
           })
           .join("\n");
+*/
 
-        setMessage("Error: " + data.message + ": " + formattedErrors);
+        setMessage("Error: " + data?.message + ": " + data?.error);
         setTimeout(() => setMessage(""), 10000);
         console.error(data);
       }

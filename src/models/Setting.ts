@@ -1,7 +1,7 @@
 import { Document, Schema, model, models } from "mongoose";
 
 export interface ISetting extends Document {
-  id: number;
+  splitwiseId: number;
   oauth: {
     consumerKey: string;
     consumerSecret: string;
@@ -9,20 +9,23 @@ export interface ISetting extends Document {
 }
 
 const settingSchema = new Schema<ISetting>({
-  id: {
+  splitwiseId: {
     type: Number,
     required: true,
   },
   oauth: {
     consumerKey: {
       type: String,
-      required: false,
     },
     consumerSecret: {
       type: String,
-      required: false,
     },
   },
 });
 
-export default models.Setting || model<ISetting>("Setting", settingSchema);
+const Setting = models.Setting || model<ISetting>("Setting", settingSchema);
+export default Setting;
+
+export async function findSettingBySplitwiseId(splitwiseId: number): Promise<ISetting | null> {
+  return (await Setting.findOne({ splitwiseId })) ?? null;
+}

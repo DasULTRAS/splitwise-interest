@@ -1,5 +1,5 @@
 import { auth } from "@/lib/auth";
-import Interests, { IInterestPair, IInterests } from "@/models/Interests";
+import Interests, { findInterestsBySplitwiseId, IInterestPair } from "@/models/Interests";
 import { connect } from "@/utils/mongodb";
 import { checkApy, checkCycles, checkMinDebtAge, checkNextDate } from "@/utils/validation";
 import { NextRequest, NextResponse } from "next/server";
@@ -23,8 +23,8 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
 
     // Get User from DB
     await connect();
-    const interests: IInterests =
-      (await Interests.findOne({ ["id"]: session.user?.id })) ?? new Interests({ id: Number(session.user?.id) });
+    const interests =
+      (await findInterestsBySplitwiseId(Number(session.user?.id))) ?? new Interests({ id: Number(session.user?.id) });
 
     // Get Data from User
     const friendId = parseInt((await params).id);
@@ -47,7 +47,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
       },
       { status: 404 },
     );
-  } catch (err: any) {
+  } catch (err) {
     return NextResponse.json({ message: "Server Error", error: err }, { status: 500 });
   }
 }
@@ -85,8 +85,9 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
 
     // Get User from DB
     await connect();
-    const interests: IInterests =
-      (await Interests.findOne({ ["id"]: session.user?.id })) ?? new Interests({ id: Number(session.user?.id) });
+    const interests =
+      (await findInterestsBySplitwiseId(Number(session.user?.id))) ??
+      new Interests({ splitwiseId: Number(session.user?.id) });
 
     const friendId = parseInt((await params)?.id);
 
@@ -122,8 +123,8 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
       interests.interests = interests.interests.map((i) => (i.friendId === friendId ? interest : i));
       await interests.save();
     } catch (err: unknown) {
-      if (err instanceof Error && err?.name === "ValidationError") {
-        return NextResponse.json({ message: "Invalid Data: ", errors: err?.errors ?? err }, { status: 400 });
+      if (err && err instanceof Error && err?.name === "ValidationError") {
+        return NextResponse.json({ message: "Invalid Data: ", error: err.message }, { status: 400 });
       } else return NextResponse.json({ message: "Error saving settings", error: err }, { status: 500 });
     }
     return NextResponse.json(
@@ -133,7 +134,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
       },
       { status: 201 },
     );
-  } catch (err: unknown) {
+  } catch (err) {
     return NextResponse.json({ message: "Server Error", error: err }, { status: 500 });
   }
 }
