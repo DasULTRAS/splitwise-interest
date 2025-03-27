@@ -56,7 +56,7 @@ export async function POST(req: NextRequest) {
       const hasInterest = interests?.interests.find(
         (interest) => interest.settings.apy > 0 && interest.settings?.nextDate.valueOf() < Date.now(),
       );
-      if (hasInterest) {
+      if (hasInterest && interests) {
         if (!settings?.oauth?.consumerKey || !settings?.oauth?.consumerSecret) {
           console.log(`CRON: User ${user.name} has interests but no Splitwise settings.`);
           continue;

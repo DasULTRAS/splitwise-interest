@@ -3,6 +3,7 @@
 import { IInterests } from "@/models/Interests";
 import { roundUpToTwoDecimals } from "@/utils/splitwise/splitwise";
 import { SplitwiseClient } from "splitwise-sdk";
+import { CreateExpenseRequest } from "splitwise-sdk/dist/types/api";
 import { components } from "splitwise-sdk/dist/types/openapi-types";
 
 export async function createInterests(
@@ -28,7 +29,7 @@ export async function createInterests(
       const settings = friend.settings;
       const latestDate = new Date(
         Date.now() -
-          (settings.cycles > settings.minDebtAge ? settings.cycles : settings.minDebtAge) * 24 * 60 * 60 * 1000,
+        (settings.cycles > settings.minDebtAge ? settings.cycles : settings.minDebtAge) * 24 * 60 * 60 * 1000,
       );
       const { expenses: latestExpenses } = await client.getExpenses({
         friend_id: friend.friendId,
@@ -73,19 +74,19 @@ export async function createInterests(
           );
 
           if (interest > 0) {
-            const expense = {
+            const res = await client.createExpense({
               cost: String(interest),
               currency_code: "EUR",
               group_id: 0,
 
               category_id: 4,
 
-              users__0__owed_share: (0.0).toString(),
-              users__0__paid_share: interest.toString(),
+              users__0__owed_share: "0.00",
+              users__0__paid_share: interest.toFixed(2),
               users__0__user_id: splitwiseId,
-              users__1__owed_share: interest.toString(),
-              users__1__paid_share: (0.0).toString(),
-              users__1__user_id: friend.friendId,
+              users__1__owed_share: interest.toFixed(2),
+              users__1__paid_share: "0.00",
+              users__1__user_id: friend.friendId.toString(),
 
               date: new Date().toISOString(),
 
@@ -93,12 +94,10 @@ export async function createInterests(
               details: `Automatically Generated: ${inventedDebt} * ${friend.settings.apy} / 100 * ${friend.settings.cycles} / 365 = ${interest} 
                             \n ${friend.settings.cycles} days between interests 
                             \n Last ${friend.settings.minDebtAge} days not excepted`,
-            } as unknown as components["schemas"]["by_shares"];
-
-            const res = await client.createExpense(expense);
+            } as unknown as CreateExpenseRequest);
 
             if (res?.errors?.base?.length ?? 0 > 0) {
-              throw new Error(`Error creating interest for ${friend.friendId}`, { cause: res.errors.base.join(", ") });
+              throw new Error(`Error creating interest for ${friend.friendId}`, { cause: res?.errors?.base?.join(", ") });
             }
 
             if (res.expenses) {

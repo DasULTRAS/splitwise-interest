@@ -28,6 +28,10 @@ export async function POST() {
       accessToken: session.accessToken,
     });
 
+    if (!interests) {
+      return NextResponse.json({ message: "Interests not found." }, { status: 404 });
+    }
+
     const createdInterests = await createInterests(interests, account.providerAccountId, client);
     return NextResponse.json(
       { message: "Interest created", interests: createdInterests },

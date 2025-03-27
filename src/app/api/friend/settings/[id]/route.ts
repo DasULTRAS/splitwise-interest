@@ -1,5 +1,5 @@
 import { auth } from "@/lib/auth";
-import Interests, { findInterestsBySplitwiseId, IInterestPair } from "@/models/Interests";
+import Interests, { findInterestsBySplitwiseId, IInterestPair, IInterests } from "@/models/Interests";
 import { connect } from "@/utils/mongodb";
 import { checkApy, checkCycles, checkMinDebtAge, checkNextDate } from "@/utils/validation";
 import { NextRequest, NextResponse } from "next/server";
@@ -24,7 +24,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
     // Get User from DB
     await connect();
     const interests =
-      (await findInterestsBySplitwiseId(Number(session.user?.id))) ?? new Interests({ id: Number(session.user?.id) });
+      (await findInterestsBySplitwiseId(Number(session.user?.id))) ?? new Interests({ id: Number(session.user?.id) }) as IInterests;
 
     // Get Data from User
     const friendId = parseInt((await params).id);
@@ -87,7 +87,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
     await connect();
     const interests =
       (await findInterestsBySplitwiseId(Number(session.user?.id))) ??
-      new Interests({ splitwiseId: Number(session.user?.id) });
+      new Interests({ splitwiseId: Number(session.user?.id) }) as IInterests;
 
     const friendId = parseInt((await params)?.id);
 

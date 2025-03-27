@@ -34,7 +34,7 @@ export default async function FriendsDashboard() {
       <div className="flex flex-wrap justify-center gap-4">
         {friends?.map((friend) => {
           if (friend.id === 0 || !friend.id) return null;
-          return <FriendCard key={friend.id} friend={friend} apy={getAPY(friend.id, interests)} />;
+          return <FriendCard key={friend.id} friend={friend} apy={interests ? getAPY(friend.id, interests) : 0} />;
         })}
       </div>
     </div>
