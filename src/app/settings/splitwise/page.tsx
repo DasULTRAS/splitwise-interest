@@ -119,12 +119,10 @@ export default function SplitwiseSettings() {
             Splitwise
           </a>{" "}
           account.
-          <br />
-          Steps one and two are <b>optional</b>.
         </p>
 
         <ol type="1" className="mr-5 list-inside list-decimal space-y-3">
-          <li>
+          {/* <li>
             Login to{" "}
             <a className="a_link" href="https://www.splitwise.com/login" target="_blank" rel="noopener">
               Splitwise.com
@@ -157,7 +155,7 @@ export default function SplitwiseSettings() {
                 button under Privacy & Security
               </li>
             </ol>
-          </li>
+          </li> */}
           <li>
             Create a new application by clicking the{" "}
             <a className="a_link" href="https://secure.splitwise.com/apps/new" target="_blank" rel="noopener">

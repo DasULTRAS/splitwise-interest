@@ -1,7 +1,7 @@
-import { Document, Schema, model, models } from "mongoose";
+import { Document, Model, Schema, model, models } from "mongoose";
 
 export interface IInterests extends Document {
-  id: number;
+  splitwiseId: number;
   interests: IInterestPair[];
 }
 
@@ -16,7 +16,7 @@ export interface IInterestPair {
   };
 }
 
-const IInterestPair = new Schema<IInterestPair>({
+const interestPairSchema = new Schema<IInterestPair>({
   friendId: {
     type: Number,
     required: true,
@@ -59,12 +59,17 @@ const IInterestPair = new Schema<IInterestPair>({
   },
 });
 
-const InterestsSchema = new Schema<IInterests>({
-  id: {
+const interestsSchema = new Schema<IInterests>({
+  splitwiseId: {
     type: Number,
     required: true,
   },
-  interests: [IInterestPair],
+  interests: [interestPairSchema],
 });
 
-export default models.Interests || model<IInterests>("Interests", InterestsSchema, "interests");
+const Interests = models.Interests || model<IInterests, Model<IInterests>>("Interests", interestsSchema, "interests");
+export default Interests;
+
+export async function findInterestsBySplitwiseId(splitwiseId: number): Promise<IInterests | null> {
+  return (await Interests.findOne({ splitwiseId })) ?? null;
+}

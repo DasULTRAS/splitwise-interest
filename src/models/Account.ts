@@ -1,4 +1,4 @@
-import { Document, Schema, model, models } from "mongoose";
+import { Document, ObjectId, Schema, model, models } from "mongoose";
 
 export interface IAccount extends Document {
   provider: string;
@@ -6,7 +6,7 @@ export interface IAccount extends Document {
   providerAccountId: number;
   token_type: string;
   type: string;
-  userId: number;
+  userId: ObjectId;
 }
 
 const userSchema = new Schema<IAccount>({
@@ -26,8 +26,13 @@ const userSchema = new Schema<IAccount>({
     type: String,
   },
   userId: {
-    type: Number,
+    type: Schema.Types.ObjectId,
   },
 });
 
-export default models.User || model<IAccount>("User", userSchema);
+const Account = models.Account || model<IAccount>("Account", userSchema);
+export default Account;
+
+export async function findAccountByProviderAccountId(providerAccountId: number): Promise<IAccount | null> {
+  return (await Account.findOne({ providerAccountId })) ?? null;
+}

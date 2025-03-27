@@ -1,5 +1,5 @@
 import { auth } from "@/lib/auth";
-import Interests, { IInterestPair, IInterests } from "@/models/Interests";
+import Interests, { findInterestsBySplitwiseId, IInterestPair, IInterests } from "@/models/Interests";
 import { connect } from "@/utils/mongodb";
 import { checkApy, checkCycles, checkMinDebtAge, checkNextDate } from "@/utils/validation";
 import { NextRequest, NextResponse } from "next/server";
@@ -12,7 +12,7 @@ export interface Settings {
   nextDate: Date;
 }
 
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   // DONT DELETE THE REQ STATEMENT params are only in second arguement
   try {
     // Get Usersession
@@ -23,11 +23,11 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 
     // Get User from DB
     await connect();
-    const interests: IInterests =
-      (await Interests.findOne({ ["id"]: session.user?.id })) ?? new Interests({ id: Number(session.user?.id) });
+    const interests =
+      (await findInterestsBySplitwiseId(Number(session.user?.id))) ?? new Interests({ id: Number(session.user?.id) }) as IInterests;
 
     // Get Data from User
-    const friendId = parseInt(params?.id);
+    const friendId = parseInt((await params).id);
     if (interests?.interests && friendId) {
       const interest = interests.interests.find((interest) => interest.friendId === friendId);
 
@@ -47,12 +47,12 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
       },
       { status: 404 },
     );
-  } catch (err: any) {
+  } catch (err) {
     return NextResponse.json({ message: "Server Error", error: err }, { status: 500 });
   }
 }
 
-export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
+export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { settings }: { settings: Settings } = await req.json();
 
@@ -85,10 +85,11 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
 
     // Get User from DB
     await connect();
-    const interests: IInterests =
-      (await Interests.findOne({ ["id"]: session.user?.id })) ?? new Interests({ id: Number(session.user?.id) });
+    const interests =
+      (await findInterestsBySplitwiseId(Number(session.user?.id))) ??
+      new Interests({ splitwiseId: Number(session.user?.id) }) as IInterests;
 
-    const friendId = parseInt(params?.id);
+    const friendId = parseInt((await params)?.id);
 
     // Get Data
     let interest = interests.interests.find((i) => i.friendId === friendId);
@@ -122,8 +123,8 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
       interests.interests = interests.interests.map((i) => (i.friendId === friendId ? interest : i));
       await interests.save();
     } catch (err: unknown) {
-      if (err instanceof Error && err?.name === "ValidationError") {
-        return NextResponse.json({ message: "Invalid Data: ", errors: err?.errors ?? err }, { status: 400 });
+      if (err && err instanceof Error && err?.name === "ValidationError") {
+        return NextResponse.json({ message: "Invalid Data: ", error: err.message }, { status: 400 });
       } else return NextResponse.json({ message: "Error saving settings", error: err }, { status: 500 });
     }
     return NextResponse.json(
@@ -133,7 +134,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
       },
       { status: 201 },
     );
-  } catch (err: unknown) {
+  } catch (err) {
     return NextResponse.json({ message: "Server Error", error: err }, { status: 500 });
   }
 }

@@ -1,20 +1,20 @@
 import { auth } from "@/lib/auth";
-import Setting, { ISetting } from "@/models/Setting";
+import Setting, { findSettingBySplitwiseId, ISetting } from "@/models/Setting";
 import { connect } from "@/utils/mongodb";
-import Splitwise from "@/utils/splitwise/splitwise";
 import { NextRequest, NextResponse } from "next/server";
+import { SplitwiseClient } from "splitwise-sdk";
 
 export async function GET() {
   try {
     // Get Usersession
     const session = await auth();
-    if (!session) {
+    if (!session || !session?.user?.id || isNaN(Number(session.user.id))) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
     // Get User from DB
     await connect();
-    const setting = (await Setting.findOne({ ["id"]: session.user?.id })) as ISetting | null;
+    const setting = await findSettingBySplitwiseId(Number(session.user?.id));
 
     // Get Data from User
     if (!setting?.oauth?.consumerKey || !setting?.oauth?.consumerSecret)
@@ -41,42 +41,38 @@ export async function POST(req: NextRequest) {
 
     // Get Usersession
     const session = await auth();
-    if (!session?.user?.id) {
+    if (!session?.user?.id || isNaN(Number(session.user.id))) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
     // Get User from DB
     await connect();
-    const setting = ((await Setting.findOne({ ["id"]: session.user?.id })) ??
-      new Setting({
-        id: Number(session.user?.id),
+    const setting =
+      (await findSettingBySplitwiseId(Number(session.user?.id))) ??
+      (new Setting({
+        splitwiseId: Number(session.user?.id),
         oauth: {
           consumerKey: "",
           consumerSecret: "",
         },
-      })) as ISetting;
+      }) as ISetting);
 
     // Test connection
     try {
       setting.oauth.consumerKey = data.consumerKey;
       setting.oauth.consumerSecret = data.consumerSecret;
 
-      Splitwise.resetInstanceWithCredentials(
-        String(setting.id),
-        setting.oauth.consumerKey,
-        setting.oauth.consumerSecret,
-      );
-      const sw = await Splitwise.getInstanceById(String(setting.id));
-      await sw.splitwise.getCurrentUser();
+      const sw = new SplitwiseClient({ consumerKey: data.consumerKey, consumerSecret: data.consumerSecret });
+      await sw.getCurrentUser();
 
       await setting.save();
 
       return NextResponse.json({ message: "Splitwise settings successfully saved!" }, { status: 201 });
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (_: unknown) {
+    } catch (err) {
       return NextResponse.json({ message: "Splitwise Credentials are not correct." }, { status: 406 });
     }
-  } catch (err: unknown) {
+  } catch (err) {
     return NextResponse.json({ message: "Server Error", error: err }, { status: 500 });
   }
 }

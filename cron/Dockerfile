@@ -1,8 +1,8 @@
 FROM alpine:3
 
 ENV TZ=Europe/Berlin
-ENV CRON_VALUE="0 * * * *"
-ENV CURL_METHOD="GET"
+ENV CRON_VALUE="* * * * *"
+ENV CURL_METHOD="POST"
 ENV CURL_HOST="app"
 ENV CURL_PORT=80
 ENV CURL_PATH="/api/cron"

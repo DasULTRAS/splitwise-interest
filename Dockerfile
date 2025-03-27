@@ -20,6 +20,11 @@ COPY . .
 # Uncomment the following line in case you want to disable telemetry during the build.
 # ENV NEXT_TELEMETRY_DISABLED 1
 
+# Set the environment variables for the build process
+ARG MONGODB_URI="mongodb://localhost:27017/build"
+ARG AUTH_SPLITWISE_ID="build"
+ARG AUTH_SPLITWISE_SECRET="build"
+
 # Build the application
 RUN npm run build
 

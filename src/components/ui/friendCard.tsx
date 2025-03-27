@@ -1,7 +1,8 @@
 import WebImage from "@/components/images/WebImage";
-import { Balance, Friend } from "@/utils/splitwise/datatypes";
+import { Balance } from "@/utils/splitwise/datatypes";
+import { components } from "splitwise-sdk/dist/types/openapi-types";
 
-function getFriendBalance(friend: Friend): number {
+function getFriendBalance(friend: components["schemas"]["friend"]): number {
   let balance = 0;
   friend.balance.forEach((bal) => {
     balance += Number.parseFloat(bal.amount);
@@ -9,7 +10,7 @@ function getFriendBalance(friend: Friend): number {
   return balance;
 }
 
-export default function FriendCard({ friend, apy }: { friend: Friend; apy: number | null }) {
+export default function FriendCard({ friend, apy }: { friend: components["schemas"]["friend"]; apy: number | null }) {
   const balance: number = getFriendBalance(friend);
 
   return (
@@ -24,7 +25,7 @@ export default function FriendCard({ friend, apy }: { friend: Friend; apy: numbe
         <div>
           <p className="text-xs text-gray-500">{friend.id}</p>
           <div className="flex space-x-1">
-            <p className="overflow-hidden truncate whitespace-nowrap font-medium">
+            <p className="truncate overflow-hidden font-medium whitespace-nowrap">
               {friend.first_name} {friend?.last_name}
             </p>
           </div>
