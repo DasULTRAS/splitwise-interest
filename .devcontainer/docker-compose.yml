@@ -14,20 +14,6 @@ services:
     profiles:
       - dev
 
-  # cron:
-  #   build:
-  #     context: ../cron
-  #   image: dasultras/curl-cron:latest
-  #   restart: unless-stopped
-  #   environment:
-  #     - CURL_HOST=dev
-  #     - CURL_PORT=3000
-  #   env_file:
-  #     - .env
-  #   profiles:
-  #     - dev
-  #     - test
-
   mongo:
     image: mongo
     restart: always
