@@ -4,36 +4,29 @@ services:
     image: mcr.microsoft.com/devcontainers/typescript-node:20-bookworm
     ports:
       - "3000:3000"
-    volumes:
-      - next:/workspaces/splitwise-interest/.next
-      - node_modules:/workspaces/splitwise-interest/node_modules:cached
     environment:
       - TZ=Europe/Berlin
       # FIX for WSL2 (https://github.com/vercel/next.js/issues/36774)
       #- NEXT_WEBPACK_USEPOLLING=true
-    command: >
-      sh -c "
-      chown -R node:node /workspaces/node_modules && 
-      chown -R node:node /workspaces/.next && 
-      sleep infinity"
+    command: sleep infinity
     env_file:
       - .env
     profiles:
       - dev
 
-  cron:
-    build:
-      context: ../cron
-    image: dasultras/curl-cron:latest
-    restart: unless-stopped
-    environment:
-      - CURL_HOST=dev
-      - CURL_PORT=3000
-    env_file:
-      - .env
-    profiles:
-      - dev
-      - test
+  # cron:
+  #   build:
+  #     context: ../cron
+  #   image: dasultras/curl-cron:latest
+  #   restart: unless-stopped
+  #   environment:
+  #     - CURL_HOST=dev
+  #     - CURL_PORT=3000
+  #   env_file:
+  #     - .env
+  #   profiles:
+  #     - dev
+  #     - test
 
   mongo:
     image: mongo
@@ -43,7 +36,6 @@ services:
     volumes:
       - db:/data/db
       - configdb:/data/configdb
-      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${DB_USER}
       MONGO_INITDB_ROOT_PASSWORD: ${DB_PASS}
@@ -51,21 +43,6 @@ services:
       - dev
       - test
 
-  test:
-    image: dasultras/splitwise-interest:latest
-    build: ..
-    ports:
-      - "3000:3000"
-    environment:
-      - TZ=Europe/Berlin
-      - PORT=3000
-    env_file:
-      - .env
-    profiles:
-      - test
-
 volumes:
-  next:
-  node_modules:
   db:
   configdb:

@@ -6,16 +6,14 @@
     "docker-compose.yml"
   ],
   "service": "dev",
+  "overrideCommand": false,
   "runServices": [
     "dev",
-    "cron",
     "mongo"
   ],
-  "workspaceFolder": "/workspaces",
+  "remoteUser": "root",
   // Copy env files before starting the container. More info: https://containers.dev/implementors/json_reference/#lifecycle-scripts
   "initializeCommand": "if [ ! -f .devcontainer/.env ]; then cp .devcontainer/.env.example .devcontainer/.env; chown 1000:1000 .devcontainer/.env; fi",
-  // Git Config
-  "onCreateCommand": "git config --global --add safe.directory /workspaces",
   // Features to add to the dev container. More info: https://containers.dev/features.
   "features": {
     "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
