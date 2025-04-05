@@ -21,7 +21,7 @@ services:
       - stack.env
 
   cron:
-    image: dasultras/curl-cron:latest
+    image: dasultras/splitwise-interest-cron:latest
     restart: unless-stopped
     environment:
       - CURL_HOST=app

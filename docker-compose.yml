@@ -11,7 +11,7 @@ services:
       - stack.env
 
   cron:
-    image: dasultras/curl-cron:latest
+    image: dasultras/splitwise-interest-cron:latest
     build: ./cron
     restart: unless-stopped
     environment:
