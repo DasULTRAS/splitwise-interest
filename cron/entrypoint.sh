@@ -7,4 +7,7 @@ crontab cron.tmp
 cat cron.tmp
 rm -rf cron.tmp
 
+# Zeitzone setzen
+ln -snf "/usr/share/zoneinfo/$TZ" /etc/localtime && echo "$TZ" > /etc/timezone
+
 exec "$@"
