@@ -9,23 +9,23 @@ A simple web app to calculate the interest on the splitwise balance.
 Example `docker-compose.yml` for `splitwise-interest`:
 
 ```yml
-version: "3"
-
 services:
   app:
-    image: dasultras/splitwise-interest
+    image: dasultras/splitwise-interest:latest
     restart: unless-stopped
     ports:
       - "3100:80"
+    environment:
+      - DB_HOST=db
     env_file:
       - stack.env
+    depends_on: [db]
 
   cron:
     image: dasultras/splitwise-interest-cron:latest
     restart: unless-stopped
     environment:
       - CURL_HOST=app
-      - CURL_PORT=80
     env_file:
       - stack.env
     depends_on: [app]
@@ -46,7 +46,6 @@ services:
 
   mongo-express:
     image: mongo-express
-    restart: on-failure
     ports:
       - "3101:8081"
     environment:
@@ -92,6 +91,8 @@ It works on Linux, Windows and OSX.
 
 #### Setup
 
+##### Preparation
+
 1. Create the following files on your host if you don't have them:
 
    ```sh
@@ -102,8 +103,11 @@ It works on Linux, Windows and OSX.
 
 1. **For Docker on OSX or Windows without WSL**: ensure your home directory `~` is accessible by Docker.
 1. **For Docker on Windows without WSL:** if you want to use SSH keys, bind mount your host `~/.ssh` to `/tmp/.ssh` instead of `~/.ssh` by changing the `volumes` section in the [docker-compose.yml](docker-compose.yml).
+
+##### Open Repository
+
 1. Open the command palette in Visual Studio Code (CTRL+SHIFT+P).
-1. Select `Remote-Containers: Open Folder in Container...` and choose the project directory.
+2. Select `Remote-Containers: Clone Repository in namend Containervolume…` and choose the project directory.
 
 ### LOCAL DEV ENVIRONMENT
 
