@@ -9,7 +9,7 @@ updates:
     directory: "/" # Location of package manifests
     schedule:
       interval: "weekly"
-    taget-branch: "dev"
+    target-branch: "dev"
     commit-message:
       prefix: "chore(npm)"
     # ignore:
@@ -31,7 +31,7 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-    taget-branch: "dev"
+    target-branch: "dev"
     commit-message:
       prefix: "chore(github-actions)"
     labels:
