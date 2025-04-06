@@ -29,7 +29,7 @@ export async function createInterests(
       const settings = friend.settings;
       const latestDate = new Date(
         Date.now() -
-        (settings.cycles > settings.minDebtAge ? settings.cycles : settings.minDebtAge) * 24 * 60 * 60 * 1000,
+          (settings.cycles > settings.minDebtAge ? settings.cycles : settings.minDebtAge) * 24 * 60 * 60 * 1000,
       );
       const { expenses: latestExpenses } = await client.getExpenses({
         friend_id: friend.friendId,
@@ -93,11 +93,13 @@ export async function createInterests(
               description: `Zins ${friend.settings.apy}%`,
               details: `Automatically Generated: ${inventedDebt} * ${friend.settings.apy} / 100 * ${friend.settings.cycles} / 365 = ${interest} 
                             \n ${friend.settings.cycles} days between interests 
-                            \n Last ${friend.settings.minDebtAge} days not excepted`,
+                            \n ${exceptedBalance}€ excepted (last ${friend.settings.minDebtAge} days)`,
             } as unknown as CreateExpenseRequest);
 
             if (res?.errors?.base?.length ?? 0 > 0) {
-              throw new Error(`Error creating interest for ${friend.friendId}`, { cause: res?.errors?.base?.join(", ") });
+              throw new Error(`Error creating interest for ${friend.friendId}`, {
+                cause: res?.errors?.base?.join(", "),
+              });
             }
 
             if (res.expenses) {
