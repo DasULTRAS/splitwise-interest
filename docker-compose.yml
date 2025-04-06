@@ -9,9 +9,10 @@ services:
       - DB_HOST=db
     env_file:
       - stack.env
+    depends_on: [db]
 
   cron:
-    image: dasultras/curl-cron:latest
+    image: dasultras/splitwise-interest-cron:latest
     build: ./cron
     restart: unless-stopped
     environment:
