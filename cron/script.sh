@@ -1,7 +1,7 @@
 #!/bin/sh
 
 execute_command() {
-    curl -X "$CURL_METHOD" \
+    curl -s -X "$CURL_METHOD" \
          -H "Accept: application/json" \
          -H "Content-Type: application/json" \
          -H "Authorization: Bearer $CRON_SECRET" \

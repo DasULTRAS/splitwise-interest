@@ -1,52 +1,17 @@
 services:
   # Update this to the name of the service you want to work with in your docker-compose.yml file
   dev:
-    image: mcr.microsoft.com/devcontainers/typescript-node:20-bookworm
+    # See version: https://mcr.microsoft.com/v2/vscode/devcontainers/javascript-node/tags/list
+    image: mcr.microsoft.com/devcontainers/typescript-node:1.1.9-22-bookworm
     ports:
       - "3000:3000"
-    volumes:
-      # Docker socket to access Docker server
-      - /var/run/docker.sock:/var/run/docker.sock
-      # SSH directory
-      - ~/.ssh:/root/.ssh
-      # For Windows without WSL, a copy will be made
-      # from /tmp/.ssh to ~/.ssh to fix permissions
-      # - ~/.ssh:/tmp/.ssh:ro
-      # Shell history persistence
-      # - ~/.zsh_history:/root/.zsh_history:z
-      # Git config
-      - ~/.gitconfig:/root/.gitconfig
-      # Workspaces directory
-      - ..:/workspaces/
-      - next:/workspaces/.next
-      - node_modules:/workspaces/node_modules:cached
     environment:
       - TZ=Europe/Berlin
-      # FIX for WSL2 (https://github.com/vercel/next.js/issues/36774)
-      - NEXT_WEBPACK_USEPOLLING=true
-    command: >
-      sh -c "
-      chown -R node:node /workspaces/node_modules && 
-      chown -R node:node /workspaces/.next && 
-      sleep infinity"
+    command: sleep infinity
     env_file:
       - .env
     profiles:
-      - dev
-
-  cron:
-    build:
-      context: ../cron
-    image: dasultras/curl-cron:latest
-    restart: unless-stopped
-    environment:
-      - CURL_HOST=dev
-      - CURL_PORT=3000
-    env_file:
-      - .env
-    profiles:
-      - dev
-      - test
+      - devcontainer
 
   mongo:
     image: mongo
@@ -56,13 +21,24 @@ services:
     volumes:
       - db:/data/db
       - configdb:/data/configdb
-      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${DB_USER}
       MONGO_INITDB_ROOT_PASSWORD: ${DB_PASS}
+
+  cron:
+    build:
+      context: ../cron
+    image: dasultras/splitwise-interest-cron:latest
+    restart: unless-stopped
+    environment:
+      - CURL_HOST=host.docker.internal
+      - CURL_PORT=3000
+    env_file:
+      - .env
     profiles:
-      - dev
       - test
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   test:
     image: dasultras/splitwise-interest:latest
@@ -78,7 +54,5 @@ services:
       - test
 
 volumes:
-  next:
-  node_modules:
   db:
   configdb:
