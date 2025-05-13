@@ -68,12 +68,4 @@ ENV DB_PASS="splitwise"
 ENV NEXTAUTH_SECRET="secret"
 ENV CRON_SECRET="cron"
 
-# Healthcheck
-# Beispiel: HTTP GET Request an die Ziel-URL, die du prüfen möchtest.
-# --fail sorgt dafür, dass ein Fehlercode zurückgegeben wird, 
-# sobald keine 2xx- oder 3xx-Antwort kommt.
-# -s schaltet "Silent mode" ein, damit keine zu großen Logs entstehen.
-HEALTHCHECK --interval=5s --timeout=5s --start-period=5s --retries=3 \
-    CMD curl -f -s -X "GET" "http://localhost:80" || exit 1
-
 CMD ["node", "server.js"]
