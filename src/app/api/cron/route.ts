@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
         {
           message: `Last run was at ${lastCronRun.toLocaleTimeString()}.`,
         },
-        { status: 400 },
+        { status: 200 },
       );
 
     // Update last run
@@ -79,7 +79,7 @@ export async function POST(req: NextRequest) {
         message: "CRON RUN.",
         interests: createdInterests,
       },
-      { status: 200 },
+      { status: 201 },
     );
   } catch (err) {
     return NextResponse.json({ message: "Server Error", error: err }, { status: 500 });

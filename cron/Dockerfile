@@ -23,7 +23,7 @@ RUN chmod +x ./*.sh
 # sobald keine 2xx- oder 3xx-Antwort kommt.
 # -s schaltet "Silent mode" ein, damit keine zu großen Logs entstehen.
 HEALTHCHECK --interval=5s --timeout=5s --start-period=5s --retries=3 \
-  CMD curl -f -s -X "$CURL_METHOD" "http://$CURL_HOST:$CURL_PORT$CURL_PATH" || exit 1
- 
+  CMD curl -f -s -X "$CURL_METHOD" "http://$CURL_HOST:$CURL_PORT" || exit 1
+
 ENTRYPOINT [ "/app/entrypoint.sh" ]
 CMD ["/usr/sbin/crond", "-f"]
