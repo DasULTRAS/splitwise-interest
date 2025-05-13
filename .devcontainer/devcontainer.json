@@ -16,15 +16,14 @@
   "customizations": {
     "vscode": {
       "extensions": [
-        "eamodio.gitlens",
         "GitHub.copilot",
         "yzhang.markdown-all-in-one",
         "ms-azuretools.vscode-docker",
         "bradlc.vscode-tailwindcss",
         "esbenp.prettier-vscode",
-        "million.million-lint",
         "github.vscode-github-actions",
-        "dbaeumer.vscode-eslint"
+        "dbaeumer.vscode-eslint",
+        "mhutchie.git-graph"
       ],
       "settings": {
         // General settings
