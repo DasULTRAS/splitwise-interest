@@ -24,6 +24,8 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${DB_USER}
       MONGO_INITDB_ROOT_PASSWORD: ${DB_PASS}
+    profiles:
+      - devcontainer
 
   cron:
     build:
@@ -39,19 +41,6 @@ services:
       - test
     extra_hosts:
       - "host.docker.internal:host-gateway"
-
-  test:
-    image: dasultras/splitwise-interest:latest
-    build: ..
-    ports:
-      - "3000:3000"
-    environment:
-      - TZ=Europe/Berlin
-      - PORT=3000
-    env_file:
-      - .env
-    profiles:
-      - test
 
 volumes:
   db:
